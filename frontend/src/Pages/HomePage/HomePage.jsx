@@ -8,7 +8,7 @@ import Card from "../../Components/Card/Card";
 export default function HomePage() {
     return (
         <>
-            <div>
+            <div className="bg-gray-100 h-screen">
                 <div className="grid grid-cols-3 gap-5 pt-20">
                     <Card
                         to="/project"

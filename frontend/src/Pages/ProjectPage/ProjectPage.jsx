@@ -4,7 +4,7 @@ import { GrDocumentUpdate } from "react-icons/gr";
 
 export default function ProjectPage() {
     return (
-        <div>
+        <div className="bg-gray-100 h-screen">
             <div className="grid grid-cols-3 gap-5 pt-20">
                 <MiniCard
                     to="/createProject"
