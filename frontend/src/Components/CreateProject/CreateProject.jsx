@@ -73,10 +73,10 @@ export default function CreateProject() {
     return (
         <div className="pt-20 bg-gray-100 h-max overflow-x-hidden">
             <div className="flex justify-center items-center py-3 m-5">
-                <div className="bg-white shadow-lg w-[75rem] h-auto grid grid-cols-3">
+                <div className="bg-white shadow-lg w-[70rem] h-auto grid grid-cols-3">
                     <div className="p-10">
                         <h1 className="font-semibold lg:text-3xl">Project Details</h1>
-                        <h1 className="font-semibold text-gray-500 lg:text-xl ml-1">Please fill all the detials</h1>
+                        <h1 className="font-semibold text-gray-500 lg:text-xl ml-1 mt-4">Please fill all the detials</h1>
                     </div>
 
                     <div className="grid grid-cols-2 py-10">
@@ -84,6 +84,7 @@ export default function CreateProject() {
                             <div className="flex flex-col m-2">
                                 <label className="font-semibold text-lg">Project Name </label>
                                 <input
+                                    required
                                     onChange={handleInputData}
                                     type="text" name="projectName" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
@@ -91,6 +92,7 @@ export default function CreateProject() {
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Objective </label>
                                 <input
+                                    required
                                     onChange={handleInputData}
                                     type="text" name="projectObjective" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
@@ -98,6 +100,7 @@ export default function CreateProject() {
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Description </label>
                                 <textarea
+                                    required
                                     onChange={handleInputData}
                                     type="text" name="projectDescription" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-24 shadow-inner focus:shadow-none w-[35rem]"></textarea>
                             </div>
@@ -165,6 +168,7 @@ export default function CreateProject() {
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Category </label>
                                 <input
+                                    required
                                     onChange={handleInputData}
                                     type="text" name="projectCategory" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"></input>
                             </div>
@@ -175,6 +179,7 @@ export default function CreateProject() {
                                         <div key={index} className="flex flex-col m-2 mt-5">
                                             <label className="font-semibold text-lg">Project Phase {index + 1}</label>
                                             <input
+                                                required
                                                 type="text"
                                                 className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
                                                 value={phase}
