@@ -146,7 +146,7 @@ export default function CreateProject() {
                             </div>
 
                             <div className="flex flex-col mt-16">
-                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-[12rem] rounded">
+                                <button className="bg-blue-500 hover:bg-blue-700 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded">
                                     Submit
                                 </button>
                             </div>
