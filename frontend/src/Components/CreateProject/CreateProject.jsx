@@ -3,6 +3,19 @@ import { useState } from "react";
 
 export default function CreateProject() {
 
+    //Handling all project detials
+    const [formData, setFormData] = useState({
+        projectName: '',
+        projectObjective: '',
+        projectDescription: '',
+        projectStatus: '',
+        projectMembers: [''],
+        projectCategory: '',
+        projectPhases: [''],
+        startDate: '',
+        endDate: ''
+    })
+
     const [projectPhases, setProjectPhases] = useState(['']);
     const [projectMember, setProjectMember] = useState(['']);
 
@@ -18,12 +31,44 @@ export default function CreateProject() {
         const newMember = [...projectMember];
         newMember[index] = value;
         setProjectMember(newMember);
+
+        // Update
+        handleInputChange('projectMembers', index, value);
     };
 
-    const handleChange = (index, value) => {
+    const handlePhase = (index, value) => {
         const newPhases = [...projectPhases];
         newPhases[index] = value;
         setProjectPhases(newPhases);
+
+        // Update
+        handleInputChange('projectPhases', index, value);
+    };
+
+
+    const handleInputChange = (field, index, value) => {
+        setFormData((prevData) => {
+            const newData = { ...prevData };
+            if (Array.isArray(newData[field])) {
+                newData[field][index] = value;
+            } else {
+                newData[field] = value;
+            }
+            return newData;
+        });
+    };
+
+    const handleInputData = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
+    }
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault(); // Prevents the default form submission behavior
+
+        console.log("Form detilas ==> ", formData)
     };
     return (
         <div className="pt-20 bg-gray-100 h-max overflow-x-hidden">
@@ -35,26 +80,33 @@ export default function CreateProject() {
                     </div>
 
                     <div className="grid grid-cols-2 py-10">
-                        <form>
+                        <form onSubmit={handleFormSubmit}>
                             <div className="flex flex-col m-2">
                                 <label className="font-semibold text-lg">Project Name </label>
-                                <input type="text" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
+                                <input
+                                    onChange={handleInputData}
+                                    type="text" name="projectName" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Objective </label>
-                                <input type="text" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
+                                <input
+                                    onChange={handleInputData}
+                                    type="text" name="projectObjective" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Description </label>
-                                <textarea type="text" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-24 shadow-inner focus:shadow-none w-[35rem]"></textarea>
+                                <textarea
+                                    onChange={handleInputData}
+                                    type="text" name="projectDescription" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-24 shadow-inner focus:shadow-none w-[35rem]"></textarea>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Status</label>
                                 <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
                                     <input
+                                        onChange={handleInputData}
                                         type="radio"
                                         name="projectStatus"
                                         value="inProgress"
@@ -65,6 +117,7 @@ export default function CreateProject() {
                                     </label>
 
                                     <input
+                                        onChange={handleInputData}
                                         type="radio"
                                         name="projectStatus"
                                         value="onHold"
@@ -73,6 +126,7 @@ export default function CreateProject() {
                                     <label htmlFor="statusOnHold">On Hold</label>
 
                                     <input
+                                        onChange={handleInputData}
                                         type="radio"
                                         name="projectStatus"
                                         value="completed"
@@ -92,6 +146,7 @@ export default function CreateProject() {
                                                 type="text"
                                                 className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
                                                 value={member}
+                                                name="projectMembers"
                                                 onChange={(e) => handleMember(index, e.target.value)}
                                             />
                                         </div>
@@ -109,7 +164,9 @@ export default function CreateProject() {
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Category </label>
-                                <input type="text" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"></input>
+                                <input
+                                    onChange={handleInputData}
+                                    type="text" name="projectCategory" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"></input>
                             </div>
 
                             <div className="flex flex-col">
@@ -121,7 +178,8 @@ export default function CreateProject() {
                                                 type="text"
                                                 className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
                                                 value={phase}
-                                                onChange={(e) => handleChange(index, e.target.value)}
+                                                name="projectPhases"
+                                                onChange={(e) => handlePhase(index, e.target.value)}
                                             />
                                         </div>
                                     ))}
@@ -139,18 +197,22 @@ export default function CreateProject() {
                             <div className="flex flex-col m-2 mt-8">
                                 <div className="flex flex-row gap-5 w-[72rem] items-center">
                                     <label className="font-semibold text-lg">Start date </label>
-                                    <input type="date" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
+                                    <input
+                                        onChange={handleInputData}
+                                        type="date" name="startDate" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
                                     <label className="font-semibold text-lg">End date </label>
-                                    <input type="date" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
+                                    <input
+                                        onChange={handleInputData}
+                                        type="date" name="endDate" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
                                 </div>
                             </div>
 
                             <div className="flex flex-col mt-16">
-                                <button className="bg-blue-500 hover:bg-blue-700 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded">
+                                <button type="submit"
+                                    className="bg-blue-500 hover:bg-blue-700 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded">
                                     Submit
                                 </button>
                             </div>
-
                         </form>
                     </div>
                 </div>
