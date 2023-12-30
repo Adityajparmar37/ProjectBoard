@@ -4,7 +4,8 @@ import { GrDocumentUpdate } from "react-icons/gr";
 
 export default function ProjectPage() {
     return (
-            <div className="grid grid-cols-3 gap-5 pt-20 h-screen">
+        <div>
+            <div className="grid grid-cols-3 gap-5 pt-20">
                 <MiniCard
                     to="/createProject"
                     bgColor="bg-orange-600"
@@ -14,12 +15,13 @@ export default function ProjectPage() {
                 />
 
                 <MiniCard
-                    to="/createProject"
+                    to="/ManageProject"
                     bgColor="bg-orange-600"
                     icon={<GrDocumentUpdate className="text-[2.5rem] text-orange-600" />}
                     title="Project Dashboard"
-                    content={["Manage Ongoing Project","Update existing Project"]}
+                    content={["Manage Ongoing Project", "Update existing Project"]}
                 />
             </div>
+        </div>
     )
 }
