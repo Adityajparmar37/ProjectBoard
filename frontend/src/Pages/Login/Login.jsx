@@ -40,7 +40,7 @@ export default function Login() {
         })
     }
     return (
-        <div className="pt-20 bg-gradient-to-b from-sky-300 h-screen flex flex-col justify-center items-center">
+        <div className="pt-20 bg-gradient-to-b from-skyBlue-rgba h-screen flex flex-col justify-center items-center">
             <div className="w-full md:w-[25rem] h-3/6 bg-white rounded-xl flex flex-col items-center justify-center p-8">
                 <h1 className="font-semibold text-2xl md:text-3xl  text-black mb-6">Login</h1>
                 <form className="w-full">

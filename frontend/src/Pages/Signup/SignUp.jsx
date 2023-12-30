@@ -46,7 +46,7 @@ export default function SignUp() {
 
 
     return (
-        <div className="pt-20 bg-gradient-to-b from-sky-300 h-screen flex flex-col justify-center items-center">
+        <div className="pt-20 bg-gradient-to-b from-skyBlue-rgba h-screen flex flex-col justify-center items-center">
             <div className="w-full md:w-[28rem] h-5/6 bg-white rounded-xl flex flex-col items-center justify-center p-7 mt-5">
                 <h1 className="font-semibold text-2xl md:text-3xl  text-black mb-6">Sign Up</h1>
                 <form className="w-full">

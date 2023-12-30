@@ -1,8 +1,18 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../Hooks/useAuth";
 
 export default function DefaultPage() {
+
+  const { student } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (student) navigate("/home");
+  }, [student, navigate]);
+
   return (
-    <div className="pt-20 bg-gradient-to-b from-sky-300 h-screen flex flex-col md:flex-row items-center justify-center">
+
+    student ? navigate("/home") : (<div className="pt-20 bg-gradient-to-b from-skyBlue-rgba h-screen flex flex-col md:flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center text-center md:text-left md:ml-10">
         <h1 className="text-black text-4xl font-bold md:text-xl md:mt-25 lg:text-5xl">
           We bring all your projects, tasks, and teammates together...
@@ -18,6 +28,7 @@ export default function DefaultPage() {
         </Link>
       </div>
       <img src="../../../public/DeaultScreenImg_1.webp" className="md:w-[50rem] lg:w-[50rem]" alt="Image Representation" />
-    </div>
+    </div>)
   );
+
 }
