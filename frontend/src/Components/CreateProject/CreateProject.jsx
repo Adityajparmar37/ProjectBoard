@@ -48,7 +48,7 @@ export default function CreateProject() {
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Description </label>
-                                <textarea type="text" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-28 shadow-inner focus:shadow-none w-[35rem]"></textarea>
+                                <textarea type="text" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-24 shadow-inner focus:shadow-none w-[35rem]"></textarea>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
