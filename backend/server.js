@@ -19,6 +19,17 @@ app.use(cors({
 app.use("/api/student", studentRouters);
 app.use("/api/project", projectRouters);
 
+//Internal Error Handling
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    return res.status(statusCode).json({
+        success: false,
+        message,
+        statusCode,
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`serving on ${PORT}`);
 })

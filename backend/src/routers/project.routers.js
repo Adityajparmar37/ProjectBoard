@@ -8,6 +8,22 @@ const Project = require('../models/projectModal.js');
 //middleare for authorization
 router.use(authMid);
 
+
+router.get("/manageProject", handler(async (req, res, next) => {
+    try {
+        const projects = await Project.find({ projectCreator: req.user.id });
+
+        if (projects.length > 0) {
+            res.json(projects);
+        } else {
+            res.status(404).json({ message: 'No projects found for the user' });
+        }
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}));
+
 router.post("/createProject", handler(async (req, res, next) => {
 
     try {

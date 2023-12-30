@@ -1,9 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { ProjectCreate } from "../../Services/projectServices";
 
 
 export default function CreateProject() {
+
+    const navigate = useNavigate();
 
     //Handling all project detials
     const [formData, setFormData] = useState({
@@ -85,13 +88,14 @@ export default function CreateProject() {
             projectPhases: formattedPhases,
         };
 
-        console.log(updatedFormData);
+        // console.log(updatedFormData);
 
         try {
             const projectCreate = await ProjectCreate(updatedFormData);
             console.log("Project Created ==> ", projectCreate);
             if (projectCreate.message === "Project created successfully") {
                 toast.success(projectCreate.message);
+                navigate("/ManageProject")
             }
         } catch (error) {
             toast.error("Project Not Created, Please try again");
@@ -140,7 +144,7 @@ export default function CreateProject() {
                                         onChange={handleInputData}
                                         type="radio"
                                         name="projectStatus"
-                                        value="inProgress"
+                                        value="In Progress"
 
                                     />
                                     <label htmlFor="statusInProgress">
@@ -151,7 +155,7 @@ export default function CreateProject() {
                                         onChange={handleInputData}
                                         type="radio"
                                         name="projectStatus"
-                                        value="onHold"
+                                        value="On Hold"
 
                                     />
                                     <label htmlFor="statusOnHold">On Hold</label>
@@ -160,7 +164,7 @@ export default function CreateProject() {
                                         onChange={handleInputData}
                                         type="radio"
                                         name="projectStatus"
-                                        value="completed"
+                                        value="Completed"
                                     />
                                     <label htmlFor="statusCompleted" >
                                         Completed

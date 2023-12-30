@@ -1,5 +1,15 @@
 import axios from "axios";
 
+
+export const getAllProject = async () => {
+    try {
+        const { data } = await axios.get("api/project/manageProject");
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 export const ProjectCreate = async (NewProjectData) => {
     try {
 
