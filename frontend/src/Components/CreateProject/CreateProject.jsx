@@ -1,12 +1,14 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { ProjectCreate } from "../../Services/projectServices";
 
 
 export default function CreateProject() {
 
     //Handling all project detials
     const [formData, setFormData] = useState({
-        projectName: '',
-        projectObjective: '',
+        projectTitle: '',
+        projectObjectives: '',
         projectDescription: '',
         projectStatus: '',
         projectMembers: [''],
@@ -24,7 +26,7 @@ export default function CreateProject() {
     };
 
     const handleAddMemebr = () => {
-        setProjectMember([...projectMember, '']); // Add a new empty string to the array
+        setProjectMember([...projectMember, '']); // Add a new object with an empty memberRef
     };
 
     const handleMember = (index, value) => {
@@ -44,7 +46,6 @@ export default function CreateProject() {
         // Update
         handleInputChange('projectPhases', index, value);
     };
-
 
     const handleInputChange = (field, index, value) => {
         setFormData((prevData) => {
@@ -66,9 +67,36 @@ export default function CreateProject() {
     }
 
     const handleFormSubmit = async (e) => {
-        e.preventDefault(); // Prevents the default form submission behavior
+        e.preventDefault();
 
-        console.log("Form detilas ==> ", formData)
+        // Convert projectMembers to the expected format
+        const formattedMembers = projectMember.map((member) => ({ memberNam:member }));
+
+        // Convert projectPhases to the expected format
+        const formattedPhases = projectPhases.map((phase, index) => ({
+            phaseTitle: phase,
+            phaseNum: (index + 1).toString(), // Assuming you want to assign a number to each phase
+        }));
+
+        // Update formData with formatted members and phases
+        const updatedFormData = {
+            ...formData,
+            projectMembers: formattedMembers,
+            projectPhases: formattedPhases,
+        };
+
+        console.log(updatedFormData);
+
+        try {
+            const projectCreate = await ProjectCreate(updatedFormData);
+            console.log("Project Created ==> ", projectCreate);
+            if (projectCreate.message === "Project created successfully") {
+                toast.success(projectCreate.message);
+            }
+        } catch (error) {
+            toast.error("Project Not Created, Please try again");
+            console.log("Error While Creating Project ", error);
+        }
     };
     return (
         <div className="pt-20 bg-gray-100 h-max overflow-x-hidden">
@@ -86,7 +114,7 @@ export default function CreateProject() {
                                 <input
                                     required
                                     onChange={handleInputData}
-                                    type="text" name="projectName" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
+                                    type="text" name="projectTitle" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
@@ -94,7 +122,7 @@ export default function CreateProject() {
                                 <input
                                     required
                                     onChange={handleInputData}
-                                    type="text" name="projectObjective" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
+                                    type="text" name="projectObjectives" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">

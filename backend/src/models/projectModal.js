@@ -40,27 +40,37 @@ const projectSchema = mongoose.Schema(
                 message: 'End date must be equal to or after the start date.',
             },
         },
-        projectMembers: [
-            {
-                memberRef: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Student",
-                    // required: true,
+        projectMembers: {
+            type: [{
+                memberNam: {
+                    type: String,
                 }
-            }
-        ],
-        projectPhases: [
-            {
+            }],
+            validate: {
+                validator: function (members) {
+                    return members.length > 0;
+                },
+                message: 'At least one member is required.',
+            },
+        },
+        projectPhases: {
+            type: [{
                 phaseTitle: {
                     type: String,
-                    required: true
+                    required: true,
                 },
                 phaseNum: {
                     type: String,
-                    required: true
+                    required: true,
                 },
-            }
-        ],
+            }],
+            validate: {
+                validator: function (phases) {
+                    return phases.length > 0;
+                },
+                message: 'At least one phase is required.',
+            },
+        }
     },
     {
         timestamps: true

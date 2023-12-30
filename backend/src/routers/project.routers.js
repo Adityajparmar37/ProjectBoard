@@ -8,7 +8,7 @@ const Project = require('../models/projectModal.js');
 //middleare for authorization
 router.use(authMid);
 
-router.get("/createProject", handler(async (req, res, next) => {
+router.post("/createProject", handler(async (req, res, next) => {
 
     try {
 
@@ -16,7 +16,7 @@ router.get("/createProject", handler(async (req, res, next) => {
 
 
         if (!projectTitle || !projectObjectives || !projectDescription || !projectStatus || !projectCategory || !startDate || !endDate || !projectPhases) {
-            next(errorHandler(401, "Please fill all fields"));
+            next(errorHandler(404, "Please fill all fields"));
         }
 
         const project = await Project.create({
