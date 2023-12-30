@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         'skyBlue-rgba': 'rgb(200, 245, 253)',
+        'LightSkyBlue-rgba': 'rgb(232, 252, 255)'
       },
     },
   },
