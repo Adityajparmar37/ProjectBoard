@@ -39,13 +39,15 @@ export default function ManageProject() {
                             />
                         ))
                     ) : (
-                        <h1 className='flex items-center justify-center bg-gray-600 text-white text-lg rounded-md p-2'>No Project Found</h1>
+                        <div className='flex items-center justify-center w-screen h-screen'>
+                            <h1 className=' bg-gray-600 text-white text-lg rounded-md p-2'>No Project Found</h1>
+                        </div>
                     )}
                 </div>
             </div>
 
             {studentProjects && studentProjects.length > 0 ? (<div className='w-1/4 bg-white shadow-lg  right-0 top-0 h-screen'>
-                <Filters />
+                <Filters setStudentProjects={setStudentProjects} />
             </div>) : (<></>)}
 
         </div>

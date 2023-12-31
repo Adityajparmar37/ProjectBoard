@@ -11,10 +11,51 @@ router.use(authMid);
 
 router.get("/manageProject", handler(async (req, res, next) => {
     try {
-        const projects = await Project.find({ projectCreator: req.user.id });
+        const { ...Filters } = req.query;
 
-        if (projects.length > 0) {
-            res.json(projects);
+        const { keywordSearch, title, category, status, sort } = Filters;
+
+        console.log("Filters backend==> ", Filters);
+
+        //student nae badha project find karo
+        const queryObject = { projectCreator: req.user.id };
+
+
+        //regex mongoDB
+        if (title) {
+            queryObject.projectTitle = { $regex: new RegExp(title, 'i') };
+        }
+
+        if (category) {
+            queryObject.projectCategory = { $regex: new RegExp(category, 'i') };
+        }
+
+        if (status) {
+            queryObject.projectStatus = { $regex: new RegExp(status, 'i') };
+        }
+
+        console.log("projectCreator ==> ", queryObject)
+
+        let filterprojects = await Project
+            .find(queryObject)
+            .sort({ createdAt: sort === 'new' ? -1 : 1 });
+
+        if (keywordSearch) {
+            const keywordSearchRegex = new RegExp(keywordSearch, 'i');
+
+            filterprojects = filterprojects.filter((project) => (
+                project.projectTitle.match(keywordSearchRegex) ||
+                project.projectObjectives.match(keywordSearchRegex) ||
+                project.projectDescription.match(keywordSearchRegex) ||
+                project.projectStatus.match(keywordSearchRegex) ||
+                project.projectCategory.match(keywordSearchRegex) ||
+                project.projectMembers.some((member) => member.memberNam.match(keywordSearchRegex)) ||
+                project.projectPhases.some((phase) => phase.phaseTitle.match(keywordSearchRegex) || phase.phaseNum.match(keywordSearchRegex))
+            ));
+        }
+
+        if (filterprojects.length > 0) {
+            res.json(filterprojects);
         } else {
             res.status(404).json({ message: 'No projects found for the user' });
         }

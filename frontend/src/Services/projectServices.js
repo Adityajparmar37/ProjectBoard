@@ -1,9 +1,15 @@
 import axios from "axios";
 
 
-export const getAllProject = async () => {
+export const getAllProject = async (filters) => {
     try {
-        const { data } = await axios.get("api/project/manageProject");
+
+        filters = filters || {};
+
+        const params = new URLSearchParams({
+            ...filters
+        })
+        const { data } = await axios.get(`api/project/manageProject?${params.toString()}`);
         return data;
     } catch (error) {
         return error.response.data;
