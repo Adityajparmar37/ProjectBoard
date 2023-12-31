@@ -43,3 +43,14 @@ export const getbyId = async (id) => {
         return error.response.data;
     }
 }
+
+
+export const deleteProject = async (id) => {
+    try {
+        const { data } = await axios.delete(`api/project/manageProject/delete/${id}`);
+        console.log("delete frontend api ", data)
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

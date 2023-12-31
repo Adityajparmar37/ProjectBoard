@@ -99,7 +99,7 @@ export default function CreateProject() {
             if (projectCreate.message === "Project created successfully") {
                 hideLoading();
                 toast.success(projectCreate.message);
-                navigate("/manageProject")
+                navigate("/manageProject");
             }
         } catch (error) {
             hideLoading();

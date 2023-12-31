@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
-import { getbyId } from "../../Services/projectServices";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { deleteProject, getbyId } from "../../Services/projectServices";
 
 export default function ProjectView() {
 
     const [project, setProject] = useState({});
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetch = async () => {
@@ -19,6 +21,19 @@ export default function ProjectView() {
 
         fetch();
     }, [id])
+
+
+    const handleDelete = async () => {
+        try {
+            // console.log("Before delete operation");
+            await deleteProject(id);
+            // console.log("After delete operation");
+            toast.success("Delete successfully");
+            navigate("/manageProject");
+        } catch (error) {
+            console.log("Error in deleting ", error);
+        }
+    }
     return (
         <div className="pt-20 bg-gray-100 h-max overflow-x-hidden">
             <div className="flex justify-center items-center py-3 m-5">
@@ -180,7 +195,8 @@ export default function ProjectView() {
 
                                 <div className="flex mt-16 justify-end items-end">
                                     <button
-                                        type="submit"
+                                        type="button"
+                                        onClick={handleDelete}
                                         className="bg-orange-700 hover:bg-orange-800 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded"
                                     >
                                         Delete
