@@ -35,7 +35,7 @@ export default function ManageProject() {
                                 key={index}
                                 projectTitle={project.projectTitle}
                                 status={project.projectStatus}
-                                endDate="12/12/2023"
+                                endDate={project.projectEndDate}
                             />
                         ))
                     ) : (

@@ -5,6 +5,11 @@ export default function ProjectCard({ projectTitle, status, endDate }) {
         'In Progress': 'bg-yellow-400',
         'Completed': 'bg-green-400',
     };
+    const formattedEndDate = new Date(endDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    });
 
     const statusColor = statusColors[status] || 'bg-orange-600';
 
@@ -24,8 +29,8 @@ export default function ProjectCard({ projectTitle, status, endDate }) {
                         <h1 className={`font-semibold text-slate-600 text-sm rounded-lg p-1 ${statusColor}`}>{status}</h1>
                     </div>
                     <div className="flex">
-                        <h1 className="text-gray-600">End Date :</h1>
-                        <h1 className="text-gray-800 font-semibold">{endDate}</h1>
+                        <h1 className="text-gray-600">End Date:</h1>
+                        <h1 className="text-gray-800 font-semibold">{formattedEndDate}</h1>
                     </div>
                 </div>
             </div>
