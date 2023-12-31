@@ -43,6 +43,8 @@ router.get("/manageProject", handler(async (req, res, next) => {
         if (keywordSearch) {
             const keywordSearchRegex = new RegExp(keywordSearch, 'i');
 
+
+            //some callback func che etla jo agar element match thai jai toh true nakar false
             filterprojects = filterprojects.filter((project) => (
                 project.projectTitle.match(keywordSearchRegex) ||
                 project.projectObjectives.match(keywordSearchRegex) ||

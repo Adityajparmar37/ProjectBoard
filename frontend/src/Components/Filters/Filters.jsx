@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useLoading } from "../../Hooks/useLoading";
 import { getAllProject } from "../../Services/projectServices";
+import { IoCaretBackSharp } from "react-icons/io5";
+import { IoCaretForwardSharp } from "react-icons/io5";
 
 // eslint-disable-next-line react/prop-types
 export default function Filters({ setStudentProjects }) {
@@ -60,8 +62,8 @@ export default function Filters({ setStudentProjects }) {
 
     console.log("Filters ==> ", filters)
     return (
-        <div className="pt-20">
-            <div className="flex flex-col mt-8">
+        <div className="pt-20 flex flex-col">
+            <div className="flex flex-col mt-8 p-5">
                 <h1 className="flex justify-center items-center font-bold lg:text-xl">Find Your Project</h1>
                 <div className="w-[100%] bg-gray-600 h-0.5 mt-2"></div>
                 <div className="flex flex-col p-5">
@@ -111,21 +113,21 @@ export default function Filters({ setStudentProjects }) {
                         <option value="old">Oldest Project</option>
                     </select>
                 </div>
-                <button
-                    onClick={() => {
-                        setFilters({
-                            keywordSearch: "",
-                            title: "",
-                            category: "",
-                            status: "",
-                            sort: ""
-                        });
-                    }}
-                    type="button"
-                    className="bg-blue-500 text-white rounded-md px-4 py-2 mt-8 hover:bg-blue-700 hover:rounded-[1rem] focus:outline-none focus:ring focus:border-gray-300 w-[25%] mx-auto"
-                >
-                    Clear
-                </button>
+                <div className="bottom-0 mx-auto mt-16 flex flex-row w-full items-center justify-center bg-white p-4">
+                    <button
+                        type="button"
+                        className="text-black lg:text-4xl"
+                    >
+                        <IoCaretBackSharp/>
+                    </button>
+                    <span className='mx-4'>Page : 1 </span>
+                    <button
+                        type="button"
+                        className="text-black lg:text-4xl"
+                    >
+                        <IoCaretForwardSharp/>
+                    </button>
+                </div>
             </div>
         </div>
     )
