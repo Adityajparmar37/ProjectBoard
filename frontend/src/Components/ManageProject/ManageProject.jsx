@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLoading } from '../../Hooks/useLoading';
 import { getAllProject } from '../../Services/projectServices';
+import Filters from '../Filters/Filters';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
 export default function ManageProject() {
@@ -44,7 +45,7 @@ export default function ManageProject() {
             </div>
 
             {studentProjects && studentProjects.length > 0 ? (<div className='w-1/4 bg-white shadow-lg  right-0 top-0 h-screen'>
-                hello
+                <Filters />
             </div>) : (<></>)}
 
         </div>
