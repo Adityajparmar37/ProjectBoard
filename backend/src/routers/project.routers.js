@@ -71,7 +71,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
         if (paginatedProjects.length > 0) {
             res.json(paginatedProjects);
         } else {
-            res.status(404).json({ message: 'No projects found for the user' });
+            res.json({ message: 'No projects found for the user' });
         }
     } catch (error) {
         console.error('Error fetching projects:', error);
