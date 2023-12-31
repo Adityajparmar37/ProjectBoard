@@ -1,13 +1,19 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Hooks/useAuth";
+import { useLoading } from "../../Hooks/useLoading";
 
 export default function DefaultPage() {
 
   const { student } = useAuth();
+  const { showLoading, hideLoading } = useLoading();
   const navigate = useNavigate();
   useEffect(() => {
-    if (student) navigate("/home");
+    if (student) {
+      showLoading();
+      navigate("/home");
+      hideLoading();
+    }
   }, [student, navigate]);
 
   return (

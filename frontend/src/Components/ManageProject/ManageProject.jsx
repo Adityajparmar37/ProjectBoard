@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useLoading } from '../../Hooks/useLoading';
 import { getAllProject } from '../../Services/projectServices';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
 export default function ManageProject() {
     const [studentProjects, setStudentProjects] = useState();
+    const { showLoading, hideLoading } = useLoading();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                showLoading();
                 const allProject = await getAllProject();
                 console.log("ALL PROJECT ==> ", allProject);
                 setStudentProjects(allProject);
+                hideLoading();
             } catch (error) {
+                hideLoading();
                 console.error('Error fetching projects:', error);
             }
         };

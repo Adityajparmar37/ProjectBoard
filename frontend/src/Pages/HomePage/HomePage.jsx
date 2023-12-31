@@ -3,12 +3,24 @@ import { FaTasks } from "react-icons/fa";
 import { IoMdChatbubbles } from "react-icons/io";
 import { ImFolderUpload } from "react-icons/im";
 import Card from "../../Components/Card/Card";
+import { useAuth } from "../../Hooks/useAuth";
+// import { useEffect } from "react";
+// import { useLoading } from "../../Hooks/useLoading";
 
 
 export default function HomePage() {
+    const { student } = useAuth();
+    // const { showLoading, hideLoading } = useLoading();
+
+    // useEffect(() => {
+    //     if (student) {
+    //         showLoading();
+    //         hideLoading();
+    //     }
+    // },[student])
     return (
         <>
-            <div className="bg-gray-100 h-screen">
+            {student ? (<div className="bg-gray-100 h-screen">
                 <div className="grid grid-cols-3 gap-5 pt-20">
                     <Card
                         to="/project"
@@ -58,7 +70,10 @@ export default function HomePage() {
                         ]}
                     />
                 </div>
-            </div>
+            </div>) : (
+                <h1 className="flex justify-center items-center lg:text-2xl font-semibold">Please Login or SignUp to use</h1>
+            )}
+
         </>
     );
 }

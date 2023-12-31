@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../Hooks/useAuth";
+import { useLoading } from "../../Hooks/useLoading";
 
 export default function Login() {
 
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
     const [params] = useSearchParams();
     const returnUrl = params.get('returnUrl');
     const { student, login } = useAuth();
@@ -24,9 +26,12 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            showLoading();
             const LoginResponse = await login(form);
+            hideLoading();
             console.log("Student login =>> ", LoginResponse);
         } catch (error) {
+            hideLoading();
             toast.error("Some Error Occured !");
             console.log("Login Page Frontend Error", error)
         }

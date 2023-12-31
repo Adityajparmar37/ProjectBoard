@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../Hooks/useAuth";
+import { useLoading } from "../../Hooks/useLoading";
 
 export default function SignUp() {
 
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
     const [params] = useSearchParams();
     const returnUrl = params.get('returnUrl');
     const { student, signup } = useAuth();
@@ -26,12 +28,16 @@ export default function SignUp() {
         e.preventDefault();
         try {
             if (form.password !== form.confirmPassword) {
+                hideLoading();
                 toast.error("Password must match");
                 return;
             }
+            showLoading();
             const SignUpResponse = await signup(form);
+            hideLoading();
             console.log("Student SignUp=>> ", SignUpResponse);
         } catch (error) {
+            hideLoading();
             toast.error("Some Error Occured !")
             console.log("SignUp API Frontend Error: ", error);
         }

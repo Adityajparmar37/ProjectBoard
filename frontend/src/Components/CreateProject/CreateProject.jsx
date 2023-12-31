@@ -1,12 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useLoading } from "../../Hooks/useLoading";
 import { ProjectCreate } from "../../Services/projectServices";
 
 
 export default function CreateProject() {
 
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
 
     //Handling all project detials
     const [formData, setFormData] = useState({
@@ -73,7 +75,7 @@ export default function CreateProject() {
         e.preventDefault();
 
         // Convert projectMembers to the expected format
-        const formattedMembers = projectMember.map((member) => ({ memberNam:member }));
+        const formattedMembers = projectMember.map((member) => ({ memberNam: member }));
 
         // Convert projectPhases to the expected format
         const formattedPhases = projectPhases.map((phase, index) => ({
@@ -91,13 +93,16 @@ export default function CreateProject() {
         // console.log(updatedFormData);
 
         try {
+            showLoading();
             const projectCreate = await ProjectCreate(updatedFormData);
             console.log("Project Created ==> ", projectCreate);
             if (projectCreate.message === "Project created successfully") {
+                hideLoading();
                 toast.success(projectCreate.message);
                 navigate("/ManageProject")
             }
         } catch (error) {
+            hideLoading();
             toast.error("Project Not Created, Please try again");
             console.log("Error While Creating Project ", error);
         }

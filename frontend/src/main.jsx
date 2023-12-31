@@ -7,13 +7,16 @@ import './Interceptors/authInterceptors.js'
 import { AuthProvider } from './Hooks/useAuth.jsx'
 
 import './index.css'
+import { LoadingProvider } from './Hooks/useLoading.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <LoadingProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </LoadingProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
