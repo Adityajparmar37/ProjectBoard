@@ -8,6 +8,7 @@ import AuthRoute from "../AuthRoute/AuthRoute";
 import ProjectPage from "../../../Pages/ProjectPage/ProjectPage";
 import CreateProject from "../../CreateProject/CreateProject";
 import ManageProject from "../../ManageProject/ManageProject";
+import ProjectView from "../../../Pages/ProjectView/ProjectView";
 
 export default function AppRoute() {
     return (
@@ -33,6 +34,10 @@ export default function AppRoute() {
                 <Route path="/manageProject" element={<AuthRoute>
                     <ManageProject />
                 </AuthRoute>} />
+
+                <Route path="/manageProject/:id" element={<AuthRoute>
+                    <ProjectView />
+                </AuthRoute>}/>
 
             </Routes>
         </>

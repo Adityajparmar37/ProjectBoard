@@ -16,7 +16,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
         const { keywordSearch, title, category, status, sort } = Filters;
 
         console.log("Filters backend==> ", Filters);
-        console.log("Page backend==> ",  Page , " " , pageSize);
+        console.log("Page backend==> ", Page, " ", pageSize);
 
         //student nae badha project find karo
         const queryObject = { projectCreator: req.user.id };
@@ -58,7 +58,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
             ));
         }
 
-        
+
 
         const currentPage = Number(Page) || 1;
         const limit = Number(pageSize) || 6;
@@ -112,6 +112,17 @@ router.post("/createProject", handler(async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+    }
+}))
+
+
+router.get("/manageProject/:id", handler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const projectData = await Project.findById(id);
+        res.send(projectData);
+    } catch (error) {
+        next(errorHandler(404, "No Such Project Found"));
     }
 }))
 

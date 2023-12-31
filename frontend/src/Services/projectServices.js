@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getAllProject = async (filters, Page, pageSize) => {
     try {
-        console.log("Page==>" , Page)
+        console.log("Page==>", Page)
         filters = filters || {};
         Page = Page || 1;
         pageSize = pageSize || 6;
@@ -28,6 +28,16 @@ export const ProjectCreate = async (NewProjectData) => {
         console.log("-->", NewProjectData)
         const { data } = await axios.post("api/project/createProject", NewProjectData);
         console.log("Project created Frontend API Hit ==> ", data);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+
+export const getbyId = async (id) => {
+    try {
+        const { data } = await axios.get(`api/project/manageProject/${id}`);
         return data;
     } catch (error) {
         return error.response.data;

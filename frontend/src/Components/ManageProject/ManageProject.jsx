@@ -30,9 +30,10 @@ export default function ManageProject() {
             <div className="pt-20 bg-gray-100 flex-1 overflow-x-hidden">
                 <div className='grid grid-cols-2 flex-1 overflow-x-hidden'>
                     {studentProjects && studentProjects.length > 0 ? (
-                        studentProjects.map((project, index) => (
+                        studentProjects.map((project,index) => (
                             <ProjectCard
                                 key={index}
+                                Id={project._id}
                                 projectTitle={project.projectTitle}
                                 status={project.projectStatus}
                                 endDate={project.projectEndDate}

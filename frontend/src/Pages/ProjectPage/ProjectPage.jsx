@@ -15,7 +15,7 @@ export default function ProjectPage() {
                 />
 
                 <MiniCard
-                    to="/ManageProject"
+                    to="/manageProject"
                     bgColor="bg-orange-600"
                     icon={<GrDocumentUpdate className="text-[2.5rem] text-orange-600" />}
                     title="Project Dashboard"
