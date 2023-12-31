@@ -5,7 +5,7 @@ import { IoCaretBackSharp } from "react-icons/io5";
 import { IoCaretForwardSharp } from "react-icons/io5";
 
 // eslint-disable-next-line react/prop-types
-export default function Filters({ setStudentProjects }) {
+export default function Filters({ setStudentProjects, pageSize }) {
     const { showLoading, hideLoading } = useLoading();
     const [filters, setFilters] = useState({
         keywordSearch: "",
@@ -14,6 +14,9 @@ export default function Filters({ setStudentProjects }) {
         status: "",
         sort: ""
     });
+
+    const [Page, setPage] = useState(1);
+
 
     const HandleChange = (e) => {
         setFilters({
@@ -37,14 +40,17 @@ export default function Filters({ setStudentProjects }) {
         };
 
         fetchData();
-    }, []); // Remove the dependency array to fetch data only on initial mount
+    }, []);
+
+
 
     // Add another useEffect to fetch data when filters change
     useEffect(() => {
         const fetchFilteredData = async () => {
             try {
                 showLoading();
-                const filteredProject = await getAllProject(filters);
+                console.log(Page);
+                const filteredProject = await getAllProject(filters, Page, pageSize);
                 console.log("FILTERED PROJECT ==> ", filteredProject);
                 setStudentProjects(filteredProject);
                 hideLoading();
@@ -57,7 +63,19 @@ export default function Filters({ setStudentProjects }) {
         if (filters) {
             fetchFilteredData();
         }
-    }, [filters]);
+    }, [filters, Page, pageSize]);
+
+
+    const handlePrevPage = () => {
+        if (Page > 1) {
+            setPage(Page - 1);
+        }
+    }
+
+    const handleNextPage = () => {
+        setPage(Page + 1)
+    }
+
 
 
     console.log("Filters ==> ", filters)
@@ -117,15 +135,17 @@ export default function Filters({ setStudentProjects }) {
                     <button
                         type="button"
                         className="text-black lg:text-4xl"
+                        onClick={handlePrevPage}
                     >
-                        <IoCaretBackSharp/>
+                        <IoCaretBackSharp />
                     </button>
-                    <span className='mx-4'>Page : 1 </span>
+                    <span className="mx-4">Page: {Page}</span>
                     <button
                         type="button"
                         className="text-black lg:text-4xl"
+                        onClick={handleNextPage}
                     >
-                        <IoCaretForwardSharp/>
+                        <IoCaretForwardSharp />
                     </button>
                 </div>
             </div>

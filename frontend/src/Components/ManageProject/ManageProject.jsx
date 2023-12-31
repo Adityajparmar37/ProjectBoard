@@ -47,7 +47,7 @@ export default function ManageProject() {
             </div>
 
             {studentProjects && studentProjects.length > 0 ? (<div className='w-1/4 bg-white shadow-lg  right-0 top-0 h-screen'>
-                <Filters setStudentProjects={setStudentProjects} />
+                <Filters setStudentProjects={setStudentProjects} pageSize={6}/>
             </div>) : (<></>)}
 
         </div>

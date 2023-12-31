@@ -1,14 +1,20 @@
 import axios from "axios";
 
 
-export const getAllProject = async (filters) => {
+export const getAllProject = async (filters, Page, pageSize) => {
     try {
-
+        console.log("Page==>" , Page)
         filters = filters || {};
+        Page = Page || 1;
+        pageSize = pageSize || 6;
 
         const params = new URLSearchParams({
-            ...filters
-        })
+            ...filters,
+            Page,
+            pageSize,
+        });
+
+        console.log(params);
         const { data } = await axios.get(`api/project/manageProject?${params.toString()}`);
         return data;
     } catch (error) {

@@ -11,11 +11,12 @@ router.use(authMid);
 
 router.get("/manageProject", handler(async (req, res, next) => {
     try {
-        const { ...Filters } = req.query;
+        const { Page, pageSize, ...Filters } = req.query;
 
         const { keywordSearch, title, category, status, sort } = Filters;
 
         console.log("Filters backend==> ", Filters);
+        console.log("Page backend==> ",  Page , " " , pageSize);
 
         //student nae badha project find karo
         const queryObject = { projectCreator: req.user.id };
@@ -36,9 +37,10 @@ router.get("/manageProject", handler(async (req, res, next) => {
 
         console.log("projectCreator ==> ", queryObject)
 
+
         let filterprojects = await Project
             .find(queryObject)
-            .sort({ createdAt: sort === 'new' ? -1 : 1 });
+            .sort({ createdAt: sort === 'new' ? -1 : 1 })
 
         if (keywordSearch) {
             const keywordSearchRegex = new RegExp(keywordSearch, 'i');
@@ -56,8 +58,18 @@ router.get("/manageProject", handler(async (req, res, next) => {
             ));
         }
 
-        if (filterprojects.length > 0) {
-            res.json(filterprojects);
+        
+
+        const currentPage = Number(Page) || 1;
+        const limit = Number(pageSize) || 6;
+        const startindex = (currentPage - 1) * limit;
+        const endIndex = currentPage * limit;
+
+        const paginatedProjects = filterprojects.slice(startindex, endIndex);
+        console.log("Backend search and sort: ", filterprojects);
+
+        if (paginatedProjects.length > 0) {
+            res.json(paginatedProjects);
         } else {
             res.status(404).json({ message: 'No projects found for the user' });
         }
