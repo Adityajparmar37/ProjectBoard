@@ -48,13 +48,13 @@ router.get("/manageProject", handler(async (req, res, next) => {
 
             //some callback func che etla jo agar element match thai jai toh true nakar false
             filterprojects = filterprojects.filter((project) => (
-                project.projectTitle.match(keywordSearchRegex) ||
-                project.projectObjectives.match(keywordSearchRegex) ||
-                project.projectDescription.match(keywordSearchRegex) ||
-                project.projectStatus.match(keywordSearchRegex) ||
-                project.projectCategory.match(keywordSearchRegex) ||
-                project.projectMembers.some((member) => member.memberNam.match(keywordSearchRegex)) ||
-                project.projectPhases.some((phase) => phase.phaseTitle.match(keywordSearchRegex) || phase.phaseNum.match(keywordSearchRegex))
+                (project.projectTitle && project.projectTitle.match(keywordSearchRegex)) ||
+                (project.projectObjectives && project.projectObjectives.match(keywordSearchRegex)) ||
+                (project.projectDescription && project.projectDescription.match(keywordSearchRegex)) ||
+                (project.projectStatus && project.projectStatus.match(keywordSearchRegex)) ||
+                (project.projectCategory && project.projectCategory.match(keywordSearchRegex)) ||
+                (project.projectMembers && project.projectMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex))) ||
+                (project.projectPhases && project.projectPhases.some((phase) => (phase.phaseTitle && phase.phaseTitle.match(keywordSearchRegex)) || (phase.phaseNum && phase.phaseNum.match(keywordSearchRegex))))
             ));
         }
 
