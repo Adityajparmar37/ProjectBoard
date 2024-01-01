@@ -49,9 +49,9 @@ export default function Filters({ setStudentProjects, pageSize }) {
         const fetchFilteredData = async () => {
             try {
                 showLoading();
-                console.log(Page);
+                // console.log(Page);
                 const filteredProject = await getAllProject(filters, Page, pageSize);
-                console.log("FILTERED PROJECT ==> ", filteredProject);
+                // console.log("FILTERED PROJECT ==> ", filteredProject);
                 setStudentProjects(filteredProject);
                 hideLoading();
             } catch (error) {
@@ -78,7 +78,7 @@ export default function Filters({ setStudentProjects, pageSize }) {
 
 
 
-    console.log("Filters ==> ", filters)
+    // console.log("Filters ==> ", filters)
     return (
         <div className="pt-20 flex flex-col">
             <div className="flex flex-col mt-8 p-5">

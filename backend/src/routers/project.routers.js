@@ -127,6 +127,24 @@ router.get("/manageProject/:id", handler(async (req, res, next) => {
 }))
 
 
+router.put("/manageProject/update/:id", handler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const updateFormData = req.body;
+        const updatedProject = await Project.findByIdAndUpdate(id, updateFormData, { update: true });
+
+        if (!updatedProject) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
+
+        res.json(updatedProject);
+    } catch (error) {
+        console.error("Error updating project:", error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}));
+
+
 router.delete("/manageProject/delete/:id", handler(async (req, res, next) => {
     try {
         const { id } = req.params;

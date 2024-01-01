@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteProject, getbyId } from "../../Services/projectServices";
+import { deleteProject, getbyId, updateProject } from "../../Services/projectServices";
 
 export default function ProjectView() {
 
+    // eslint-disable-next-line no-unused-vars
     const [project, setProject] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
@@ -14,6 +15,17 @@ export default function ProjectView() {
             try {
                 const projectData = await getbyId(id);
                 setProject(projectData);
+                setFormData({
+                    projectTitle: projectData.projectTitle || "",
+                    projectObjectives: projectData.projectObjectives || "",
+                    projectDescription: projectData.projectDescription || "",
+                    projectStatus: projectData.projectStatus || "",
+                    projectMembers: projectData.projectMembers || [],
+                    projectCategory: projectData.projectCategory || "",
+                    projectPhases: projectData.projectPhases || [],
+                    projectStartDate: projectData.projectStartDate ? projectData.projectStartDate.slice(0, 10) : "",
+                    projectEndDate: projectData.projectEndDate ? projectData.projectEndDate.slice(0, 10) : "",
+                });
             } catch (error) {
                 console.error("ERROR fetching the project through id ", error);
             }
@@ -23,6 +35,34 @@ export default function ProjectView() {
     }, [id])
 
 
+
+
+    const [formData, setFormData] = useState({
+        projectTitle: '',
+        projectObjectives: '',
+        projectDescription: '',
+        projectStatus: '',
+        projectMembers: [''],
+        projectCategory: '',
+        projectPhases: [''],
+        startDate: '',
+        endDate: ''
+    })
+    // console.log("Formdata ==> ", formData)
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // console.log("Form Data Submitted:", formData);
+            const updatedProject = await updateProject(id, formData)
+            console.log("New updated project", updatedProject);
+            toast.success("Update successful");
+        } catch (error) {
+            console.error("Error updating project:", error);
+            toast.error("Error updating project");
+        }
+    };
     const handleDelete = async () => {
         try {
             // console.log("Before delete operation");
@@ -34,6 +74,40 @@ export default function ProjectView() {
             console.log("Error in deleting ", error);
         }
     }
+
+    const handleAddMember = () => {
+        setFormData({
+            ...formData,
+            projectMembers: [...formData.projectMembers, { memberName: "" }],
+        });
+    };
+
+    const handleMemberChange = (index, value) => {
+        const updatedMembers = [...formData.projectMembers];
+        updatedMembers[index].memberNam = value;
+
+        setFormData({
+            ...formData,
+            projectMembers: updatedMembers,
+        });
+    };
+
+    const handlePhaseChange = (index, value) => {
+        const updatedPhases = [...formData.projectPhases];
+        updatedPhases[index].phaseTitle = value;
+
+        setFormData({
+            ...formData,
+            projectPhases: updatedPhases,
+        });
+    };
+
+    const handleAddMore = () => {
+        setFormData({
+            ...formData,
+            projectPhases: [...formData.projectPhases, { phaseTitle: "" }],
+        });
+    };
     return (
         <div className="pt-20 bg-gray-100 h-max overflow-x-hidden">
             <div className="flex justify-center items-center py-3 m-5">
@@ -44,28 +118,31 @@ export default function ProjectView() {
                     </div>
 
                     <div className="grid grid-cols-2 py-10">
-                        <form>
+                        <form onSubmit={handleFormSubmit}>
                             <div className="flex flex-col m-2">
                                 <label className="font-semibold text-lg">Project Name </label>
                                 <input
-                                    // onChange={handleInputData}
-                                    value={project.projectTitle}
-                                    type="text" name="projectTitle" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
+                                    value={formData.projectTitle}
+                                    onChange={(e) => setFormData({ ...formData, projectTitle: e.target.value })}
+                                    type="text"
+                                    name="projectTitle"
+                                    className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"
+                                />
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Objective </label>
                                 <input
-                                    value={project.projectObjectives}
-                                    // onChange={handleInputData}
+                                    value={formData.projectObjectives}
+                                    onChange={(e) => setFormData({ ...formData, projectObjectives: e.target.value })}
                                     type="text" name="projectObjectives" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Description </label>
                                 <textarea
-                                    value={project.projectDescription}
-                                    // onChange={handleInputData}
+                                    value={formData.projectDescription}
+                                    onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
                                     type="text" name="projectDescription" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-24 shadow-inner focus:shadow-none w-[35rem]"></textarea>
                             </div>
 
@@ -73,11 +150,11 @@ export default function ProjectView() {
                                 <label className="font-semibold text-lg">Project Status</label>
                                 <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
                                     <input
-                                        // onChange={handleInputData}
+                                        onChange={(e) => setFormData({ ...formData, projectStatus: e.target.value })}
                                         type="radio"
                                         name="projectStatus"
                                         value="In Progress"
-                                        checked={project.projectStatus === "In Progress"}
+                                        checked={formData.projectStatus === "In Progress"}
 
                                     />
                                     <label htmlFor="statusInProgress">
@@ -85,21 +162,21 @@ export default function ProjectView() {
                                     </label>
 
                                     <input
-                                        // onChange={handleInputData}
+                                        onChange={(e) => setFormData({ ...formData, projectStatus: e.target.value })}
                                         type="radio"
                                         name="projectStatus"
                                         value="On Hold"
-                                        checked={project.projectStatus === "On Hold"}
+                                        checked={formData.projectStatus === "On Hold"}
 
                                     />
                                     <label htmlFor="statusOnHold">On Hold</label>
 
                                     <input
-                                        // onChange={handleInputData}
+                                        onChange={(e) => setFormData({ ...formData, projectStatus: e.target.value })}
                                         type="radio"
                                         name="projectStatus"
                                         value="Completed"
-                                        checked={project.projectStatus === "Completed"}
+                                        checked={formData.projectStatus === "Completed"}
                                     />
                                     <label htmlFor="statusCompleted" >
                                         Completed
@@ -109,13 +186,14 @@ export default function ProjectView() {
 
                             <div className="flex flex-col">
                                 <div>
-                                    {project.projectMembers && project.projectMembers.map((member, index) => (
+                                    {formData.projectMembers && formData.projectMembers.map((member, index) => (
                                         <div key={index} className="flex flex-col m-2 mt-5">
                                             <label className="font-semibold text-lg">Project Member {index + 1}</label>
                                             <input
                                                 type="text"
                                                 className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
                                                 value={member.memberNam}
+                                                onChange={(e) => handleMemberChange(index, e.target.value)}
                                                 name="projectMembers"
                                             />
                                         </div>
@@ -123,7 +201,7 @@ export default function ProjectView() {
 
                                     <button
                                         type="button"
-                                        // onClick={handleAddMemebr}
+                                        onClick={handleAddMember}
                                         className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
                                     >
                                         Add Member
@@ -134,14 +212,15 @@ export default function ProjectView() {
                             <div className="flex flex-col m-2 mt-5">
                                 <label className="font-semibold text-lg">Project Category </label>
                                 <input
-                                    value={project.projectCategory}
+                                    onChange={(e) => setFormData({ ...formData, projectCategory: e.target.value })}
+                                    value={formData.projectCategory}
                                     type="text" name="projectCategory" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]">
                                 </input>
                             </div>
 
                             <div className="flex flex-col">
                                 <div>
-                                    {project.projectPhases && project.projectPhases.map((phase, index) => (
+                                    {formData.projectPhases && formData.projectPhases.map((phase, index) => (
                                         <div key={index} className="flex flex-col m-2 mt-5">
                                             <label className="font-semibold text-lg">Project Phase {index + 1}</label>
                                             <input
@@ -149,6 +228,7 @@ export default function ProjectView() {
                                                 type="text"
                                                 className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
                                                 value={phase.phaseTitle}
+                                                onChange={(e) => handlePhaseChange(index, e.target.value)}
                                                 name="projectPhases"
                                             />
                                         </div>
@@ -156,7 +236,7 @@ export default function ProjectView() {
 
                                     <button
                                         type="button"
-                                        // onClick={handleAddMore}
+                                        onClick={handleAddMore}
                                         className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
                                     >
                                         Add More
@@ -168,14 +248,16 @@ export default function ProjectView() {
                                 <div className="flex flex-row gap-5 w-[72rem] items-center">
                                     <label className="font-semibold text-lg">Start date </label>
                                     <input
-                                        value={project.projectStartDate ? project.projectStartDate.slice(0, 10) : ""}
+                                        onChange={(e) => setFormData({ ...formData, projectStartDate: e.target.value })}
+                                        value={formData.projectStartDate ? formData.projectStartDate.slice(0, 10) : ""}
                                         type="date"
                                         name="startDate"
                                         className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"
                                     />
                                     <label className="font-semibold text-lg">End date </label>
                                     <input
-                                        value={project.projectEndDate ? project.projectEndDate.slice(0, 10) : ""}
+                                        onChange={(e) => setFormData({ ...formData, projectEndDate: e.target.value })}
+                                        value={formData.projectEndDate ? formData.projectEndDate.slice(0, 10) : ""}
                                         type="date"
                                         name="endDate"
                                         className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"
