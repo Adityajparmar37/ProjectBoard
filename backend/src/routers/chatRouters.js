@@ -13,11 +13,12 @@ router.use(authMid);
 ///getting friend request from db
 router.get("/request/allRequest", handler(async (req, res, next) => {
     try {
-        const allRequests = await Friend.find({ sender: req.user.id })
-            .populate('receiver', 'name email InsitutionName');
+        const allRequests = await Friend.find({ receiver : req.user.id })
+            .populate('sender', 'name email InsitutionName');
 
 
         if (allRequests.length > 0) {
+            console.log(allRequests)
             res.status(200).json(allRequests);
         } else {
             res.status(200).json({ message: "No requests found!" });

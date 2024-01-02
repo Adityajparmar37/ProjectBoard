@@ -118,11 +118,11 @@ export default function SearchMember() {
                                 {request && request.length > 0 ? (
                                     request.map((member) => (
                                         <MemberCard
-                                            key={member.receiver._id}
-                                            memberName={member.receiver.name}
-                                            memberInsitutionName={member.receiver.InsitutionName}
-                                            memberEmail={member.receiver.email}
-                                            onSendRequest={handleSendRequest}
+                                            key={member.sender._id}
+                                            memberName={member.sender.name}
+                                            memberInsitutionName={member.sender.InsitutionName}
+                                            memberEmail={member.sender.email}
+                                            // onSendRequest={handleSendRequest}
                                             buttonNm={"Accept Request"}
                                             buttonCol={"blue-400"}
                                         />
