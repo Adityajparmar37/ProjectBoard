@@ -13,12 +13,12 @@ router.use(authMid);
 ///getting friend request from db
 router.get("/request/allRequest", handler(async (req, res, next) => {
     try {
-        const allRequests = await Friend.find({ receiver : req.user.id })
+        const allRequests = await Friend.find({ receiver: req.user.id, isAccepted: false })
             .populate('sender', 'name email InsitutionName');
 
 
         if (allRequests.length > 0) {
-            console.log(allRequests)
+            // console.log(allRequests)
             res.status(200).json(allRequests);
         } else {
             res.status(200).json({ message: "No requests found!" });
@@ -28,6 +28,29 @@ router.get("/request/allRequest", handler(async (req, res, next) => {
     }
 }));
 
+
+
+router.get("/request/accept/:requestId", handler(async (req, res, next) => {
+    try {
+        const requestId = req.params.requestId;
+        console.log("requestId==>", requestId);
+
+        // Update the friend request by setting isAccepted to true
+        //_id is request Id genrate on creating req automatily by mongodb & store in db
+        const updatedRequest = await Friend.updateOne(
+            { _id: requestId, receiver: req.user.id, isAccepted: false },
+            { $set: { isAccepted: true } }
+        );
+
+        if (updatedRequest.nModified > 0) {
+            res.status(200).json({ message: "Friend request accepted successfully!" });
+        } else {
+            res.status(404).json({ message: "Friend request not found or already accepted!" });
+        }
+    } catch (error) {
+        next(error);
+    }
+}));
 
 
 router.get("/find", handler(async (req, res, next) => {

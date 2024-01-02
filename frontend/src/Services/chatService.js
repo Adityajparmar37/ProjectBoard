@@ -34,3 +34,13 @@ export const AllRequest = async () => {
         return error.response.data;
     }
 }
+
+
+export const AcceptRequest = async (requestId) => {
+    try {
+        const { data } = await axios.get(`api/chat/request/accept/${requestId}`);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { AllRequest, findMember, sendRequest } from "../../Services/chatService";
+import { AcceptRequest, AllRequest, findMember, sendRequest } from "../../Services/chatService";
 import MemberCard from "../MemberCart/MemberCart";
 
 
@@ -65,15 +65,28 @@ export default function SearchMember() {
                 })
             }
         } catch (error) {
-            console.log("ERROR IN SENDING REQUEST", friendId);
-            toast.error("Request not send !");
+            console.log("ERROR IN SENDING REQUEST", error);
+            toast.error("Request not send ! , try again");
+        }
+    }
+
+
+    const handleacceptRequest = async (RequestId) => {
+        try {
+            await AcceptRequest(RequestId);
+            toast.success("Request accept successfully ", {
+                icon: '✌️'
+            })
+        } catch (error) {
+            console.log("Error in accepting", error);
+            toast.error("Could not accept the request ! , try again");
         }
     }
 
     return (
         <div className="pt-20">
             <div className="bg-gray-100 h-screen flex justify-center pt-12">
-                <div className="bg-white h-[90%] w-[90%]">
+                <div className="bg-white h-auto w-[90%] mb-auto">
                     <div className="flex flex-col">
                         <div className="flex flex-col p-5">
                             <label className="font-semibold lg:text-2xl">Search</label>
@@ -116,24 +129,23 @@ export default function SearchMember() {
                             <label className="font-semibold lg:text-2xl">Request for you</label>
                             <div className="grid grid-cols-3">
                                 {request && request.length > 0 ? (
-                                    request.map((member) => (
+                                    request.map((frinedRequest) => (
                                         <MemberCard
-                                            key={member.sender._id}
-                                            memberName={member.sender.name}
-                                            memberInsitutionName={member.sender.InsitutionName}
-                                            memberEmail={member.sender.email}
-                                            // onSendRequest={handleSendRequest}
+                                            key={frinedRequest._id}
+                                            memberId={frinedRequest._id}
+                                            memberName={frinedRequest.sender.name}
+                                            memberInsitutionName={frinedRequest.sender.InsitutionName}
+                                            memberEmail={frinedRequest.sender.email}
+                                            onSendRequest={handleacceptRequest}
                                             buttonNm={"Accept Request"}
                                             buttonCol={"blue"}
                                         />
                                     ))
                                 ) : (
                                     <div className="flex items-center justify-center">
-                                        <Link to="/chat">
                                             <h1 className='bg-gray-600 text-white text-md rounded-md p-2'>
-                                                No Student Found! Click to go back
+                                                No Request Found!
                                             </h1>
-                                        </Link>
                                     </div>
                                 )}
                             </div>
