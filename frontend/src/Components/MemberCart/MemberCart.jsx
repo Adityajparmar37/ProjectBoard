@@ -21,7 +21,7 @@ const MemberCard = ({ memberName, memberInsitutionName, memberEmail, memberId, b
                 <div className="mt-2">
                     <button
                         onClick={() => onSendRequest(memberId)}
-                        className={`p-1 m-auto bg-${buttonCol} rounded-md text-white font-bold hover:rounded-lg hover:shadow-inner shadow-lg`
+                        className={`p-1 m-auto bg-${buttonCol}-400 rounded-md text-white font-bold hover:bg-${buttonCol}-600 hover:rounded-lg hover:shadow-inner shadow-lg`
                         }>
                         {buttonNm}
                     </button>

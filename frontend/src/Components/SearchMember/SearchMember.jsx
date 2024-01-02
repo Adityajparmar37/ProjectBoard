@@ -97,7 +97,7 @@ export default function SearchMember() {
                                         memberId={member._id}
                                         onSendRequest={handleSendRequest}
                                         buttonNm={"Send Request"}
-                                        buttonCol={"green-400"}
+                                        buttonCol={"green"}
                                     />
                                 ))
                             ) : (
@@ -124,7 +124,7 @@ export default function SearchMember() {
                                             memberEmail={member.sender.email}
                                             // onSendRequest={handleSendRequest}
                                             buttonNm={"Accept Request"}
-                                            buttonCol={"blue-400"}
+                                            buttonCol={"blue"}
                                         />
                                     ))
                                 ) : (
