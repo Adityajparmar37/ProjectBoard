@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { findMember } from "../../Services/studentServices";
 
 export default function SearchMember() {
@@ -15,7 +16,7 @@ export default function SearchMember() {
                 setSearchMember(searchData);
             } catch (error) {
                 console.log(error);
-                setSearchMember([]); 
+                setSearchMember([]);
             }
         };
 
@@ -46,7 +47,7 @@ export default function SearchMember() {
                         </div>
 
                         <div className="grid grid-cols-3">
-                            {Array.isArray(SearchMember) &&
+                            {SearchMember && SearchMember.length > 0 ? (
                                 SearchMember.map((member) => (
                                     <div key={member._id} className="w-[30rem] h-32 bg-gray-100 m-5 shadow-lg">
                                         <div className="pt-3 px-4">
@@ -74,7 +75,17 @@ export default function SearchMember() {
 
                                         </div>
                                     </div>
-                                ))}
+                                ))) : (
+
+                                <div className="flex items-center justify-center">
+                                    <Link to="/chat">
+                                        <h1 className='bg-gray-600 text-white text-md rounded-md p-2'>
+                                            No Student Found! Click to go back
+                                        </h1>
+                                    </Link>
+                                </div>
+
+                            )}
                         </div>
                     </div>
                 </div>
