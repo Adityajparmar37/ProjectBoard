@@ -10,9 +10,7 @@ const authMid = require('../middlewares/authMiddleware');
 router.use(authMid);
 
 router.get("/find", handler(async (req, res, next) => {
-
     try {
-
         const { ...filters } = req.query;
         const { keywordSearch } = filters;
 
@@ -27,16 +25,19 @@ router.get("/find", handler(async (req, res, next) => {
             ));
         }
 
+        // // Exclude the logged-in user
+        findStudent = findStudent.filter((student) => student._id.toString() !== req.user.id);
 
-        if (findStudent) {
+        console.log("User loggedIn ==> ", req.user.id);
+
+        if (findStudent.length > 0) {
             res.status(201).json(findStudent);
         } else {
-            next(errorHandler(404, "No such Student Found!"));
+            next(errorHandler(404, "No other students found!"));
         }
     } catch (error) {
         next(error);
     }
-}))
-
+}));
 
 module.exports = router;
