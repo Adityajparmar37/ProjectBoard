@@ -9,6 +9,8 @@ import ProjectPage from "../../../Pages/ProjectPage/ProjectPage";
 import CreateProject from "../../CreateProject/CreateProject";
 import ManageProject from "../../ManageProject/ManageProject";
 import ProjectView from "../../../Pages/ProjectView/ProjectView";
+import ChatPage from "../../../Pages/ChatPage/ChatPage";
+import SearchMember from "../../SearchMember/SearchMember";
 
 export default function AppRoute() {
     return (
@@ -27,6 +29,15 @@ export default function AppRoute() {
                     <ProjectPage />
                 </AuthRoute>} />
 
+
+                <Route path="/chat" element={<AuthRoute>
+                    <ChatPage/>
+                </AuthRoute>} />
+
+                <Route path="/chat/find" element={<AuthRoute>
+                    <SearchMember/>
+                </AuthRoute>} />
+
                 <Route path="/createProject" element={<AuthRoute>
                     <CreateProject />
                 </AuthRoute>} />
@@ -37,7 +48,7 @@ export default function AppRoute() {
 
                 <Route path="/manageProject/:id" element={<AuthRoute>
                     <ProjectView />
-                </AuthRoute>}/>
+                </AuthRoute>} />
 
             </Routes>
         </>

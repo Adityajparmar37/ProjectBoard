@@ -79,19 +79,6 @@ router.post("/signup", handler(async (req, res, next) => {
 }))
 
 
-router.get("/find", handler(async (req, res, next) => {
 
-    try {
-        const findStudent = await Student.find({});
-
-        if (findStudent) {
-            res.status(201).json(findStudent);
-        } else {
-            next(errorHandler(404, "No such Student Found!"));
-        }
-    } catch (error) {
-        next(error);
-    }
-}))
 
 module.exports = router;

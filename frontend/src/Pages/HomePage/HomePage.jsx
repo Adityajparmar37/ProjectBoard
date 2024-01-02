@@ -47,7 +47,7 @@ export default function HomePage() {
                     />
 
                     <Card
-                        to="/Chat"
+                        to="/chat"
                         bgColor="bg-green-400"
                         icon={<IoMdChatbubbles className="text-[2.5rem] text-green-400" />}
                         title="Chat"

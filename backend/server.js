@@ -5,6 +5,7 @@ const dbconnect = require('./config/database.config');
 dotenv.config();
 const studentRouters = require('./src/routers/student.router.js')
 const projectRouters = require('./src/routers/project.routers.js')
+const chatRouters = require('./src/routers/chatRouters.js')
 
 const app = express();
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use(cors({
 
 app.use("/api/student", studentRouters);
 app.use("/api/project", projectRouters);
+app.use("/api/chat", chatRouters);
 
 //Internal Error Handling
 app.use((err, req, res, next) => {
