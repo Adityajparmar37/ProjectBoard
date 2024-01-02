@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { findMember, sendRequest } from "../../Services/chatService";
+import { AllRequest, findMember, sendRequest } from "../../Services/chatService";
 import MemberCard from "../MemberCart/MemberCart";
 
 
 export default function SearchMember() {
     const [SearchMember, setSearchMember] = useState([]);
+    const [request, setRequest] = useState();
     const [filters, setFilters] = useState({
         keywordSearch: "",
     });
@@ -32,6 +33,21 @@ export default function SearchMember() {
             [e.target.name]: e.target.value,
         });
     };
+
+
+    useEffect(() => {
+
+        const fetchRequest = async () => {
+            try {
+                const frinedRequest = await AllRequest();
+                setRequest(frinedRequest);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchRequest();
+    }, [])
 
 
     const handleSendRequest = async (friendId) => {
@@ -79,7 +95,10 @@ export default function SearchMember() {
                                         memberInsitutionName={member.InsitutionName}
                                         memberEmail={member.email}
                                         memberId={member._id}
-                                        onSendRequest={handleSendRequest} />
+                                        onSendRequest={handleSendRequest}
+                                        buttonNm={"Send Request"}
+                                        buttonCol={"green-400"}
+                                    />
                                 ))
                             ) : (
                                 <div className="flex items-center justify-center">
@@ -90,6 +109,34 @@ export default function SearchMember() {
                                     </Link>
                                 </div>
                             )}
+                        </div>
+
+
+                        <div className="flex flex-col p-5">
+                            <label className="font-semibold lg:text-2xl">Request for you</label>
+                            <div className="grid grid-cols-3">
+                                {request && request.length > 0 ? (
+                                    request.map((member) => (
+                                        <MemberCard
+                                            key={member.receiver._id}
+                                            memberName={member.receiver.name}
+                                            memberInsitutionName={member.receiver.InsitutionName}
+                                            memberEmail={member.receiver.email}
+                                            onSendRequest={handleSendRequest}
+                                            buttonNm={"Accept Request"}
+                                            buttonCol={"blue-400"}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="flex items-center justify-center">
+                                        <Link to="/chat">
+                                            <h1 className='bg-gray-600 text-white text-md rounded-md p-2'>
+                                                No Student Found! Click to go back
+                                            </h1>
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

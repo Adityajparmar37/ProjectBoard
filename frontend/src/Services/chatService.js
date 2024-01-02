@@ -25,3 +25,12 @@ export const sendRequest = async (id) => {
         return error.response.data;
     }
 }
+
+export const AllRequest = async () => {
+    try {
+        const { data } = await axios.get(`api/chat/request/Allrequest`);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

@@ -10,6 +10,25 @@ const Friend = require('../models/friendModal');
 //middleare for authorization
 router.use(authMid);
 
+///getting friend request from db
+router.get("/request/allRequest", handler(async (req, res, next) => {
+    try {
+        const allRequests = await Friend.find({ sender: req.user.id })
+            .populate('receiver', 'name email InsitutionName');
+
+
+        if (allRequests.length > 0) {
+            res.status(200).json(allRequests);
+        } else {
+            res.status(200).json({ message: "No requests found!" });
+        }
+    } catch (error) {
+        next(error);
+    }
+}));
+
+
+
 router.get("/find", handler(async (req, res, next) => {
     try {
         const { ...filters } = req.query;
@@ -61,9 +80,10 @@ router.get("/request/:friendId", handler(async (req, res, next) => {
             res.status(201).json({ success: true, message: "Request sent successfully" });
         }
     } catch (error) {
-        console.error("Error handling friend request:", error);
-        res.status(500).json({ success: false, error: "Internal Server Error" });
+        next(error);
     }
 }));
+
+
 
 module.exports = router;

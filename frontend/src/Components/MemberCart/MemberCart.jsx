@@ -1,6 +1,6 @@
 
 // eslint-disable-next-line react/prop-types
-const MemberCard = ({ memberName, memberInsitutionName,memberEmail,memberId,onSendRequest }) => {
+const MemberCard = ({ memberName, memberInsitutionName, memberEmail, memberId, buttonNm, buttonCol, onSendRequest }) => {
     return (
         <div className="w-[30rem] h-32 bg-gray-100 m-5 shadow-lg">
             <div className="pt-3 px-4">
@@ -21,9 +21,9 @@ const MemberCard = ({ memberName, memberInsitutionName,memberEmail,memberId,onSe
                 <div className="mt-2">
                     <button
                         onClick={() => onSendRequest(memberId)}
-                        className="p-1 m-auto bg-green-400 rounded-md text-white font-bold hover:rounded-lg hover:shadow-inner shadow-lg"
-                    >
-                        Send Request
+                        className={`p-1 m-auto bg-${buttonCol} rounded-md text-white font-bold hover:rounded-lg hover:shadow-inner shadow-lg`
+                        }>
+                        {buttonNm}
                     </button>
                 </div>
             </div>
