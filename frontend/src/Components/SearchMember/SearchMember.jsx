@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { findMember, sendRequest } from "../../Services/chatService";
+import MemberCard from "../MemberCart/MemberCart";
 
 
 export default function SearchMember() {
@@ -72,36 +73,15 @@ export default function SearchMember() {
                         <div className="grid grid-cols-3">
                             {SearchMember && SearchMember.length > 0 ? (
                                 SearchMember.map((member) => (
-                                    <div key={member._id} className="w-[30rem] h-32 bg-gray-100 m-5 shadow-lg">
-                                        <div className="pt-3 px-4">
-
-                                            <div className="flex gap-2">
-                                                <h1 className="lg:text-xl text-gray-600">Name:</h1>
-                                                <h1 className="lg:text-xl font-semibold">{member.name}</h1>
-                                            </div>
-                                            <div className=" flex flex-row gap-4 items-center mt-2 justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <h1 className="text-gray-600">Institution Name:</h1>
-                                                    <h1 className={`font-bold text-black text-sm rounded-lg p-1`}>{member.InsitutionName}</h1>
-                                                </div>
-                                                <div className="flex">
-                                                    <h1 className="text-gray-600">Email:</h1>
-                                                    <h1 className={`font-bold text-black text-sm rounded-lg p-1`}>{member.email}</h1>
-                                                </div>
-                                            </div>
-
-                                            <div className="mt-2">
-                                                <button
-                                                    onClick={() => handleSendRequest(member._id)}
-                                                    className="p-1 m-auto bg-green-400 rounded-md text-white font-bold hover:rounded-lg hover:shadow-inner shadow-lg">
-                                                    Send Request
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                ))) : (
-
+                                    <MemberCard
+                                        key={member._id}
+                                        memberName={member.name}
+                                        memberInsitutionName={member.InsitutionName}
+                                        memberEmail={member.email}
+                                        memberId={member._id}
+                                        onSendRequest={handleSendRequest} />
+                                ))
+                            ) : (
                                 <div className="flex items-center justify-center">
                                     <Link to="/chat">
                                         <h1 className='bg-gray-600 text-white text-md rounded-md p-2'>
@@ -109,7 +89,6 @@ export default function SearchMember() {
                                         </h1>
                                     </Link>
                                 </div>
-
                             )}
                         </div>
                     </div>
