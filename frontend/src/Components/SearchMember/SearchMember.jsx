@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { findMember } from "../../Services/studentServices";
+import { findMember, sendRequest } from "../../Services/chatService";
+
 
 export default function SearchMember() {
     const [SearchMember, setSearchMember] = useState([]);
@@ -29,6 +31,27 @@ export default function SearchMember() {
             [e.target.name]: e.target.value,
         });
     };
+
+
+    const handleSendRequest = async (friendId) => {
+        try {
+            const response = await sendRequest(friendId);
+            console.log("Request response =>", response);
+
+            if (response.success === true) {
+                toast.success(response.message);
+            }
+
+            if (response.success === false) {
+                toast.error(response.message, {
+                    icon: '🕛'
+                })
+            }
+        } catch (error) {
+            console.log("ERROR IN SENDING REQUEST", friendId);
+            toast.error("Request not send !");
+        }
+    }
 
     return (
         <div className="pt-20">
@@ -68,7 +91,9 @@ export default function SearchMember() {
                                             </div>
 
                                             <div className="mt-2">
-                                                <button className="p-1 m-auto bg-green-400 rounded-md text-white font-bold hover:rounded-lg hover:shadow-inner shadow-lg">
+                                                <button
+                                                    onClick={() => handleSendRequest(member._id)}
+                                                    className="p-1 m-auto bg-green-400 rounded-md text-white font-bold hover:rounded-lg hover:shadow-inner shadow-lg">
                                                     Send Request
                                                 </button>
                                             </div>

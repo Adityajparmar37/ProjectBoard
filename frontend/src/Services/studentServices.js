@@ -21,20 +21,6 @@ export const signup = async (signupData) => {
     }
 }
 
-export const findMember = async (filters) => {
-    filters = filters || {};
-
-    const params = new URLSearchParams({
-        ...filters,
-    });
-    try {
-        const { data } = await axios.get(`api/chat/find?${params.toString()}`);
-        console.log("Search filter member" ,data);
-        return data;
-    } catch (error) {
-        return error.response.data
-    }
-}
 
 
 export const getUser = () =>
