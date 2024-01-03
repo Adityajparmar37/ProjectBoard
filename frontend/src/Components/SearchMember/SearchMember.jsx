@@ -133,9 +133,9 @@ export default function SearchMember() {
                                         <MemberCard
                                             key={frinedRequest._id}
                                             memberId={frinedRequest._id}
-                                            memberName={frinedRequest.sender.name}
-                                            memberInsitutionName={frinedRequest.sender.InsitutionName}
-                                            memberEmail={frinedRequest.sender.email}
+                                            memberName={frinedRequest.sender && frinedRequest.sender.name}
+                                            memberInsitutionName={frinedRequest.sender && frinedRequest.sender.InsitutionName}
+                                            memberEmail={frinedRequest.sender && frinedRequest.sender.email}
                                             onSendRequest={handleacceptRequest}
                                             buttonNm={"Accept Request"}
                                             buttonCol={"blue"}
@@ -143,9 +143,9 @@ export default function SearchMember() {
                                     ))
                                 ) : (
                                     <div className="flex items-center justify-center">
-                                            <h1 className='bg-gray-600 text-white text-md rounded-md p-2'>
-                                                No Request Found!
-                                            </h1>
+                                        <h1 className='bg-gray-600 text-white text-md rounded-md p-2'>
+                                            No Request Found!
+                                        </h1>
                                     </div>
                                 )}
                             </div>

@@ -25,6 +25,16 @@ const MemberCard = ({ memberName, memberInsitutionName, memberEmail, memberId, b
                         }>
                         {buttonNm}
                     </button>
+                    {
+                        buttonNm === "Accept Request" ? (
+                            <button
+                                // onClick={() => onSendRequest(memberId)}
+                                className={`p-1 m-auto bg-red-400 rounded-md text-white font-bold hover:bg-red-600 hover:rounded-lg hover:shadow-inner shadow-lg ml-48`
+                                }>
+                                Reject Request
+                            </button>
+                        ) : null
+                    }
                 </div>
             </div>
         </div>
