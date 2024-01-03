@@ -29,7 +29,6 @@ router.get("/request/allRequest", handler(async (req, res, next) => {
 }));
 
 
-
 router.get("/request/accept/:requestId", handler(async (req, res, next) => {
     try {
         const requestId = req.params.requestId;
@@ -47,6 +46,21 @@ router.get("/request/accept/:requestId", handler(async (req, res, next) => {
         } else {
             res.status(404).json({ message: "Friend request not found or already accepted!" });
         }
+    } catch (error) {
+        next(error);
+    }
+}));
+
+
+//request deleting 
+router.delete("/request/reject/:requestId", handler(async (req, res, next) => {
+    try {
+        const { requestId } = req.params;
+        console.log("delete requestId ==>", requestId);
+
+        await Friend.findByIdAndDelete(requestId); 
+
+        res.status(200).json({ message: "Friend request rejected successfully!" });
     } catch (error) {
         next(error);
     }

@@ -44,3 +44,13 @@ export const AcceptRequest = async (requestId) => {
         return error.response.data;
     }
 }
+
+
+export const RejectRequest = async (requestId) => {
+    try {
+        const { data } = await axios.delete(`api/chat/request/reject/${requestId}`);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

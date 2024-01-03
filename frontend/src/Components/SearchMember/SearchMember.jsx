@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { AcceptRequest, AllRequest, findMember, sendRequest } from "../../Services/chatService";
+import { AcceptRequest, AllRequest, findMember, RejectRequest, sendRequest } from "../../Services/chatService";
 import MemberCard from "../MemberCart/MemberCart";
 
 
@@ -75,11 +75,24 @@ export default function SearchMember() {
         try {
             await AcceptRequest(RequestId);
             toast.success("Request accept successfully ", {
-                icon: '✌️'
+                icon: '🫱🏻‍🫲🏽'
             })
         } catch (error) {
             console.log("Error in accepting", error);
             toast.error("Could not accept the request ! , try again");
+        }
+    }
+
+
+    const handlerejectRequest = async (RequestId) => {
+        try {
+            await RejectRequest(RequestId);
+            toast.success("Request Rejected !", {
+                icon: "👎"
+            })
+        } catch (error) {
+            console.log("Error in rejecting request", error);
+            toast.error("Could not reject the request ! , try again");
         }
     }
 
@@ -137,6 +150,7 @@ export default function SearchMember() {
                                             memberInsitutionName={frinedRequest.sender && frinedRequest.sender.InsitutionName}
                                             memberEmail={frinedRequest.sender && frinedRequest.sender.email}
                                             onSendRequest={handleacceptRequest}
+                                            handlerejectRequest={handlerejectRequest}
                                             buttonNm={"Accept Request"}
                                             buttonCol={"blue"}
                                         />
