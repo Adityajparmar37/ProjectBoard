@@ -77,6 +77,7 @@ export default function SearchMember() {
             toast.success("Request accept successfully ", {
                 icon: '🫱🏻‍🫲🏽'
             })
+            setRequest(request.filter((req) => req._id !== RequestId));
         } catch (error) {
             console.log("Error in accepting", error);
             toast.error("Could not accept the request ! , try again");
@@ -90,6 +91,7 @@ export default function SearchMember() {
             toast.success("Request Rejected !", {
                 icon: "👎"
             })
+            setRequest(request.filter((req) => req._id !== RequestId));
         } catch (error) {
             console.log("Error in rejecting request", error);
             toast.error("Could not reject the request ! , try again");
