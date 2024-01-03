@@ -58,7 +58,7 @@ router.delete("/request/reject/:requestId", handler(async (req, res, next) => {
         const { requestId } = req.params;
         console.log("delete requestId ==>", requestId);
 
-        await Friend.findByIdAndDelete(requestId); 
+        await Friend.findByIdAndDelete(requestId);
 
         res.status(200).json({ message: "Friend request rejected successfully!" });
     } catch (error) {
@@ -106,7 +106,14 @@ router.get("/request/:friendId", handler(async (req, res, next) => {
         const receiverRequestExist = await Friend.findOne({ sender: friendId, receiver: req.user.id });
 
         if (senderRequestExist || receiverRequestExist) {
-            res.status(200).json({ success: false, message: "Request is pending" });
+            // Check if the request is accepted
+            const isAccepted = senderRequestExist && senderRequestExist.isAccepted;
+
+            if (isAccepted) {
+                res.status(200).json({ success: true, message: "Request is accepted" });
+            } else {
+                res.status(200).json({ success: false, message: "Request is pending" });
+            }
         } else {
             const data = new Friend({
                 sender: req.user.id,
@@ -121,7 +128,6 @@ router.get("/request/:friendId", handler(async (req, res, next) => {
         next(error);
     }
 }));
-
 
 
 module.exports = router;
