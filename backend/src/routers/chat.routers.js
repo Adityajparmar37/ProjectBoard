@@ -13,10 +13,15 @@ router.use(authMid);
 ///getting friend request from db
 router.get("/request/allRequest", handler(async (req, res, next) => {
     try {
-        const allRequests = await Friend.find({ receiver: req.user.id, isAccepted: false })
+
+        const queryObject = {
+            receiver: req.user.id,
+            isAccepted: false
+        };
+        const allRequests = await Friend.find(queryObject)
             .populate('sender', 'name email InsitutionName');
 
-
+        // console.log("Friend request ==> ",)
         if (allRequests.length > 0) {
             // console.log(allRequests)
             res.status(200).json(allRequests);
@@ -110,7 +115,7 @@ router.get("/request/:friendId", handler(async (req, res, next) => {
             const isAccepted = senderRequestExist && senderRequestExist.isAccepted;
 
             if (isAccepted) {
-                res.status(200).json({ success: true, message: "Request is accepted" });
+                res.status(200).json({ success: true, message: "✌️ Request is accepted already" });
             } else {
                 res.status(200).json({ success: false, message: "Request is pending" });
             }
