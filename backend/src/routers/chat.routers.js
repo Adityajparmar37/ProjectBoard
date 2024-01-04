@@ -34,19 +34,47 @@ router.get("/request/allRequest", handler(async (req, res, next) => {
 }));
 
 
+
+router.get("/myfriend", handler(async (req, res, next) => {
+    try {
+        const queryObject = {
+            $or: [{ sender: req.user.id }, { receiver: req.user.id }],
+            isAccepted: true
+        };
+
+        const senderFriends = await Friend.find(queryObject);
+
+        if (senderFriends.length > 0) {
+            res.status(200).json(senderFriends);
+        } else {
+            res.status(200).json({ message: "No Friends found!" });
+        }
+    } catch (error) {
+        next(error);
+    }
+}));
+
+
+
+//accepting the request
 router.get("/request/accept/:requestId", handler(async (req, res, next) => {
     try {
         const requestId = req.params.requestId;
-        console.log("requestId==>", requestId);
 
-        // Update the friend request by setting isAccepted to true
-        //_id is request Id genrate on creating req automatily by mongodb & store in db
-        const updatedRequest = await Friend.updateOne(
-            { _id: requestId, receiver: req.user.id, isAccepted: false },
-            { $set: { isAccepted: true } }
-        );
+        // Check if the friend request exists and is not already accepted
+        const existingRequest = await Friend.findOne({
+            _id: requestId,
+            receiver: req.user.id,
+            isAccepted: false
+        });
 
-        if (updatedRequest.nModified > 0) {
+        if (existingRequest) {
+            // Update the friend request by setting isAccepted to true
+            const updatedRequest = await Friend.findByIdAndUpdate(
+                requestId,
+                { $set: { isAccepted: true } }
+            );
+
             res.status(200).json({ message: "Friend request accepted successfully!" });
         } else {
             res.status(404).json({ message: "Friend request not found or already accepted!" });
@@ -72,10 +100,12 @@ router.delete("/request/reject/:requestId", handler(async (req, res, next) => {
 }));
 
 
+//find request
 router.get("/find", handler(async (req, res, next) => {
     try {
         const { ...filters } = req.query;
         const { keywordSearch } = filters;
+
 
         let findStudent = await Student.find({});
 
@@ -104,6 +134,7 @@ router.get("/find", handler(async (req, res, next) => {
 }));
 
 
+//sending request
 router.get("/request/:friendId", handler(async (req, res, next) => {
     try {
         const { friendId } = req.params;

@@ -54,3 +54,13 @@ export const RejectRequest = async (requestId) => {
         return error.response.data;
     }
 }
+
+
+export const MyFriend = async () => {
+    try {
+        const { data } = await axios.get('api/chat/myfriend');
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

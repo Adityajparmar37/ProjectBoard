@@ -11,6 +11,8 @@ import ManageProject from "../../ManageProject/ManageProject";
 import ProjectView from "../../../Pages/ProjectView/ProjectView";
 import ChatPage from "../../../Pages/ChatPage/ChatPage";
 import SearchMember from "../../SearchMember/SearchMember";
+import TaskPage from "../../../Pages/TaskPage/TaskPage";
+import CreateTask from "../../CreateTask/CreateTask";
 
 export default function AppRoute() {
     return (
@@ -31,11 +33,11 @@ export default function AppRoute() {
 
 
                 <Route path="/chat" element={<AuthRoute>
-                    <ChatPage/>
+                    <ChatPage />
                 </AuthRoute>} />
 
                 <Route path="/chat/find" element={<AuthRoute>
-                    <SearchMember/>
+                    <SearchMember />
                 </AuthRoute>} />
 
                 <Route path="/createProject" element={<AuthRoute>
@@ -50,6 +52,13 @@ export default function AppRoute() {
                     <ProjectView />
                 </AuthRoute>} />
 
+                <Route path="/task" element={<AuthRoute>
+                    <TaskPage />
+                </AuthRoute>} />
+
+                <Route path="/createTask" element={<AuthRoute>
+                    <CreateTask />
+                </AuthRoute>} />
             </Routes>
         </>
     )
