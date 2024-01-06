@@ -21,7 +21,7 @@ const MemberCard = ({ handlerejectRequest,memberName, memberInsitutionName, memb
                 <div className="mt-2">
                     <button
                         onClick={() => onSendRequest(memberId)}
-                        className={`p-1 m-auto bg-${buttonCol}-400 rounded-md text-white font-bold hover:bg-${buttonCol}-600 hover:rounded-lg hover:shadow-inner shadow-lg`
+                        className={`p-1 m-auto bg-${buttonCol}-400 rounded-md text-white font-bold hover:bg-${buttonCol}-700 hover:rounded-lg hover:shadow-inner shadow-lg`
                         }>
                         {buttonNm}
                     </button>
@@ -29,7 +29,7 @@ const MemberCard = ({ handlerejectRequest,memberName, memberInsitutionName, memb
                         buttonNm === "Accept Request" ? (
                             <button
                                 onClick={() => handlerejectRequest(memberId)}
-                                className={`p-1 m-auto bg-red-400 rounded-md text-white font-bold hover:bg-red-600 hover:rounded-lg hover:shadow-inner shadow-lg ml-48`
+                                className={`p-1 m-auto bg-red-400 rounded-md text-white font-bold hover:bg-red-700 hover:rounded-lg hover:shadow-inner shadow-lg ml-48`
                                 }>
                                 Reject Request
                             </button>
