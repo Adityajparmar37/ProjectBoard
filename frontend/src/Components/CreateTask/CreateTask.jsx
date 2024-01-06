@@ -2,13 +2,82 @@
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Autosuggest from 'react-autosuggest';
 import { useLoading } from '../../Hooks/useLoading';
+import { MyFriend } from '../../Services/chatService';
 import { getAllProject } from '../../Services/projectServices';
 
 export default function CreateTask() {
     const [studentProjects, setStudentProjects] = useState();
     const [taskType, settaskType] = useState();
     const { showLoading, hideLoading } = useLoading();
+    const [myFriends, setMyFriends] = useState([]);
+    const [taskMember, setTaskMember] = useState(['']);
+    const [suggestions, setSuggestions] = useState([]);
+
+    const handleAddMember = () => {
+        setTaskMember([...taskMember, '']);
+    };
+
+    const getSuggestions = (inputValue) => {
+        const inputValueLowerCase = inputValue.toLowerCase();
+        return myFriends.filter(
+            (friend) => friend.friendName.toLowerCase().includes(inputValueLowerCase)
+        );
+    };
+
+    const getSuggestionValue = (suggestion) => suggestion.friendName;
+
+    const renderSuggestion = (suggestion) => <span className='text-lg font-semibold text-gray-900 cursor-pointer'> 👉🏼 {suggestion.friendName}</span>;
+
+    const onSuggestionsFetchRequested = ({ value }) => {
+        setSuggestions(getSuggestions(value));
+    };
+
+    const onSuggestionsClearRequested = () => {
+        setSuggestions([]);
+    };
+    const handleMember = (index, value) => {
+        const newMembers = [...taskMember];
+        newMembers[index] = value;
+        setTaskMember(newMembers);
+    };
+
+    console.log("Task members ==> " , taskMember)
+
+
+    // const handleMember = (index, value) => {
+    //     const newMember = [...taskMember];
+    //     newMember[index] = value;
+    //     setTaskMember(newMember);
+
+    //     // Update
+    //     // handleInputChange('taskMembers', index, value);
+    // };
+
+    // const handleInputChange = (field, index, value) => {
+    //     setFormData((prevData) => {
+    //         const newData = { ...prevData };
+    //         if (Array.isArray(newData[field])) {
+    //             newData[field][index] = value;
+    //         } else {
+    //             newData[field] = value;
+    //         }
+    //         return newData;
+    //     });
+    // };
+
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                const allMyFriends = await MyFriend();
+                setMyFriends(allMyFriends);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetch();
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,6 +95,7 @@ export default function CreateTask() {
 
         fetchData();
     }, []);
+
     return (
         <>
             <div className="pt-20 bg-gray-100 h-screen overflow-x-hidden">
@@ -140,33 +210,33 @@ export default function CreateTask() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col">
-                                    <div>
-                                        {/* {console.log(studentProjects)} */}
-                                        {/* {studentProjects.projectMembers && studentProjects.projectMembers.map((member, index) => (
-                                        <div key={index} className="flex flex-col m-2 mt-5">
-                                            <label className="font-semibold text-lg">Project Member {index + 1}</label>
-                                            <input
-                                                type="text"
-                                                className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
-                                                value={member.memberNam}
-                                                // onChange={(e) => handleMemberChange(index, e.target.value)}
-                                                name="projectMembers"
+                                <div className="flex flex-col m-2">
+                                    <label className="font-semibold text-lg">Task Members</label>
+                                    {taskMember.map((member, index) => (
+                                        <div key={index} className="flex flex-row mt-2 w-96 gap-3 text-lg">
+                                            <Autosuggest
+                                                suggestions={suggestions}
+                                                onSuggestionsFetchRequested={({ value }) => onSuggestionsFetchRequested({ value })}
+                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                                getSuggestionValue={getSuggestionValue}
+                                                renderSuggestion={renderSuggestion}
+                                                inputProps={{
+                                                    value: member,
+                                                    onChange: (event, { newValue }) => handleMember(index, newValue),
+                                                    placeholder: 'Type a friend name',
+                                                    className: 'p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none'
+                                                }}
                                             />
                                         </div>
                                     ))}
-
                                     <button
                                         type="button"
-                                        // onClick={handleAddMember}
+                                        onClick={handleAddMember}
                                         className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
                                     >
                                         Add Member
-                                    </button> */}
-                                    </div>
+                                    </button>
                                 </div>
-
-
 
                                 {/* <div className="flex flex-col">
                                     <div>

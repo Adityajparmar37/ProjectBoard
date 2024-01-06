@@ -37,16 +37,37 @@ router.get("/request/allRequest", handler(async (req, res, next) => {
 //all my friends
 router.get("/myfriend", handler(async (req, res, next) => {
     try {
-        console.log("User loggedIn ==> ", req.user.id);
         const userId = req.user.id;
-        const myFrined = await Friend.find({
+
+        const myFriends = await Friend.find({
             $or: [
                 { sender: userId, isAccepted: true },
                 { receiver: userId, isAccepted: true }
             ]
+        })
+            .populate([
+                { path: 'sender', select: 'name' },
+                { path: 'receiver', select: 'name' }
+            ])
+            .exec();
+
+        // Exclude the logged-in user's name from the response
+        const filteredFriends = myFriends.map(friend => {
+            let friendName;
+            if (friend.sender.id === userId) {
+                friendName = friend.receiver.name;
+            } else {
+                friendName = friend.sender.name;
+            }
+
+            // Return the modified object
+            return {
+                friendName,
+                // Add other properties as needed
+            };
         });
 
-        res.json(myFrined);
+        res.json(filteredFriends);
     } catch (error) {
         next(error);
     }
