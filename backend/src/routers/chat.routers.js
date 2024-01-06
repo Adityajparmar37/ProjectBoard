@@ -34,21 +34,19 @@ router.get("/request/allRequest", handler(async (req, res, next) => {
 }));
 
 
-
+//all my friends
 router.get("/myfriend", handler(async (req, res, next) => {
     try {
-        const queryObject = {
-            $or: [{ sender: req.user.id }, { receiver: req.user.id }],
-            isAccepted: true
-        };
+        console.log("User loggedIn ==> ", req.user.id);
+        const userId = req.user.id;
+        const myFrined = await Friend.find({
+            $or: [
+                { sender: userId, isAccepted: true },
+                { receiver: userId, isAccepted: true }
+            ]
+        });
 
-        const senderFriends = await Friend.find(queryObject);
-
-        if (senderFriends.length > 0) {
-            res.status(200).json(senderFriends);
-        } else {
-            res.status(200).json({ message: "No Friends found!" });
-        }
+        res.json(myFrined);
     } catch (error) {
         next(error);
     }
@@ -121,7 +119,7 @@ router.get("/find", handler(async (req, res, next) => {
         // // Exclude the logged-in user
         findStudent = findStudent.filter((student) => student._id.toString() !== req.user.id);
 
-        console.log("User loggedIn ==> ", req.user.id);
+        // console.log("User loggedIn ==> ", req.user.id);
 
         if (findStudent.length > 0) {
             res.status(201).json(findStudent);

@@ -11,14 +11,14 @@ export default function TaskPage() {
                     bgColor="bg-yellow-400"
                     icon={<IoCreateSharp className="text-[2.5rem] text-yellow-400" />}
                     title="Create Task"
-                    content={["Create your Task List"]}
+                    content={["Create your Task List", "Have your to do list"]}
                 />
 
                 <MiniCard
                     to="/manageTask"
                     bgColor="bg-yellow-400"
                     icon={<CiViewList className="text-[2.5rem] text-yellow-400" />}
-                    title="Project Dashboard"
+                    title="Task Dashboard"
                     content={["Manage your daily Task", "Lookover your assign task"]}
                 />
             </div>

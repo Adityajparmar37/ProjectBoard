@@ -7,6 +7,7 @@ import { getAllProject } from '../../Services/projectServices';
 
 export default function CreateTask() {
     const [studentProjects, setStudentProjects] = useState();
+    const [taskType, settaskType] = useState();
     const { showLoading, hideLoading } = useLoading();
 
     useEffect(() => {
@@ -38,22 +39,52 @@ export default function CreateTask() {
                         <div className="grid grid-cols-2 py-10">
                             <form>
                                 <div className="flex flex-col m-2 mt-5">
-                                    <label className="font-semibold text-lg">Select Project</label>
+                                    <label className="font-semibold text-lg">Select Type</label>
                                     <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
-                                        {studentProjects && studentProjects.length > 0 ? (
-                                            <select className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-sm bg-gray-100 mb-4">
-                                                <option> -- Choose Project --</option>
-                                                {studentProjects.map((project) => (
-                                                    <option value={project.projectTitle} key={project._id} className="font-semibold bg-gray-100 border-none focus:border-none outline-none">
-                                                        {project.projectTitle}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        ) : (
-                                            <h1 className='lg:text-xl text-gray-500'>Sorry, No Project</h1>
-                                        )}
+                                        <input
+                                            onChange={() => { settaskType("Personal") }}
+                                            type="radio"
+                                            name="taskType"
+                                            value="Personal"
+
+                                        />
+                                        <label htmlFor="statusInProgress">
+                                            Personal
+                                        </label>
+
+                                        <input
+                                            onChange={() => { settaskType("Project") }}
+                                            type="radio"
+                                            name="taskType"
+                                            value="Project"
+
+                                        />
+                                        <label htmlFor="statusOnHold">Project</label>
                                     </div>
                                 </div>
+                                {taskType === "Project" && (
+                                    <div className="flex flex-col m-2 mt-5">
+                                        <label className="font-semibold text-lg">Select Project</label>
+                                        <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
+                                            {studentProjects && studentProjects.length > 0 ? (
+                                                <select className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-sm bg-gray-100 mb-4">
+                                                    <option> -- Choose Project --</option>
+                                                    {studentProjects.map((project) => (
+                                                        <option
+                                                            value={project.projectTitle}
+                                                            key={project._id}
+                                                            className="font-semibold bg-gray-100 border-none focus:border-none outline-none"
+                                                        >
+                                                            {project.projectTitle}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            ) : (
+                                                <h1 className="lg:text-xl text-gray-500">Sorry, No Project</h1>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="flex flex-col m-2">
                                     <label className="font-semibold text-lg">Task title </label>
                                     <input
@@ -110,9 +141,9 @@ export default function CreateTask() {
                                 </div>
 
                                 <div className="flex flex-col">
-                                <div>
-                                {/* {console.log(studentProjects)} */}
-                                    {/* {studentProjects.projectMembers && studentProjects.projectMembers.map((member, index) => (
+                                    <div>
+                                        {/* {console.log(studentProjects)} */}
+                                        {/* {studentProjects.projectMembers && studentProjects.projectMembers.map((member, index) => (
                                         <div key={index} className="flex flex-col m-2 mt-5">
                                             <label className="font-semibold text-lg">Project Member {index + 1}</label>
                                             <input
@@ -132,7 +163,7 @@ export default function CreateTask() {
                                     >
                                         Add Member
                                     </button> */}
-                                </div>
+                                    </div>
                                 </div>
 
 
