@@ -94,7 +94,7 @@ export default function CreateTask() {
 
     const getSuggestionValue = (suggestion) => suggestion.friendName;
 
-    const renderSuggestion = (suggestion) => <span className='text-lg font-semibold text-gray-900 cursor-pointer'> 👉🏼 {suggestion.friendName}</span>;
+    const renderSuggestion = (suggestion) =>  <span className='m-5 lg:text-xl font-semibold cursor-pointer text-red-600'> 👉🏼 {suggestion.friendName}</span>;
 
     const onSuggestionsFetchRequested = ({ value }) => {
         setSuggestions(getSuggestions(value));
