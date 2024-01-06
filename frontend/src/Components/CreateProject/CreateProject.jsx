@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Autosuggest from 'react-autosuggest';
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../Hooks/useLoading";
 import { ProjectCreate } from "../../Services/projectServices";
+import { MyFriend } from "../../Services/chatService";
 
 
 export default function CreateProject() {
@@ -23,6 +25,8 @@ export default function CreateProject() {
         endDate: ''
     })
 
+    const [myFriends, setMyFriends] = useState([]);
+    const [suggestions, setSuggestions] = useState([]);
     const [projectPhases, setProjectPhases] = useState(['']);
     const [projectMember, setProjectMember] = useState(['']);
 
@@ -70,6 +74,37 @@ export default function CreateProject() {
             [e.target.name]: e.target.value,
         }));
     }
+
+
+    const getSuggestions = (inputValue) => {
+        const inputValueLowerCase = inputValue.toLowerCase();
+        return myFriends.filter(
+            (friend) => friend.friendName.toLowerCase().includes(inputValueLowerCase)
+        );
+    };
+
+    const getSuggestionValue = (suggestion) => suggestion.friendName;
+
+    const renderSuggestion = (suggestion) => <span className='text-lg font-semibold text-gray-900 cursor-pointer'> 👉🏼 {suggestion.friendName}</span>;
+
+    const onSuggestionsFetchRequested = ({ value }) => {
+        setSuggestions(getSuggestions(value));
+    };
+
+    const onSuggestionsClearRequested = () => {
+        setSuggestions([]);
+    };
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                const allMyFriends = await MyFriend();
+                setMyFriends(allMyFriends);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetch();
+    }, [])
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -177,33 +212,39 @@ export default function CreateProject() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col">
-                                <div>
-                                    {projectMember.map((member, index) => (
-                                        <div key={index} className="flex flex-col m-2 mt-5">
-                                            <label className="font-semibold text-lg">Project Member {index + 1}</label>
-                                            <input
-                                                type="text"
-                                                className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
-                                                value={member}
-                                                name="projectMembers"
-                                                onChange={(e) => handleMember(index, e.target.value)}
+
+                            <div className="flex flex-col m-2">
+                                {projectMember.map((member, index) => (
+                                    <>
+                                        <label className="font-semibold text-lg mt-5">Project Members {index+1}</label>
+                                        <div key={index} className="flex flex-row w-96 gap-3 text-lg">
+                                            <Autosuggest
+                                                suggestions={suggestions}
+                                                onSuggestionsFetchRequested={({ value }) => onSuggestionsFetchRequested({ value })}
+                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                                getSuggestionValue={getSuggestionValue}
+                                                renderSuggestion={renderSuggestion}
+                                                inputProps={{
+                                                    value: member,
+                                                    onChange: (event, { newValue }) => handleMember(index, newValue),
+                                                    placeholder: 'Type a friend name',
+                                                    className: 'p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none'
+                                                }}
                                             />
                                         </div>
-                                    ))}
-
-                                    <button
-                                        type="button"
-                                        onClick={handleAddMemebr}
-                                        className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
-                                    >
-                                        Add Member
-                                    </button>
-                                </div>
+                                    </>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={handleAddMemebr}
+                                    className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
+                                >
+                                    Add Member
+                                </button>
                             </div>
 
                             <div className="flex flex-col m-2 mt-5">
-                                <label className="font-semibold text-lg">Project Category </label>
+                                <label className="font-semibold text-lg mt-5">Project Category </label>
                                 <input
                                     required
                                     onChange={handleInputData}

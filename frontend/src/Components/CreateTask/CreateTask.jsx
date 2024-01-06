@@ -8,8 +8,19 @@ import { MyFriend } from '../../Services/chatService';
 import { getAllProject } from '../../Services/projectServices';
 
 export default function CreateTask() {
+    const [formData, setFormData] = useState({
+        taskType: '',
+        taskProject: '',
+        taskTitle: '',
+        taskDescription: '',
+        taskPriority: '',
+        taskMembers: [''],
+        startDate: '',
+        endDate: '',
+
+    });
     const [studentProjects, setStudentProjects] = useState();
-    const [taskType, settaskType] = useState();
+    const [tasktype, settasktype] = useState();
     const { showLoading, hideLoading } = useLoading();
     const [myFriends, setMyFriends] = useState([]);
     const [taskMember, setTaskMember] = useState(['']);
@@ -18,6 +29,61 @@ export default function CreateTask() {
     const handleAddMember = () => {
         setTaskMember([...taskMember, '']);
     };
+
+    const handleMember = (index, value) => {
+        const newMember = [...taskMember];
+        newMember[index] = value;
+        setTaskMember(newMember);
+
+        // Update
+        handleInputChange('taskMembers', index, value);
+    };
+
+    const handleInputChange = (field, index, value) => {
+        setFormData((prevData) => {
+            const newData = { ...prevData };
+            if (Array.isArray(newData[field])) {
+                newData[field][index] = value;
+            } else {
+                newData[field] = value;
+            }
+            return newData;
+        });
+    };
+
+    const handleInputData = (e) => {
+        console.log("Event:", e);
+
+        if (e && e.target && e.target.name) {
+            // Handle regular input changes
+            setFormData((prevData) => ({
+                ...prevData,
+                [e.target.name]: e.target.value,
+            }));
+        }
+    };
+
+    const handleQuillChange = (content) => {
+        console.log(content);
+        setFormData((prevData) => ({
+            ...prevData,
+            taskDescription: content,
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const formattedMembers = taskMember.map((member) => ({ memberNam: member }));
+        const formattedDescription = formData.taskDescription; // Access HTML content
+        const updatedFormData = {
+            ...formData,
+            taskMembers: formattedMembers,
+            taskDescription: formattedDescription,
+        };
+        setFormData(updatedFormData);
+    };
+    console.log("task details ==> ", formData);
 
     const getSuggestions = (inputValue) => {
         const inputValueLowerCase = inputValue.toLowerCase();
@@ -37,35 +103,6 @@ export default function CreateTask() {
     const onSuggestionsClearRequested = () => {
         setSuggestions([]);
     };
-    const handleMember = (index, value) => {
-        const newMembers = [...taskMember];
-        newMembers[index] = value;
-        setTaskMember(newMembers);
-    };
-
-    console.log("Task members ==> " , taskMember)
-
-
-    // const handleMember = (index, value) => {
-    //     const newMember = [...taskMember];
-    //     newMember[index] = value;
-    //     setTaskMember(newMember);
-
-    //     // Update
-    //     // handleInputChange('taskMembers', index, value);
-    // };
-
-    // const handleInputChange = (field, index, value) => {
-    //     setFormData((prevData) => {
-    //         const newData = { ...prevData };
-    //         if (Array.isArray(newData[field])) {
-    //             newData[field][index] = value;
-    //         } else {
-    //             newData[field] = value;
-    //         }
-    //         return newData;
-    //     });
-    // };
 
     useEffect(() => {
         const fetch = async () => {
@@ -107,37 +144,45 @@ export default function CreateTask() {
                         </div>
 
                         <div className="grid grid-cols-2 py-10">
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="flex flex-col m-2 mt-5">
                                     <label className="font-semibold text-lg">Select Type</label>
                                     <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
                                         <input
-                                            onChange={() => { settaskType("Personal") }}
+                                            onChange={(e) => {
+                                                settasktype("Personal");
+                                                handleInputData(e, null);
+                                            }}
                                             type="radio"
                                             name="taskType"
                                             value="Personal"
-
                                         />
-                                        <label htmlFor="statusInProgress">
+                                        <label>
                                             Personal
                                         </label>
 
                                         <input
-                                            onChange={() => { settaskType("Project") }}
+                                            onChange={(e) => {
+                                                settasktype("Project");
+                                                handleInputData(e, null);
+                                            }}
                                             type="radio"
                                             name="taskType"
                                             value="Project"
 
                                         />
-                                        <label htmlFor="statusOnHold">Project</label>
+                                        <label>Project</label>
                                     </div>
                                 </div>
-                                {taskType === "Project" && (
+                                {tasktype === "Project" && (
                                     <div className="flex flex-col m-2 mt-5">
                                         <label className="font-semibold text-lg">Select Project</label>
                                         <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
                                             {studentProjects && studentProjects.length > 0 ? (
-                                                <select className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-sm bg-gray-100 mb-4">
+                                                <select
+                                                    name="taskProject"
+                                                    onChange={handleInputData}
+                                                    className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-sm bg-gray-100 mb-4">
                                                     <option> -- Choose Project --</option>
                                                     {studentProjects.map((project) => (
                                                         <option
@@ -159,8 +204,8 @@ export default function CreateTask() {
                                     <label className="font-semibold text-lg">Task title </label>
                                     <input
                                         required
-                                        // onChange={handleInputData}
-                                        type="text" name="projectTitle" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
+                                        onChange={handleInputData}
+                                        type="text" name="taskTitle" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                                 </div>
 
                                 <div className="flex flex-col m-2 mt-5">
@@ -168,8 +213,8 @@ export default function CreateTask() {
                                     <ReactQuill
                                         required
                                         theme="snow"
-                                        // onChange={handleInputData}
-                                        name="projectDescription"
+                                        onChange={handleQuillChange}
+                                        name="taskDescription"
                                         className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 shadow-inner focus:shadow-none w-[35rem]"
                                     ></ReactQuill>
                                 </div>
@@ -179,32 +224,32 @@ export default function CreateTask() {
                                     <label className="font-semibold text-lg">Task Priority</label>
                                     <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
                                         <input
-                                            // onChange={handleInputData}
+                                            onChange={handleInputData}
                                             type="radio"
-                                            name="projectStatus"
+                                            name="taskPriority"
                                             value="Low"
 
                                         />
-                                        <label htmlFor="statusInProgress">
+                                        <label>
                                             Low
                                         </label>
 
                                         <input
-                                            // onChange={handleInputData}
+                                            onChange={handleInputData}
                                             type="radio"
-                                            name="projectStatus"
+                                            name="taskPriority"
                                             value="Medium"
 
                                         />
-                                        <label htmlFor="statusOnHold">Medium</label>
+                                        <label>Medium</label>
 
                                         <input
-                                            // onChange={handleInputData}
+                                            onChange={handleInputData}
                                             type="radio"
-                                            name="projectStatus"
+                                            name="taskPriority"
                                             value="High"
                                         />
-                                        <label htmlFor="statusCompleted" >
+                                        <label>
                                             High
                                         </label>
                                     </div>
@@ -238,41 +283,15 @@ export default function CreateTask() {
                                     </button>
                                 </div>
 
-                                {/* <div className="flex flex-col">
-                                    <div>
-                                        {projectPhases.map((phase, index) => (
-                                        <div key={index} className="flex flex-col m-2 mt-5">
-                                            <label className="font-semibold text-lg">Project Phase {index + 1}</label>
-                                            <input
-                                                required
-                                                type="text"
-                                                className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
-                                                value={phase}
-                                                name="projectPhases"
-                                                // onChange={(e) => handlePhase(index, e.target.value)}
-                                            />
-                                        </div>
-                                    ))}
-
-                                        <button
-                                            type="button"
-                                            // onClick={handleAddMore}
-                                            className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
-                                        >
-                                            Add More
-                                        </button>
-                                    </div>
-                                </div> */}
-
                                 <div className="flex flex-col m-2 mt-8">
                                     <div className="flex flex-row gap-5 w-[72rem] items-center">
                                         <label className="font-semibold text-lg">Start date </label>
                                         <input
-                                            // onChange={handleInputData}
+                                            onChange={handleInputData}
                                             type="date" name="startDate" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
                                         <label className="font-semibold text-lg">End date </label>
                                         <input
-                                            // onChange={handleInputData}
+                                            onChange={handleInputData}
                                             type="date" name="endDate" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
                                     </div>
                                 </div>
