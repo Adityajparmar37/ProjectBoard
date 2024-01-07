@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLoading } from '../../Hooks/useLoading';
 import { getAllTask } from '../../Services/taskServices';
 import TaskCard from '../TaskCard/TaskCard';
+import TaskFilter from '../TaskFilter/TaskFilter';
 
 
 
@@ -28,37 +30,53 @@ export default function ManageTask() {
 
     return (
         <>
-            <div className="pt-20 relative overflow-x-auto sm:rounded-lg flex justify-center items-center h-screen">
-                <table className="w-[90%] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-lg font-bold text-zinc-400 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-40 border-b-4 border-white">
-                        <tr >
-                            <th scope="col" className="p-4">
-                                <div className="flex items-center">
-                                    <label className="text-white lg:text-2xl font-bold">📒</label>
-                                </div>
-                            </th>
-                            <th scope="col" className="px-6 py-3 border-l-4 ">
-                                Task Name
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Task Type
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Task Priority
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Due Date
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {studentTasks &&
-                            studentTasks.map((task) => <TaskCard key={task.id} task={task} />)}
-                    </tbody>
-                </table>
+            <div className='pt-20  h-screen bg-gray-100'>
+                {studentTasks && studentTasks.length > 0 ? (
+                    <>
+                        <div className='bg-white w-full lg:text-xl mb-10 shadow-lg mt-3'>
+                            <div className='flex justify-center items-center p-2'>
+                                <TaskFilter />
+                            </div>
+                        </div>
+                        <div className='flex flex-col justify-center items-center'>
+                            <table className="w-[90%] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead className="text-lg font-bold text-zinc-400 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-40 border-b-4 border-white">
+                                    <tr >
+                                        <th scope="col" className="p-4">
+                                            <div className="flex items-center">
+                                                <label className="text-white lg:text-2xl font-bold">📒</label>
+                                            </div>
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-l-4 ">
+                                            Task Name
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Task Type
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Task Priority
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Due Date
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {studentTasks &&
+                                        studentTasks.map((task) => <TaskCard key={task.id} task={task} />)}
+                                </tbody>
+                            </table>
+                        </div>
+                    </>
+                ) : (<div className='flex items-center justify-center w-screen h-screen'>
+                    <Link to="/task">
+                        <h1 className=' bg-gray-600 text-white text-lg rounded-md p-2'>No Task Found! Click to go back</h1>
+                    </Link>
+                </div>)}
+
             </div>
         </>
     );
