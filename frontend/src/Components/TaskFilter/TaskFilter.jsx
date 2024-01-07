@@ -5,18 +5,18 @@ export default function TaskFilter() {
 
             <div className="flex flex-row">
                 <div className="p-5 items-center">
-                    <label className="font-semibold text-md">Search Task</label>
+                    <label className="font-semibold text-lg">Search Task</label>
                     <input
                         type="text" name="title" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[90%]" placeholder="Enter Word"></input>
                 </div>
 
                 <div className="p-5 items-center ml-12">
-                    <label className="font-semibold text-md">Task title</label>
+                    <label className="font-semibold text-lg">Task title</label>
                     <input
                         type="text" name="title" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[90%]" placeholder="Enter Task Title"></input>
                 </div>
                 <div className="p-5 items-center ml-12">
-                    <label className="font-semibold text-md">Task Type</label>
+                    <label className="font-semibold text-lg">Task Type</label>
                     <div className="flex flex-row gap-3 text-xl mt-3">
                         <input
                             type="radio"

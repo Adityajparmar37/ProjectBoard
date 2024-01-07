@@ -2,57 +2,70 @@
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import Autosuggest from 'react-autosuggest';
+// import Autosuggest from 'react-autosuggest';
 import { useLoading } from '../../Hooks/useLoading';
-import { MyFriend } from '../../Services/chatService';
 import { getAllProject } from '../../Services/projectServices';
 import toast from 'react-hot-toast';
-import { TaskCreate } from '../../Services/taskServices';
-import { useNavigate } from 'react-router-dom';
+import { deleteTask, getTheTask, TaskCreate } from '../../Services/taskServices';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function CreateTask() {
+export default function TaskView() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const getTask = await getTheTask(id);
+                setFormData({
+                    taskType: getTask.taskType || "",
+                    taskProject: getTask.taskProject || "",
+                    taskTitle: getTask.taskTitle || "",
+                    taskDescription: getTask.taskDescription || "",
+                    taskPriority: getTask.taskPriority || "",
+                    taskMembers: getTask.taskMembers || [],
+                    startDate: getTask.taskStartDate ? getTask.taskStartDate.slice(0, 10) : "",
+                    endDate: getTask.taskEndDate ? getTask.taskEndDate.slice(0, 10) : "",
+
+                })
+            } catch (error) {
+                console.log("Error in fetching a task ==> ", error);
+            }
+        }
+        fetchData();
+    }, [id])
+
     const [formData, setFormData] = useState({
         taskType: '',
         taskProject: '',
         taskTitle: '',
         taskDescription: '',
         taskPriority: '',
-        taskMembers: [''],
+        taskMembers: [{ memberNam: '' }],
         startDate: '',
         endDate: '',
 
     });
 
-    const navigate = useNavigate();
+
     const [studentProjects, setStudentProjects] = useState();
-    const [tasktype, settasktype] = useState();
+    const [, settasktype] = useState();
     const { showLoading, hideLoading } = useLoading();
-    const [myFriends, setMyFriends] = useState([]);
-    const [taskMember, setTaskMember] = useState(['']);
-    const [suggestions, setSuggestions] = useState([]);
 
     const handleAddMember = () => {
-        setTaskMember([...taskMember, '']);
+        setFormData({
+            ...formData,
+            taskMembers: [...formData.taskMembers, { memberNam: '' }],
+        });
     };
 
-    const handleMember = (index, value) => {
-        const newMember = [...taskMember];
-        newMember[index] = value;
-        setTaskMember(newMember);
+    const handleMemberChange = (index, value) => {
+        const updatedMembers = [...formData.taskMembers];
+        updatedMembers[index].memberNam = value;
 
-        // Update
-        handleInputChange('taskMembers', index, value);
-    };
-
-    const handleInputChange = (field, index, value) => {
-        setFormData((prevData) => {
-            const newData = { ...prevData };
-            if (Array.isArray(newData[field])) {
-                newData[field][index] = value;
-            } else {
-                newData[field] = value;
-            }
-            return newData;
+        setFormData({
+            ...formData,
+            taskMembers: updatedMembers,
         });
     };
 
@@ -78,15 +91,6 @@ export default function CreateTask() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const formattedMembers = taskMember.map((member) => ({ memberNam: member }));
-        const formattedDescription = formData.taskDescription; // Access HTML content
-        const FormData = {
-            ...formData,
-            taskMembers: formattedMembers,
-            taskDescription: formattedDescription,
-        };
-
         try {
             showLoading();
             const NewtaskCreate = await TaskCreate(FormData);
@@ -95,7 +99,7 @@ export default function CreateTask() {
             if (NewtaskCreate.message === "Task created successfully") {
                 hideLoading();
                 toast.success(NewtaskCreate.message);
-                navigate("/manageTask");
+                // navigator
             }
         } catch (error) {
             hideLoading();
@@ -103,45 +107,26 @@ export default function CreateTask() {
             console.error("Error While Creating Task", error);
         }
     };
-    // console.log("task details ==> ", formData);
 
-    const getSuggestions = (inputValue) => {
-        const inputValueLowerCase = inputValue.toLowerCase();
-        return myFriends.filter(
-            (friend) => friend.friendName.toLowerCase().includes(inputValueLowerCase)
-        );
-    };
-
-    const getSuggestionValue = (suggestion) => suggestion.friendName;
-
-    const renderSuggestion = (suggestion) => <span className='m-5 lg:text-xl font-semibold cursor-pointer text-red-600'> 👉🏼 {suggestion.friendName}</span>;
-
-    const onSuggestionsFetchRequested = ({ value }) => {
-        setSuggestions(getSuggestions(value));
-    };
-
-    const onSuggestionsClearRequested = () => {
-        setSuggestions([]);
-    };
-
-    useEffect(() => {
-        const fetch = async () => {
-            try {
-                const allMyFriends = await MyFriend();
-                setMyFriends(allMyFriends);
-            } catch (error) {
-                console.log(error);
-            }
+    const handleDelete = async () => {
+        try {
+            // console.log("Before delete operation");
+            await deleteTask(id);
+            // console.log("After delete operation");
+            toast.success("Delete successfully");
+            navigate("/manageTask");
+        } catch (error) {
+            console.log("Error in deleting ", error);
         }
-        fetch();
-    }, [])
+    }
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 showLoading();
                 const allProject = await getAllProject();
-                console.log("ALL PROJECT ==> ", allProject);
+                // console.log("ALL PROJECT ==> ", allProject);
                 setStudentProjects(allProject);
                 hideLoading();
             } catch (error) {
@@ -175,7 +160,7 @@ export default function CreateTask() {
                                             }}
                                             type="radio"
                                             name="taskType"
-                                            value="Personal"
+                                            checked={formData.taskType === "Personal"}
                                         />
                                         <label>
                                             Personal
@@ -188,19 +173,19 @@ export default function CreateTask() {
                                             }}
                                             type="radio"
                                             name="taskType"
-                                            value="Project"
-
+                                            checked={formData.taskType === "Project"}
                                         />
                                         <label>Project</label>
                                     </div>
                                 </div>
-                                {tasktype === "Project" && (
+                                {formData && formData.taskType === "Project" && (
                                     <div className="flex flex-col m-2 mt-5">
                                         <label className="font-semibold text-lg">Select Project</label>
                                         <div className="flex flex-row mt-2 w-96 gap-3 text-lg">
                                             {studentProjects && studentProjects.length > 0 ? (
                                                 <select
                                                     name="taskProject"
+                                                    value={formData.taskProject}
                                                     onChange={handleInputData}
                                                     className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-sm bg-gray-100 mb-4">
                                                     <option> -- Choose Project --</option>
@@ -223,7 +208,7 @@ export default function CreateTask() {
                                 <div className="flex flex-col m-2">
                                     <label className="font-semibold text-lg">Task title </label>
                                     <input
-                                        required
+                                        value={formData.taskTitle}
                                         onChange={handleInputData}
                                         type="text" name="taskTitle" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[35rem]"></input>
                                 </div>
@@ -231,7 +216,7 @@ export default function CreateTask() {
                                 <div className="flex flex-col m-2 mt-5">
                                     <label className="font-semibold text-lg">Task Description</label>
                                     <ReactQuill
-                                        required
+                                        value={formData.taskDescription}
                                         theme="snow"
                                         onChange={handleQuillChange}
                                         name="taskDescription"
@@ -248,6 +233,7 @@ export default function CreateTask() {
                                             type="radio"
                                             name="taskPriority"
                                             value="Low"
+                                            checked={formData.taskPriority === "Low"}
 
                                         />
                                         <label>
@@ -259,6 +245,7 @@ export default function CreateTask() {
                                             type="radio"
                                             name="taskPriority"
                                             value="Medium"
+                                            checked={formData.taskPriority === "Medium"}
 
                                         />
                                         <label>Medium</label>
@@ -268,6 +255,7 @@ export default function CreateTask() {
                                             type="radio"
                                             name="taskPriority"
                                             value="High"
+                                            checked={formData.taskPriority === "High"}
                                         />
                                         <label>
                                             High
@@ -276,21 +264,15 @@ export default function CreateTask() {
                                 </div>
 
                                 <div className="flex flex-col m-2">
-                                    <label className="font-semibold text-lg">Task Members</label>
-                                    {taskMember.map((member, index) => (
-                                        <div key={index} className="flex flex-row mt-2 w-96 gap-3 text-lg">
-                                            <Autosuggest
-                                                suggestions={suggestions}
-                                                onSuggestionsFetchRequested={({ value }) => onSuggestionsFetchRequested({ value })}
-                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                                getSuggestionValue={getSuggestionValue}
-                                                renderSuggestion={renderSuggestion}
-                                                inputProps={{
-                                                    value: member,
-                                                    onChange: (event, { newValue }) => handleMember(index, newValue),
-                                                    placeholder: 'Type a friend name',
-                                                    className: 'p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none'
-                                                }}
+                                    {formData && formData.taskMembers.map((member, index) => (
+                                        <div key={index} className="flex flex-col m-2 ml-0 mt-5">
+                                            <label className="font-semibold text-lg">Task Member {index + 1}</label>
+                                            <input
+                                                type="text"
+                                                className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
+                                                value={member.memberNam}
+                                                onChange={(e) => handleMemberChange(index, e.target.value)}
+                                                name="projectMembers"
                                             />
                                         </div>
                                     ))}
@@ -307,20 +289,36 @@ export default function CreateTask() {
                                     <div className="flex flex-row gap-5 w-[72rem] items-center">
                                         <label className="font-semibold text-lg">Start date </label>
                                         <input
+                                            value={formData.startDate}
                                             onChange={handleInputData}
                                             type="date" name="startDate" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
                                         <label className="font-semibold text-lg">End date </label>
                                         <input
+                                            value={formData.endDate}
                                             onChange={handleInputData}
                                             type="date" name="endDate" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[15rem]"></input>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col mt-16">
-                                    <button type="submit"
-                                        className="bg-blue-500 hover:bg-blue-700 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded">
-                                        Create Task
-                                    </button>
+                                <div className="grid grid-cols-2 gap-5 w-max">
+                                    <div className="flex mt-16 justify-start items-start">
+                                        <button
+                                            type="submit"
+                                            className="bg-blue-500 hover:bg-blue-700 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded"
+                                        >
+                                            Update
+                                        </button>
+                                    </div>
+
+                                    <div className="flex mt-16 justify-end items-end">
+                                        <button
+                                            type="button"
+                                            onClick={handleDelete}
+                                            className="bg-orange-700 hover:bg-orange-800 hover:rounded-[3rem] text-white font-bold py-2 px-4 w-[12rem] rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>

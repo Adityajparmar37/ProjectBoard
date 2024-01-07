@@ -14,6 +14,7 @@ import SearchMember from "../../SearchMember/SearchMember";
 import TaskPage from "../../../Pages/TaskPage/TaskPage";
 import CreateTask from "../../CreateTask/CreateTask";
 import ManageTask from "../../ManageTask/ManageTask";
+import TaskView from "../../../Pages/TaskView/TaskView";
 
 export default function AppRoute() {
     return (
@@ -61,9 +62,14 @@ export default function AppRoute() {
                     <CreateTask />
                 </AuthRoute>} />
 
-                
+
                 <Route path="/manageTask" element={<AuthRoute>
                     <ManageTask />
+                </AuthRoute>} />
+
+
+                <Route path="/manageTask/:id" element={<AuthRoute>
+                    <TaskView />
                 </AuthRoute>} />
             </Routes>
         </>

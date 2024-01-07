@@ -33,18 +33,18 @@ export default function ManageTask() {
             <div className='pt-20  h-screen bg-gray-100'>
                 {studentTasks && studentTasks.length > 0 ? (
                     <>
-                        <div className='bg-white w-full text-lg mb-10 shadow-lg mt-3'>
+                        <div className='bg-white w-fulltext-[1rem] mb-10 shadow-lg mt-3'>
                             <div className='flex justify-center items-center  p-2'>
                                 <TaskFilter />
                             </div>
                         </div>
                         <div className='flex flex-col justify-center items-center'>
                             <table className="w-[90%] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead className="text-lg font-bold text-zinc-400 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-40 border-b-4 border-white">
+                                <thead className="text-[1rem] font-bold text-zinc-400 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-40 border-b-4 border-white">
                                     <tr >
                                         <th scope="col" className="p-4">
                                             <div className="flex items-center">
-                                                <label className="text-white lg:text-2xl font-bold">📒</label>
+                                                <label className="text-white font-bold">📒</label>
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3 border-l-4 ">

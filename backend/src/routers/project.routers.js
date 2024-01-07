@@ -151,12 +151,12 @@ router.delete("/manageProject/delete/:id", handler(async (req, res, next) => {
         const projectToDelete = await Project.findByIdAndDelete(id);
 
         if (!projectToDelete) {
-            return next(errorHandler("404", "Project not found"));
+            return next(errorHandler(404, "Project not found"));
         }
 
         res.status(200).json({ success: true, message: "Project deleted successfully" });
     } catch (error) {
-        return next();
+        next(error);
     }
 }));
 

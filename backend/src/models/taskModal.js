@@ -33,6 +33,11 @@ const taskSchema = mongoose.Schema(
             required: true
         },
 
+        isCrossed: {
+            type: Boolean, 
+            default: false
+        },
+
         taskMembers: {
             type: [{
                 memberNam: {
