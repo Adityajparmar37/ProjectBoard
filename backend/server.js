@@ -6,6 +6,7 @@ dotenv.config();
 const studentRouters = require('./src/routers/student.router.js')
 const projectRouters = require('./src/routers/project.routers.js')
 const chatRouters = require('./src/routers/chat.routers.js')
+const taskRouters = require('./src/routers/task.routers.js')
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use(cors({
 app.use("/api/student", studentRouters);
 app.use("/api/project", projectRouters);
 app.use("/api/chat", chatRouters);
+app.use("/api/task", taskRouters);
 
 //Internal Error Handling
 app.use((err, req, res, next) => {
