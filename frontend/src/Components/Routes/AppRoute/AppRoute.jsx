@@ -13,6 +13,7 @@ import ChatPage from "../../../Pages/ChatPage/ChatPage";
 import SearchMember from "../../SearchMember/SearchMember";
 import TaskPage from "../../../Pages/TaskPage/TaskPage";
 import CreateTask from "../../CreateTask/CreateTask";
+import ManageTask from "../../ManageTask/ManageTask";
 
 export default function AppRoute() {
     return (
@@ -58,6 +59,11 @@ export default function AppRoute() {
 
                 <Route path="/createTask" element={<AuthRoute>
                     <CreateTask />
+                </AuthRoute>} />
+
+                
+                <Route path="/manageTask" element={<AuthRoute>
+                    <ManageTask />
                 </AuthRoute>} />
             </Routes>
         </>

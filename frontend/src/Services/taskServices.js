@@ -11,3 +11,12 @@ export const TaskCreate = async (NewTaskData) => {
         return error.response.data;
     }
 }
+
+export const getAllTask = async () => {
+    try {
+        const { data } = await axios.get('api/task/manageTask');
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
