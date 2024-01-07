@@ -54,7 +54,7 @@ const taskSchema = mongoose.Schema(
             type: Date,
             validate: {
                 validator: function (endDate) {
-                    return this.projectStartDate <= endDate;
+                    return this.taskStartDate <= endDate;
                 },
                 message: 'End date must be equal to or after the start date.',
             },

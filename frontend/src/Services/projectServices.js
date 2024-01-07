@@ -25,7 +25,7 @@ export const getAllProject = async (filters, Page, pageSize) => {
 export const ProjectCreate = async (NewProjectData) => {
     try {
 
-        console.log("-->", NewProjectData)
+        // console.log("-->", NewProjectData)
         const { data } = await axios.post("api/project/createProject", NewProjectData);
         console.log("Project created Frontend API Hit ==> ", data);
         return data;

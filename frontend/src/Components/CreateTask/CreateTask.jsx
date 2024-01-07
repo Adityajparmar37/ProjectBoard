@@ -6,6 +6,8 @@ import Autosuggest from 'react-autosuggest';
 import { useLoading } from '../../Hooks/useLoading';
 import { MyFriend } from '../../Services/chatService';
 import { getAllProject } from '../../Services/projectServices';
+import toast from 'react-hot-toast';
+import { TaskCreate } from '../../Services/taskServices';
 
 export default function CreateTask() {
     const [formData, setFormData] = useState({
@@ -71,19 +73,34 @@ export default function CreateTask() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formattedMembers = taskMember.map((member) => ({ memberNam: member }));
         const formattedDescription = formData.taskDescription; // Access HTML content
-        const updatedFormData = {
+        const FormData = {
             ...formData,
             taskMembers: formattedMembers,
             taskDescription: formattedDescription,
         };
-        setFormData(updatedFormData);
+
+        try {
+            showLoading();
+            const NewtaskCreate = await TaskCreate(FormData);
+            console.log("Task Created ==> ", NewtaskCreate);
+
+            if (NewtaskCreate.message === "Task created successfully") {
+                hideLoading();
+                toast.success(NewtaskCreate.message);
+                // navigator
+            }
+        } catch (error) {
+            hideLoading();
+            toast.error("Task Not Created , Please try again");
+            console.error("Error While Creating Task", error);
+        }
     };
-    console.log("task details ==> ", formData);
+    // console.log("task details ==> ", formData);
 
     const getSuggestions = (inputValue) => {
         const inputValueLowerCase = inputValue.toLowerCase();
@@ -94,7 +111,7 @@ export default function CreateTask() {
 
     const getSuggestionValue = (suggestion) => suggestion.friendName;
 
-    const renderSuggestion = (suggestion) =>  <span className='m-5 lg:text-xl font-semibold cursor-pointer text-red-600'> 👉🏼 {suggestion.friendName}</span>;
+    const renderSuggestion = (suggestion) => <span className='m-5 lg:text-xl font-semibold cursor-pointer text-red-600'> 👉🏼 {suggestion.friendName}</span>;
 
     const onSuggestionsFetchRequested = ({ value }) => {
         setSuggestions(getSuggestions(value));
