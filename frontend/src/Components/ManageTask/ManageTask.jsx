@@ -33,8 +33,8 @@ export default function ManageTask() {
             <div className='pt-20  h-screen bg-gray-100'>
                 {studentTasks && studentTasks.length > 0 ? (
                     <>
-                        <div className='bg-white w-full lg:text-xl mb-10 shadow-lg mt-3'>
-                            <div className='flex justify-center items-center p-2'>
+                        <div className='bg-white w-full text-lg mb-10 shadow-lg mt-3'>
+                            <div className='flex justify-center items-center  p-2'>
                                 <TaskFilter />
                             </div>
                         </div>
