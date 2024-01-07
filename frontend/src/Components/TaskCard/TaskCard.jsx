@@ -43,7 +43,7 @@ const TaskCard = ({ task }) => {
             </th>
             <td className={`px-6 py-4 text-lg ${isChecked ? 'line-through text-zinc-400 font-light bg-zinc-500' : ''}`}>{task.taskType}</td>
             <td className={`px-6 py-4 text-lg ${isChecked ? 'line-through text-zinc-400 font-light bg-zinc-500' : ''}`}>
-                <h1 className={`font-semibold text-white text-sm rounded-lg p-1 ${ColoredPriority} ${isChecked ? 'bg-zinc-500 text-zinc-400':""}`}>
+                <h1 className={`font-semibold text-white text-lg rounded-lg p-1 ${ColoredPriority} ${isChecked ? 'bg-zinc-500 text-zinc-400':""}`}>
                     {taskPriority}
                 </h1>
             </td>
