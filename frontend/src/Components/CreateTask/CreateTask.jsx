@@ -54,7 +54,7 @@ export default function CreateTask() {
     };
 
     const handleInputData = (e) => {
-        console.log("Event:", e);
+        // console.log("Event:", e);
 
         if (e && e.target && e.target.name) {
             // Handle regular input changes
@@ -66,7 +66,7 @@ export default function CreateTask() {
     };
 
     const handleQuillChange = (content) => {
-        console.log(content);
+        // console.log(content);
         setFormData((prevData) => ({
             ...prevData,
             taskDescription: content,

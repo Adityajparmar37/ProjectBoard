@@ -10,6 +10,26 @@ const Task = require('../models/taskModal.js');
 router.use(authMid);
 
 
+//user nae badhe task 
+router.get("/manageTask", handler(async (req, res, next) => {
+    try {
+        const queryObject = { taskCreator: req.user.id };
+
+        let taskList = await Task.find(queryObject);
+
+        if (taskList.length > 0) {
+            res.json(taskList);
+        } else {
+            res.json({ message: "No task found for the user" });
+        }
+    } catch (error) {
+        console.error('Error fetching task: ', error);
+        next(error);
+    }
+}));
+
+
+//task creation
 router.post("/createTask", handler(async (req, res, next) => {
     try {
         const {
