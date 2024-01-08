@@ -59,6 +59,17 @@ export const taskUndo = async (id) => {
 }
 
 
+export const updateTask = async (id, updatedFormData) => {
+    try {
+        const { data } = await axios.put(`api/task/manageTask/update/${id}`, updatedFormData);
+        console.log("Update task Frontend api ", data);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+
 
 export const deleteTask = async (id) => {
     try {

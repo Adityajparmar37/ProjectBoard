@@ -6,7 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useLoading } from '../../Hooks/useLoading';
 import { getAllProject } from '../../Services/projectServices';
 import toast from 'react-hot-toast';
-import { deleteTask, getTheTask, TaskCreate } from '../../Services/taskServices';
+import { deleteTask, getTheTask, updateTask } from '../../Services/taskServices';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function TaskView() {
@@ -89,25 +89,6 @@ export default function TaskView() {
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            showLoading();
-            const NewtaskCreate = await TaskCreate(FormData);
-            console.log("Task Created ==> ", NewtaskCreate);
-
-            if (NewtaskCreate.message === "Task created successfully") {
-                hideLoading();
-                toast.success(NewtaskCreate.message);
-                // navigator
-            }
-        } catch (error) {
-            hideLoading();
-            toast.error("Task Not Created , Please try again");
-            console.error("Error While Creating Task", error);
-        }
-    };
-
     const handleDelete = async () => {
         try {
             // console.log("Before delete operation");
@@ -138,6 +119,20 @@ export default function TaskView() {
         fetchData();
     }, []);
 
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // console.log("Form Data Submitted:", formData);
+            const updatedTask = await updateTask(id, formData)
+            console.log("New updated project", updatedTask);
+            toast.success("Update successful");
+        } catch (error) {
+            console.error("Error updating project:", error);
+            toast.error("Error updating project");
+        }
+    };
+
     return (
         <>
             <div className="pt-20 bg-gray-100 h-screen overflow-x-hidden">
@@ -149,7 +144,7 @@ export default function TaskView() {
                         </div>
 
                         <div className="grid grid-cols-2 py-10">
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleFormSubmit}>
                                 <div className="flex flex-col m-2 mt-5">
                                     <label className="font-semibold text-lg">Select Type</label>
                                     <div className="flex flex-row mt-2 w-96 gap-3 text-lg">

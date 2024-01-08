@@ -16,7 +16,7 @@ router.get("/manageTask", handler(async (req, res, next) => {
 
         const { ...filterTask } = req.query;
 
-        const { keywordSearch, taskType, taskPriority, sort } =  filterTask ;
+        const { keywordSearch, taskType, taskPriority, sort } = filterTask;
 
         console.log("Task filters ==> ", filterTask);
         console.log(sort)
@@ -120,6 +120,24 @@ router.get("/manageTask/taskUndo/:id", handler(async (req, res, next) => {
     } catch (error) {
         console.erro('Error in crossing task: ', error);
         next(error);
+    }
+}));
+
+
+router.put("/manageTask/update/:id", handler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const updateFormData = req.body;
+        const updatedTask = await Task.findByIdAndUpdate(id, updateFormData, { update: true });
+
+        if (!updatedTask) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+
+        res.json(updatedTask);
+    } catch (error) {
+        console.error("Error updating project:", error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }));
 
