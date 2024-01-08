@@ -114,8 +114,8 @@ const TaskCard = ({ task }) => {
             >
                 {isChecked ? (<button
                     onClick={UndoTheTask}
-                    className={`font-semibold text-xl dark:text-blue-500 hover:underline ${isChecked
-                        ? " dark:text-green-300 hover:no-underline"
+                    className={`font-semibold text-xl dark:text-blue-500 ${isChecked
+                        ? " dark:text-green-300 hover:underline"
                         : ""
                         }`}
                 >
