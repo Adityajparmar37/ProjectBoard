@@ -16,7 +16,7 @@ export default function ManageTask() {
             try {
                 showLoading();
                 const allTask = await getAllTask();
-                console.log("ALL Task ==> ", allTask);
+                // console.log("ALL Task ==> ", allTask);
                 setStudentTasks(allTask);
                 hideLoading();
             } catch (error) {
@@ -35,7 +35,7 @@ export default function ManageTask() {
                     <>
                         <div className='bg-white w-fulltext-[1rem] mb-10 shadow-lg mt-3'>
                             <div className='flex justify-center items-center  p-2'>
-                                <TaskFilter />
+                                <TaskFilter setStudentTasks={setStudentTasks}/>
                             </div>
                         </div>
                         <div className='flex flex-col justify-center items-center'>
@@ -66,7 +66,7 @@ export default function ManageTask() {
                                 </thead>
                                 <tbody>
                                     {studentTasks &&
-                                        studentTasks.map((task) => <TaskCard key={task.id} task={task} />)}
+                                        studentTasks.map((task) => <TaskCard key={task._id} task={task} />)}
                                 </tbody>
                             </table>
                         </div>

@@ -13,12 +13,46 @@ router.use(authMid);
 //user nae badhe task 
 router.get("/manageTask", handler(async (req, res, next) => {
     try {
+
+        const { ...filterTask } = req.query;
+
+        const { keywordSearch, taskType, taskPriority, sort } =  filterTask ;
+
+        console.log("Task filters ==> ", filterTask);
+        console.log(sort)
+
         const queryObject = { taskCreator: req.user.id };
 
-        let taskList = await Task.find(queryObject);
+        if (taskType) {
+            queryObject.taskType = { $regex: new RegExp(taskType, 'i') };
+        }
 
-        if (taskList.length > 0) {
-            res.json(taskList);
+        if (taskPriority) {
+            queryObject.taskPriority = { $regex: new RegExp(taskPriority, 'i') };
+        }
+
+        let filteredTask = await Task
+            .find(queryObject)
+            .sort({ createdAt: sort === 'new' ? -1 : 1 })
+
+
+        if (keywordSearch) {
+            const keywordSearchRegex = new RegExp(keywordSearch, 'i');
+
+            filteredTask = filteredTask.filter((task) => (
+                (task.taskTitle && task.taskTitle.match(keywordSearchRegex)) ||
+                (task.taskType && task.taskType.match(keywordSearchRegex)) ||
+                (task.taskTitle && task.taskTitle.match(keywordSearchRegex)) ||
+                (task.taskDescription && task.taskDescription.match(keywordSearchRegex)) ||
+                (task.taskPriority && task.taskPriority.match(keywordSearchRegex)) ||
+                (task.taskMembers && task.taskMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex)))
+            ));
+        }
+
+        console.log(filteredTask)
+
+        if (filteredTask.length > 0) {
+            res.json(filteredTask);
         } else {
             res.json({ message: "No task found for the user" });
         }

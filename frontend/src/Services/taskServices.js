@@ -12,9 +12,15 @@ export const TaskCreate = async (NewTaskData) => {
     }
 }
 
-export const getAllTask = async () => {
+export const getAllTask = async (filterTask) => {
     try {
-        const { data } = await axios.get('api/task/manageTask');
+        filterTask = filterTask || {};
+
+        const params = new URLSearchParams({
+            ...filterTask
+        });
+
+        const { data } = await axios.get(`api/task/manageTask?${params.toString()}`);
         return data;
     } catch (error) {
         return error.response.data;
@@ -63,3 +69,5 @@ export const deleteTask = async (id) => {
         return error.response.data;
     }
 }
+
+
