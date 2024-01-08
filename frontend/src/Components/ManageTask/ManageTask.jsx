@@ -41,7 +41,7 @@ export default function ManageTask() {
                         <div className='flex flex-col justify-center items-center'>
                             <table className="w-[90%] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead className="text-[1rem] font-bold text-zinc-400 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-40 border-b-4 border-white">
-                                    <tr >
+                                    <tr>
                                         <th scope="col" className="p-4">
                                             <div className="flex items-center">
                                                 <label className="text-white font-bold">📒</label>
