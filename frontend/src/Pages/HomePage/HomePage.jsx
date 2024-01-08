@@ -62,7 +62,7 @@ export default function HomePage() {
                         to="/file"
                         bgColor="bg-purple-400"
                         icon={<ImFolderUpload className="text-[2.5rem] text-purple-400" />}
-                        title="File Upload"
+                        title="Files Managment"
                         content={[
                             "Upload Project Files",
                             "Manage Project Files",

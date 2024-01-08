@@ -16,6 +16,7 @@ import CreateTask from "../../CreateTask/CreateTask";
 import ManageTask from "../../ManageTask/ManageTask";
 import TaskView from "../../../Pages/TaskView/TaskView";
 import Calendar from "../../Calendar/Calendar";
+import FilePage from "../../../Pages/FilePage/FilePage";
 
 export default function AppRoute() {
     return (
@@ -75,6 +76,10 @@ export default function AppRoute() {
 
                 <Route path="/manageTask/calendar" element={<AuthRoute>
                     <Calendar />
+                </AuthRoute>} />
+
+                <Route path="/file" element={<AuthRoute>
+                    <FilePage />
                 </AuthRoute>} />
             </Routes>
         </>
