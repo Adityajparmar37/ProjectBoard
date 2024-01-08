@@ -19,7 +19,7 @@ const TaskCard = ({ task }) => {
                 setIsChecked(true);
                 setIsCross(true);
             }
-           
+
         } catch (error) {
             console.log("Some error occurred in fetching data ", error);
             toast.error("Some error occurred!");
@@ -53,7 +53,7 @@ const TaskCard = ({ task }) => {
                 setIsChecked(false);
                 setIsCross(false);
             }
-           
+
         } catch (error) {
             console.log("Some error occurred in fetching data ", error);
             toast.error("Some error occurred!");
@@ -112,7 +112,15 @@ const TaskCard = ({ task }) => {
                 className={`px-6 py-4 ${isChecked ? " text-zinc-400 font-light bg-zinc-500" : ""
                     }`}
             >
-                <Link to={`/manageTask/${task._id}`}>
+                {isChecked ? (<button
+                    onClick={UndoTheTask}
+                    className={`font-semibold text-xl dark:text-blue-500 hover:underline ${isChecked
+                        ? " dark:text-green-300 hover:no-underline"
+                        : ""
+                        }`}
+                >
+                    Undo
+                </button>) : (<Link to={`/manageTask/${task._id}`}>
                     <button
                         className={`font-semibold text-xl dark:text-blue-500 hover:underline ${isChecked
                             ? "line-through dark:text-zinc-400 hover:no-underline"
@@ -121,17 +129,7 @@ const TaskCard = ({ task }) => {
                     >
                         Show
                     </button>
-                </Link>
-
-                {isChecked ? (<button
-                    onClick={UndoTheTask}
-                    className={` ml-3 font-semibold text-xl dark:text-blue-500 hover:underline ${isChecked
-                        ? " dark:text-green-500 hover:no-underline"
-                        : ""
-                        }`}
-                >
-                    Undo
-                </button>) : ("")}
+                </Link>)}
 
 
             </td>
