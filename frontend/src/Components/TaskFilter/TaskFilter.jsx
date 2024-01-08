@@ -93,7 +93,7 @@ export default function TaskFilter({ setStudentTasks }) {
                         onChange={HandleChange}
                         type="radio"
                         name="taskType"
-                        value="Personal"
+                        value="Project"
                     />
                     <label>
                         Project
