@@ -84,7 +84,7 @@ function Calendar() {
 
     return (
         <>
-            <div className="pt-20 bg-gray-100 h-screen">
+            <div className="pt-20 bg-gray-100">
                 <div className="bg-white mt-5 mx-5 p-8 shadow-xl">
                     <Fullcalendar
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
