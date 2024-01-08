@@ -49,19 +49,21 @@ function Calendar() {
     }, []);
 
     const createEvents = () => {
-        if (Tasks) {
+        if (Tasks && Array.isArray(Projects)) { 
             let events = [];
-
+    
             for (let item of Tasks) {
-                events.push({
-                    type: "task",
-                    title: item.taskTitle,
-                    date: item.taskEndDate.substring(0, 10),
-                    backgroundColor: 'green',
-                    borderColor: 'green',
-                });
+                if (!item.isCrossed) {
+                    events.push({
+                        type: "task",
+                        title: item.taskTitle,
+                        date: item.taskEndDate.substring(0, 10),
+                        backgroundColor: 'green',
+                        borderColor: 'green',
+                    });
+                }
             }
-
+    
             for (let item of Projects) {
                 events.push({
                     type: "project",
@@ -71,7 +73,7 @@ function Calendar() {
                     borderColor: 'orange',
                 });
             }
-
+    
             console.log(events);
             setAllEvents(events);
         }
@@ -81,9 +83,9 @@ function Calendar() {
     }, [Tasks, Projects])
 
     return (
-        <>  
+        <>
             <div className="pt-20 bg-gray-100 h-screen">
-                <div className="bg-white m-5 p-8 shadow-xl mt-20">
+                <div className="bg-white mt-5 mx-5 p-8 shadow-xl">
                     <Fullcalendar
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         initialView={"dayGridMonth"}
