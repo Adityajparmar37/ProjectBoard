@@ -62,7 +62,7 @@ const TaskCard = ({ task }) => {
 
     return (
         <tr
-            className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-white dark:hover:bg-zinc-100 dark:hover:text-black ${isChecked ? "line-through" : ""
+            className={`bg-white border-b dark:bg-gray-800/95 dark:border-gray-700 text-white dark:hover:bg-zinc-100 dark:hover:text-black ${isChecked ? "line-through" : ""
                 }`}
         >
             <td className={`w-4 p-4 ${isChecked ? "  bg-zinc-500" : ""}`}>
