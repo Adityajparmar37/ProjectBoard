@@ -4,7 +4,7 @@ import { useLoading } from '../../Hooks/useLoading';
 import { getAllTask } from '../../Services/taskServices';
 import TaskCard from '../TaskCard/TaskCard';
 import TaskFilter from '../TaskFilter/TaskFilter';
-
+import { FcCalendar } from "react-icons/fc";
 
 
 export default function ManageTask() {
@@ -35,7 +35,7 @@ export default function ManageTask() {
                     <>
                         <div className='bg-white w-fulltext-[1rem] mb-10 shadow-lg mt-3'>
                             <div className='flex justify-center items-center  p-2'>
-                                <TaskFilter setStudentTasks={setStudentTasks}/>
+                                <TaskFilter setStudentTasks={setStudentTasks} />
                             </div>
                         </div>
                         <div className='flex flex-col justify-center items-center'>
@@ -69,6 +69,13 @@ export default function ManageTask() {
                                         studentTasks.map((task) => <TaskCard key={task._id} task={task} />)}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="fixed bottom-10 right-24">
+                            <Link to="/manageTask/calendar">
+                                <FcCalendar 
+                                    className="cursor-pointer bg-white p-3 h-[5rem] w-[5rem] rounded-[3rem]"
+                                />
+                            </Link>
                         </div>
                     </>
                 ) : (<div className='flex items-center justify-center w-screen h-screen'>
