@@ -7,8 +7,10 @@ const studentRouters = require('./src/routers/student.router.js')
 const projectRouters = require('./src/routers/project.routers.js')
 const chatRouters = require('./src/routers/chat.routers.js')
 const taskRouters = require('./src/routers/task.routers.js')
+const fileRouters = require('./src/routers/file.routers.js')
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = process.env.PORT;
 dbconnect();
@@ -22,6 +24,7 @@ app.use("/api/student", studentRouters);
 app.use("/api/project", projectRouters);
 app.use("/api/chat", chatRouters);
 app.use("/api/task", taskRouters);
+app.use("/api/file", fileRouters);
 
 //Internal Error Handling
 app.use((err, req, res, next) => {

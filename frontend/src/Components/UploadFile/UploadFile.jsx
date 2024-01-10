@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useLoading } from "../../Hooks/useLoading";
+import { fileUpload } from "../../Services/fileService";
 import { getAllProject } from "../../Services/projectServices";
 
-/* eslint-disable react/prop-types */
 export default function UploadFile() {
     const { showLoading, hideLoading } = useLoading();
-    const [project, setProject] = useState();
+    const [project, setProject] = useState([]);
+    const [selectedProject, setSelectedProject] = useState("");
+    const [files, setFiles] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 showLoading();
                 const allProject = await getAllProject();
-                console.log("ALL PROJECT ==> ", allProject);
                 setProject(allProject);
                 hideLoading();
             } catch (error) {
@@ -23,13 +25,37 @@ export default function UploadFile() {
         fetchData();
     }, []);
 
+    const handleFileChange = (e) => {
+        // Use spread operator to create a new array with the selected files
+        setFiles([...e.target.files]);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("projectName", selectedProject);
+        for (const file of files) {
+            formData.append("files", file);
+        }
+
+        try {
+            const result = await fileUpload(formData);
+            console.log("result-->", result);
+
+            if (result.data.status === "ok") {
+                alert("Uploaded Successfully!");
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    };
 
     return (
         <div className="pt-20 bg-gray-100 h-screen">
             <div className="flex flex-col">
                 <div className="bg-white w-full h-56 px-3 py-5 shadow-xl">
                     <div className="ml-16">
-                        <h1 className="lg:text-3xl font-semibold">File Details :</h1>
+                        <h1 className="lg:text-3xl font-semibold">File Details:</h1>
                         <div className="bg-gray-300 w-[12rem] h-1 mt-2"></div>
 
                         <div className="flex flex-col mt-5">
@@ -38,12 +64,13 @@ export default function UploadFile() {
                                 {project && project.length > 0 ? (
                                     <select
                                         name="taskProject"
-                                        // onChange={handleInputData}
-                                        className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-md bg-gray-100 mb-4 hover:shadow-inner shadow-xl">
+                                        onChange={(e) => setSelectedProject(e.target.value)}
+                                        className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-md bg-gray-100 mb-4 hover:shadow-inner shadow-xl"
+                                    >
                                         <option> -- Choose Project --</option>
                                         {project.map((project) => (
                                             <option
-                                                value={project.projectTitle}
+                                                value={project._id}
                                                 key={project._id}
                                                 className="font-semibold bg-gray-100 border-none focus:border-none outline-none"
                                             >
@@ -58,11 +85,18 @@ export default function UploadFile() {
                         </div>
                     </div>
                 </div>
+                <div className="mt-20 bg-white h-[10rem]">
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="file"
+                            onChange={handleFileChange}
+                            multiple
+                        />
 
-                <div className="bg-white w-full h-[30rem] px-3 py-5 shadow-xl mt-14">
-
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
-    )
+    );
 }
