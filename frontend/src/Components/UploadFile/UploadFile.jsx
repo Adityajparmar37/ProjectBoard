@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLoading } from "../../Hooks/useLoading";
 import { fileUpload } from "../../Services/fileService";
 import { getAllProject } from "../../Services/projectServices";
 import { TiDropbox } from "react-icons/ti";
+import toast from "react-hot-toast";
 
 export default function UploadFile() {
     const { showLoading, hideLoading } = useLoading();
     const [project, setProject] = useState([]);
     const [selectedProject, setSelectedProject] = useState("");
     const [files, setFiles] = useState([]);
+    const inputRef = useRef(null)
 
-
-    useEffect(() => {
+       useEffect(() => {
         const fetchData = async () => {
             try {
                 showLoading();
@@ -27,22 +28,25 @@ export default function UploadFile() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        // Make sure inputRef is assigned before using it
+        if (inputRef.current) {
+            inputRef.current.addEventListener('change', handleFileChange);
+        }
+    }, [inputRef]);
+
     const handleFileChange = (e) => {
-        // Use spread operator to create a new array with the selected files
         setFiles([...e.target.files]);
     };
 
     const handleDragOver = (e) => {
         e.preventDefault();
-        e.stopPropagation();
     };
 
     const handleDrop = (e) => {
         e.preventDefault();
-        e.stopPropagation();
-
         const droppedFiles = e.dataTransfer.files;
-        setFiles([...droppedFiles]);
+        setFiles([...files, ...droppedFiles]);
     };
 
     const handleSubmit = async (e) => {
@@ -58,10 +62,17 @@ export default function UploadFile() {
             console.log("result-->", result);
 
             if (result.data.status === "ok") {
-                alert("Uploaded Successfully!");
+                toast.success("Uploaded Successfully!");
             }
         } catch (error) {
+            toast.error("Error uploading file");
             console.error('Error uploading file:', error);
+        }
+    };
+
+    const containerClickHandler = () => {
+        if (inputRef.current) {
+            inputRef.current.click();
         }
     };
 
@@ -101,34 +112,47 @@ export default function UploadFile() {
                     </div>
                 </div>
                 <div
-                    className="mt-20 bg-white h-[28rem] flex justify-center items-center"
+                    className="mt-20 bg-white h-[28rem] flex justify-center items-center shadow-xl"
 
                 >
-                    <div className="flex flex-col border-8 border-dotted w-[60%] h-[90%] justify-center items-center"
+                    <div className="flex flex-col border-8 border-dotted w-[60%] h-[90%] justify-center items-center hover:cursor-pointer"
+
                         onDragOver={handleDragOver}
-                        onDrop={handleDrop}>
-                        <form onSubmit={handleSubmit}>
-                            <div className="w-auto h-auto justify-center items-center ml-14">
-                                <div>
-                                    <h1 className="text-slate-700 text-3xl">Drag and Drop</h1>
-                                </div>
-                                <div>
-                                    <TiDropbox className="text-[10em] text-center mt-5" />
-                                </div>
-                            </div>
-                            <div className="mt-5 flex justify-center items-center">
-                                <input
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    multiple
+                        onDrop={handleDrop}
+                        onClick={containerClickHandler}>
+                         <div className="mt-5 flex flex-col justify-center items-center">
+                            <h1 className="text-slate-700 text-3xl">Drag & Drop or Click to upload</h1>
 
-                                />
-                            </div>
-                            <div>
-                                <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem]">Upload</button>
-                            </div>
-                        </form>
-
+                            {files && files.length > 0 ? (
+                                <div className="mt-10 font-bold text-gray-500 text-lg border-2 shadow-inner p-2 rounded-md">
+                                    <ul>
+                                        {files.map((file, index) => (
+                                            <li key={index}>📄 {file.name}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : (
+                                <>
+                                    <TiDropbox className="text-[8em] text-center mt-5" />
+                                    <input
+                                        type="file"
+                                        onChange={handleFileChange}
+                                        multiple
+                                        ref={inputRef}
+                                        style={{ display: 'none' }}
+                                    />
+                                </>
+                            )}
+                        </div>
+                        <div className="w-[15%]">
+                            <button
+                                type="submit"
+                                onClick={handleSubmit}
+                                className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem]"
+                            >
+                                Upload
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
