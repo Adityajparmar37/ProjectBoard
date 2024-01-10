@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useLoading } from "../../Hooks/useLoading";
 import { fileUpload } from "../../Services/fileService";
 import { getAllProject } from "../../Services/projectServices";
+import { TiDropbox } from "react-icons/ti";
 
 export default function UploadFile() {
     const { showLoading, hideLoading } = useLoading();
     const [project, setProject] = useState([]);
     const [selectedProject, setSelectedProject] = useState("");
     const [files, setFiles] = useState([]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,6 +30,19 @@ export default function UploadFile() {
     const handleFileChange = (e) => {
         // Use spread operator to create a new array with the selected files
         setFiles([...e.target.files]);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const droppedFiles = e.dataTransfer.files;
+        setFiles([...droppedFiles]);
     };
 
     const handleSubmit = async (e) => {
@@ -65,7 +80,7 @@ export default function UploadFile() {
                                     <select
                                         name="taskProject"
                                         onChange={(e) => setSelectedProject(e.target.value)}
-                                        className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-md bg-gray-100 mb-4 hover:shadow-inner shadow-xl"
+                                        className="w-[95%] text-lg p-1 border-2 border-black focus:outline-none rounded-md bg-gray-100 mb-4 hover:shadow-inner shadow-md"
                                     >
                                         <option> -- Choose Project --</option>
                                         {project.map((project) => (
@@ -85,16 +100,36 @@ export default function UploadFile() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-20 bg-white h-[10rem]">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            multiple
-                        />
+                <div
+                    className="mt-20 bg-white h-[28rem] flex justify-center items-center"
 
-                        <button type="submit">Submit</button>
-                    </form>
+                >
+                    <div className="flex flex-col border-8 border-dotted w-[60%] h-[90%] justify-center items-center"
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}>
+                        <form onSubmit={handleSubmit}>
+                            <div className="w-auto h-auto justify-center items-center ml-14">
+                                <div>
+                                    <h1 className="text-slate-700 text-3xl">Drag and Drop</h1>
+                                </div>
+                                <div>
+                                    <TiDropbox className="text-[10em] text-center mt-5" />
+                                </div>
+                            </div>
+                            <div className="mt-5 flex justify-center items-center">
+                                <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    multiple
+
+                                />
+                            </div>
+                            <div>
+                                <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem]">Upload</button>
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
             </div>
         </div>
