@@ -4,6 +4,7 @@ const multer = require('multer');
 const Files = require('../models/filesModal');
 const authMid = require('../middlewares/authMiddleware');
 const path = require('path');
+const fs = require('fs');
 
 router.use(authMid);
 
@@ -27,6 +28,10 @@ router.post("/uploadFile", upload.array("files"), async (req, res) => {
 
     try {
         await Files.create({ projectName: projectName, files: fileNames });
+        req.files.forEach(file => {
+            const filePath = path.join("../backend/public/file", file.filename);
+            fs.unlinkSync(filePath);
+        });
         res.send({ status: "ok" });
     } catch (error) {
         res.json({ status: error });
