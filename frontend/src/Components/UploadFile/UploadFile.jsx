@@ -12,7 +12,7 @@ export default function UploadFile() {
     const [files, setFiles] = useState([]);
     const inputRef = useRef(null)
 
-       useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 showLoading();
@@ -86,7 +86,7 @@ export default function UploadFile() {
 
                         <div className="flex flex-col mt-5">
                             <label className="font-bold text-lg text-gray-700 ml-1">Select Project</label>
-                            <div className="flex flex-row mt-3 w-96 gap-3 text-lg">
+                            <div className="flex flex-row mt-3 w-80 gap-3 text-lg">
                                 {project && project.length > 0 ? (
                                     <select
                                         name="taskProject"
@@ -112,7 +112,7 @@ export default function UploadFile() {
                     </div>
                 </div>
                 <div
-                    className="mt-20 bg-white h-[28rem] flex justify-center items-center shadow-xl"
+                    className="mt-14 bg-white h-[30rem] flex justify-center items-center shadow-xl"
 
                 >
                     <div className="flex flex-col border-8 border-dotted w-[60%] h-[90%] justify-center items-center hover:cursor-pointer"
@@ -120,16 +120,19 @@ export default function UploadFile() {
                         onDragOver={handleDragOver}
                         onDrop={handleDrop}
                         onClick={containerClickHandler}>
-                         <div className="mt-5 flex flex-col justify-center items-center">
+                        <div className="mt-5 flex flex-col justify-center items-center">
                             <h1 className="text-slate-700 text-3xl">Drag & Drop or Click to upload</h1>
 
                             {files && files.length > 0 ? (
-                                <div className="mt-10 font-bold text-gray-500 text-lg border-2 shadow-inner p-2 rounded-md">
+                                <div className="mt-10 font-bold text-gray-600 text-lg border-2 shadow-inner p-2 rounded-md bg-gray-100">
                                     <ul>
                                         {files.map((file, index) => (
                                             <li key={index}>📄 {file.name}</li>
                                         ))}
                                     </ul>
+                                    <div className="flex justify-center items-center border-t-2 mt-2">
+                                        <h1 className="font-extrabold">Total : {files.length}</h1>
+                                    </div>
                                 </div>
                             ) : (
                                 <>
@@ -148,7 +151,7 @@ export default function UploadFile() {
                             <button
                                 type="submit"
                                 onClick={handleSubmit}
-                                className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem]"
+                                className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem] hover:shadow-none"
                             >
                                 Upload
                             </button>
