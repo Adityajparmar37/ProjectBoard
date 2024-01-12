@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const handler = require('express-async-handler');
 const authMid = require('../middlewares/authMiddleware.js');
-const errorHandler = require('../middlewares/errorMiddlewares');
+const errorHandler = require('../middlewares/errorMiddlewares.js');
 const Project = require('../models/projectModal.js');
 
 //middleare for authorization
