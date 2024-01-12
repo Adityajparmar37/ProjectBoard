@@ -6,21 +6,23 @@ const authMid = require('../middlewares/authMiddleware');
 const fs = require('fs');
 const upload = require('../middlewares/multerMiddleware');
 const path = require('path');
+const errorHandler = require('../middlewares/errorMiddlewares.js');
 
 router.use(authMid);
 
-router.post("/uploadFile", upload.array("files"), async (req, res) => {
+router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
     try {
         const promises = req.files.map(file =>
             new Promise((resolve, reject) => {
                 cloudinary.uploader.upload(
                     file.path,
                     {
-                        resource_type: "auto"
+                        resource_type: "raw"
                     },
                     (err, result) => {
                         if (err) {
                             console.log(err);
+                            next(errorHandler(400, "Error in file uploading , please try agian"))
                             reject(err);
                         } else {
                             resolve(result.secure_url);
@@ -32,16 +34,19 @@ router.post("/uploadFile", upload.array("files"), async (req, res) => {
         );
 
         const fileUrls = await Promise.all(promises);
+        // console.log("fileUrls == > ", fileUrls);
 
         const projectName = req.body.projectName;
         const fileNames = req.files.map(file => file.filename);
 
         // Store file information in the database
-        const filesData = fileUrls.map((url, index) => ({
+        const filesData = {
             projectName: projectName,
-            fileName: fileNames[index],
-            fileUrl: url
-        }));
+            files: fileUrls.map((url, index) => ({
+                fileName: fileNames[index],
+                fileUrl: url
+            }))
+        };
 
         await Files.create(filesData);
 
@@ -57,12 +62,19 @@ router.post("/uploadFile", upload.array("files"), async (req, res) => {
             data: fileUrls
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "Error",
-            error: error.message
+
+        // Delete files from server
+        req.files.forEach(file => {
+            const filePath = path.join("../backend/public/file", file.filename);
+            fs.unlinkSync(filePath);
         });
+        // console.error(error);
+        // res.status(500).json({
+        //     success: false,
+        //     message: "Error",
+        //     error: error.message
+        // });
+        next(error);
     }
 });
 

@@ -4,12 +4,21 @@ const filesSchema = new mongoose.Schema({
     projectName: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
-        required:true
+        required: true
     },
-    files: [{
-        type: String,
-    }],
-})
+    files: [
+        {
+            fileName: {
+                type: String,
+                required: true
+            },
+            fileUrl: {
+                type: String,
+                required: true
+            }
+        }
+    ]
+});
 
 const Files = mongoose.model('files', filesSchema);
 

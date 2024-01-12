@@ -64,6 +64,10 @@ export default function UploadFile() {
             if (result.statusText === "OK") {
                 toast.success("Uploaded Successfully!");
             }
+
+            else if(result.success === false){
+                toast.error("Please try again to upload !");
+            }
         } catch (error) {
             toast.error("Error uploading file");
             console.error('Error uploading file:', error);
