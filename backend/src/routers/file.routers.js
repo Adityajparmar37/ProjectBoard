@@ -10,6 +10,17 @@ const errorHandler = require('../middlewares/errorMiddlewares.js');
 
 router.use(authMid);
 
+router.get('/getfile/:projectName/:filename', async (req, res) => {
+    try {
+        const { projectName, filename } = req.params;
+        const url = await getObjectURl(projectName, filename);
+        res.json({ url });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
     try {
         const projectname = req.body.projectName;
@@ -113,5 +124,8 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
         next(errorHandler(500, "Some error occured !"));
     }
 });
+
+
+
 
 module.exports = router;
