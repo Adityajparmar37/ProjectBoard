@@ -56,7 +56,7 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
             fs.unlinkSync(filePath);
         });
 
-        next(error);
+        next(errorHandler(500, "Please try againg"));
     }
 });
 
