@@ -15,7 +15,7 @@ export default function FilePage() {
                 />
 
                 <MiniCard
-                    to="/viewFile"
+                    to="/manageFile"
                     bgColor="bg-purple-400"
                     icon={<PiFilesFill className="text-[2.5rem] text-purple-400" />}
                     title="View Files"

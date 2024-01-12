@@ -61,7 +61,7 @@ export default function UploadFile() {
             const result = await fileUpload(formData);
             console.log("result-->", result);
 
-            if (result.data.status === "ok") {
+            if (result.statusText === "OK") {
                 toast.success("Uploaded Successfully!");
             }
         } catch (error) {

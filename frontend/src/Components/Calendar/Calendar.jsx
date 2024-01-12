@@ -49,9 +49,9 @@ function Calendar() {
     }, []);
 
     const createEvents = () => {
-        if (Tasks && Array.isArray(Projects)) { 
+        if (Tasks && Array.isArray(Projects)) {
             let events = [];
-    
+
             for (let item of Tasks) {
                 if (!item.isCrossed) {
                     events.push({
@@ -63,7 +63,7 @@ function Calendar() {
                     });
                 }
             }
-    
+
             for (let item of Projects) {
                 events.push({
                     type: "project",
@@ -73,7 +73,7 @@ function Calendar() {
                     borderColor: 'orange',
                 });
             }
-    
+
             console.log(events);
             setAllEvents(events);
         }
@@ -105,7 +105,15 @@ function Calendar() {
                                         fontWeight: 'bold',
                                         padding: '3px',
                                         borderRadius: '3px',
-                                        transition: 'background-color 0.3s ease',
+                                        transition: 'background-color 0.2s ease',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.backgroundColor = '#FCF4A3';
+                                        e.currentTarget.style.color = 'black';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.backgroundColor = arg.event.backgroundColor;
+                                        e.currentTarget.style.color = 'white';
                                     }}
                                 >
                                     {arg.timeText}
