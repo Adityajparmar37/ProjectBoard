@@ -34,7 +34,7 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
         );
 
         const fileUrls = await Promise.all(promises);
-        // console.log("fileUrls == > ", fileUrls);
+        console.log("fileUrls == > ", fileUrls);
 
         const projectName = req.body.projectName;
         const fileNames = req.files.map(file => file.filename);
