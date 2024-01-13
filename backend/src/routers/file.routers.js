@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { putObject, getObjectURL, listObjects } = require('../utils/aws.js');
+const { putObject, getObjectURL, listObjects , deleteObject } = require('../utils/aws.js');
 const Files = require('../models/filesModal');
 const authMid = require('../middlewares/authMiddleware');
 const fs = require('fs');
@@ -10,6 +10,8 @@ const errorHandler = require('../middlewares/errorMiddlewares.js');
 
 router.use(authMid);
 
+
+///file download k view karva
 router.get('/getfile/:projectName/:filename', async (req, res) => {
     try {
         const { projectName, filename } = req.params;
@@ -21,6 +23,8 @@ router.get('/getfile/:projectName/:filename', async (req, res) => {
     }
 });
 
+
+///file upoloading , pn same project mate nhi thai
 router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
     try {
         const projectname = req.body.projectName;
@@ -83,6 +87,8 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
     }
 });
 
+
+///all file listing 
 router.get("/listFiles/:projectName", async (req, res, next) => {
     try {
         const projectName = req.params.projectName;
@@ -125,6 +131,40 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
     }
 });
 
+
+///file deleting 
+router.delete("/deleteFile/:projectName/:filename", async (req, res, next) => {
+    try {
+        const { projectName, filename } = req.params;
+
+        // console.log(req.params);
+
+        // Delete the file from AWS S3
+        await deleteObject(projectName, filename);
+
+        // Delete the file information from the database
+        const filesData = await Files.findOneAndUpdate(
+            { projectName },
+            { $pull: { files: { fileName: filename } } },
+            { new: true }
+        );
+
+        if (!filesData) {
+            return res.status(404).json({
+                success: false,
+                message: "Project or file not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "File deleted successfully",
+            filedata: filesData,
+        });
+    } catch (error) {
+        next(errorHandler(500, "Some error occurred while deleting the file"));
+    }
+});
 
 
 

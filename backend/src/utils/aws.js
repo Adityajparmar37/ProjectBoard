@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command,DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
 const s3Client = new S3Client({
     region: "ap-south-1",
@@ -46,8 +46,20 @@ async function listObjects(projectName) {
     console.log(result);
 }
 
+async function deleteObject(projectName, filename) {
+    const key = `${projectName}/${filename}`;
+
+    const command = new DeleteObjectCommand({
+        Bucket: "projectboard-upload",
+        Key: key,
+    });
+
+    await s3Client.send(command);
+}
+
 module.exports = {
     putObject,
     getObjectURL,
     listObjects,
+    deleteObject,
 };

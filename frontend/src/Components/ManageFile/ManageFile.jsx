@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoading } from "../../Hooks/useLoading";
-import { fileList } from "../../Services/fileService";
+import { fileDelete, fileList } from "../../Services/fileService";
 import { getAllProject } from "../../Services/projectServices";
 
 export default function ManageFile() {
     const [project, setProject] = useState([]);
-    // const [selectedProject, setSelectedProject] = useState("");
+    const [selectedProject, setSelectedProject] = useState("");
     const [listFiles, setListFiles] = useState([]);
+    const navigate = useNavigate();
     const { showLoading, hideLoading } = useLoading();
     useEffect(() => {
         const fetchData = async () => {
@@ -29,6 +31,7 @@ export default function ManageFile() {
     const listAllFiles = async (selectedProject) => {
 
         setListFiles(null);
+        setSelectedProject(selectedProject);
         try {
             const responseData = await fileList(selectedProject);
             console.log(responseData.data.filedata.projectInfo.files);
@@ -37,6 +40,24 @@ export default function ManageFile() {
             console.log("Project file listing error ! ", error);
         }
 
+    }
+
+    const handleDelete = async (fileName) => {
+        try {
+            const fileToDelete = await fileDelete(selectedProject, fileName);
+            console.log(fileToDelete.data);
+            // setListFiles(fileToDelete.data.filedata.projectInfo.files);
+
+            if (fileToDelete.data.success === true) {
+                toast.success("File Deleted successfully !");
+                navigate("/file")
+            } else {
+                toast.error("Some error occured , Please try again !");
+            }
+        } catch (error) {
+            toast.error("Some error occured please try agian !");
+            console.log("File deleteing error");
+        }
     }
 
     // console.log(selectedProject);
@@ -77,21 +98,24 @@ export default function ManageFile() {
                 </div>
             </div>
 
-            <div className="mt-14 bg-white h-[30rem] flex px-8 shadow-xl w-full">
-                {listFiles && listFiles.length > 0 ? (
-                    <>
-                        <div className="flex flex-col justify-evenly w-full">
+
+            {listFiles && listFiles.length > 0 ? (
+                <>
+                    <div className="mt-14 bg-white h-auto flex px-8 py-1 shadow-xl w-full">
+                        <div className="flex flex-col justify-between w-full py-5">
                             {listFiles.map((file) => (
                                 <>
 
-                                    <ul className=" border-b-2 p-3 text-xl font-bold rounded-lg hover:shadow-inner hover:border-2" key={file._id}>
-                                        <li className="flex justify-between items-center">
+                                    <ul className=" border-b-4 p-3 text-xl font-bold rounded-lg hover:shadow-inner hover:border-2" key={file._id}>
+                                        <li className="flex justify-between items-center    ">
                                             {file.fileName}
                                             <div className="flex flex-row">
                                                 <Link to={file.fileUrl}>
                                                     <button className="mr-5 text-white bg-blue-700 hover:bg-blue-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-lg text-center p-2 shadow-md">Download</button>
                                                 </Link>
-                                                <button className="mr-5 text-white bg-orange-600 hover:bg-orange-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-lg text-center p-2 shadow-md">Delete</button>
+                                                <button
+                                                    onClick={() => handleDelete(file.fileName)}
+                                                    className="mr-5 text-white bg-orange-600 hover:bg-orange-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-lg text-center p-2 shadow-md">Delete</button>
                                             </div>
                                         </li>
                                     </ul>
@@ -99,13 +123,16 @@ export default function ManageFile() {
                                 </>
                             ))}
                         </div>
-                    </>
-                ) : (
-                    <>
-                        <h1 className="text-black font-semibold uppercase text-lg mt-5 border-b-2 bg-gray-100 p-2 rounded-lg shadow-inner h-10">No File Found or Please Select Project !</h1>
-                    </>
-                )}
-            </div>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className="w-full flex justify-center items-center">
+                        <h1 className="text-black font-semibold uppercase text-lg p-2 rounded-lg shadow-inner h-10 border-b-4 border-zinc-500 mt-10">No File Found or Please Select Project !</h1>
+                    </div>
+                </>
+            )}
+
         </div>
     )
 }

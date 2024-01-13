@@ -85,7 +85,7 @@ export default function UploadFile() {
             <div className="flex flex-col">
                 <div className="bg-white w-full h-56 px-3 py-5 shadow-xl">
                     <div className="ml-16">
-                        <h1 className="lg:text-3xl font-semibold">File Details:</h1>
+                        <h1 className="lg:text-3xl font-semibold">File Uploads:</h1>
                         <div className="bg-gray-300 w-[12rem] h-1 mt-2"></div>
 
                         <div className="flex flex-col mt-5">
