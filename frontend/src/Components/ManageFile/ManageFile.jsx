@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLoading } from "../../Hooks/useLoading";
 import { fileDelete, fileList } from "../../Services/fileService";
 import { getAllProject } from "../../Services/projectServices";
+import { FaDownload } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
 
 export default function ManageFile() {
     const [project, setProject] = useState([]);
@@ -111,11 +113,11 @@ export default function ManageFile() {
                                             {file.fileName}
                                             <div className="flex flex-row">
                                                 <Link to={file.fileUrl}>
-                                                    <button className="mr-5 text-white bg-blue-700 hover:bg-blue-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-lg text-center p-2 shadow-md">Download</button>
+                                                    <button className="mr-5 text-white bg-blue-700 hover:bg-blue-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-2xl text-center p-2 shadow-md"><FaDownload/></button>
                                                 </Link>
                                                 <button
                                                     onClick={() => handleDelete(file.fileName)}
-                                                    className="mr-5 text-white bg-orange-600 hover:bg-orange-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-lg text-center p-2 shadow-md">Delete</button>
+                                                    className="mr-5 text-white bg-orange-600 hover:bg-orange-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-2xl text-center p-2 shadow-md"><MdDelete/></button>
                                             </div>
                                         </li>
                                     </ul>
