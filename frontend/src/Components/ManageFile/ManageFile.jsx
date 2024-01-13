@@ -28,6 +28,7 @@ export default function ManageFile() {
 
     const listAllFiles = async (selectedProject) => {
 
+        setListFiles(null);
         try {
             const responseData = await fileList(selectedProject);
             console.log(responseData.data.filedata.projectInfo.files);

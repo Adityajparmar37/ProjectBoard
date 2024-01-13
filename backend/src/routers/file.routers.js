@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { putObject, getObjectURl, listObjects } = require('../utils/aws.js');
+const { putObject, getObjectURL, listObjects } = require('../utils/aws.js');
 const Files = require('../models/filesModal');
 const authMid = require('../middlewares/authMiddleware');
 const fs = require('fs');
@@ -13,7 +13,7 @@ router.use(authMid);
 router.get('/getfile/:projectName/:filename', async (req, res) => {
     try {
         const { projectName, filename } = req.params;
-        const url = await getObjectURl(projectName, filename);
+        const url = await getObjectURL(projectName, filename);
         res.json({ url });
     } catch (error) {
         console.error('Error:', error);
@@ -89,7 +89,7 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
         console.log(projectName);
 
         const filesData = await Files.findOne({ projectName });
-        // console.log("hello", filesData);
+        console.log("hello", filesData);
 
         if (!filesData) {
             return res.status(404).json({
@@ -107,7 +107,7 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
             res.status(200).json({
                 success: true,
                 message: "Files retrieved successfully",
-                data: {
+                filedata: {
                     projectInfo: filesData,
                     objectList: objectList,
                 },

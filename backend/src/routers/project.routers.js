@@ -15,8 +15,8 @@ router.get("/manageProject", handler(async (req, res, next) => {
 
         const { keywordSearch, title, category, status, sort } = Filters;
 
-        console.log("Filters backend==> ", Filters);
-        console.log("Page backend==> ", Page, " ", pageSize);
+        // console.log("Filters backend==> ", Filters);
+        // console.log("Page backend==> ", Page, " ", pageSize);
 
         //student nae badha project find karo
         const queryObject = { projectCreator: req.user.id };
@@ -35,7 +35,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
             queryObject.projectStatus = { $regex: new RegExp(status, 'i') };
         }
 
-        console.log("projectCreator ==> ", queryObject)
+        // console.log("projectCreator ==> ", queryObject)
 
 
         let filterprojects = await Project
@@ -66,7 +66,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
         const endIndex = currentPage * limit;
 
         const paginatedProjects = filterprojects.slice(startindex, endIndex);
-        console.log("Backend search and sort: ", filterprojects);
+        // console.log("Backend search and sort: ", filterprojects);
 
         if (paginatedProjects.length > 0) {
             res.json(paginatedProjects);

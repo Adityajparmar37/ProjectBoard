@@ -1,7 +1,4 @@
 const { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
-
 
 const s3Client = new S3Client({
     region: "ap-south-1",
@@ -21,20 +18,19 @@ async function putObject(projectName, filename, contentType, body) {
         Body: body,
     });
 
-    const url = await getSignedUrl(s3Client, command);
     await s3Client.send(command);
+
+    // Construct the public URL directly without signing
+    const url = `https://projectboard-upload.s3.ap-south-1.amazonaws.com/${encodeURIComponent(key)}`;
+
     return url;
 }
 
-async function getObjectURl(projectName, filename) {
+async function getObjectURL(projectName, filename) {
     const key = `${projectName}/${filename}`;
 
-    const command = new GetObjectCommand({
-        Bucket: "projectboard-upload",
-        Key: key,
-    });
-
-    const url = await getSignedUrl(s3Client, command);
+    // Construct the public URL directly without signing
+    const url = `https://projectboard-upload.s3.ap-south-1.amazonaws.com/${encodeURIComponent(key)}`;
     return url;
 }
 
@@ -52,6 +48,6 @@ async function listObjects(projectName) {
 
 module.exports = {
     putObject,
-    getObjectURl,
+    getObjectURL,
     listObjects,
 };
