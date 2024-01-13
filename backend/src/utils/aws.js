@@ -12,7 +12,7 @@ async function putObject(projectName, filename, contentType, body) {
     const key = `${projectName}/${filename}`;
 
     const command = new PutObjectCommand({
-        Bucket: "projectboard-upload",
+        Bucket: process.env.BUCKET_NAME,
         Key: key,
         ContentType: contentType,
         Body: body,
@@ -38,7 +38,7 @@ async function listObjects(projectName) {
     const prefix = `${projectName}/`;
 
     const command = new ListObjectsV2Command({
-        Bucket: "projectboard-upload",
+        Bucket: process.env.BUCKET_NAME,
         Prefix: prefix,
     });
 
@@ -50,7 +50,7 @@ async function deleteObject(projectName, filename) {
     const key = `${projectName}/${filename}`;
 
     const command = new DeleteObjectCommand({
-        Bucket: "projectboard-upload",
+        Bucket: process.env.BUCKET_NAME,
         Key: key,
     });
 
