@@ -65,7 +65,7 @@ export default function UploadFile() {
                 toast.success("Uploaded Successfully!");
             }
 
-            else if(result.success === false){
+            else if (result.success === false) {
                 toast.error("Please try again to upload !");
             }
         } catch (error) {
@@ -125,7 +125,7 @@ export default function UploadFile() {
                         onDrop={handleDrop}
                         onClick={containerClickHandler}>
                         <div className="mt-5 flex flex-col justify-center items-center">
-                            <h1 className="text-slate-700 text-3xl">Drag & Drop or Click to upload</h1>
+                            <h1 className="text-slate-700 text-3xl">Drag & Drop or Click anywhere to upload</h1>
 
                             {files && files.length > 0 ? (
                                 <div className="mt-10 font-bold text-gray-600 text-lg border-2 shadow-inner p-2 rounded-md bg-gray-100">
@@ -151,15 +151,23 @@ export default function UploadFile() {
                                 </>
                             )}
                         </div>
-                        <div className="w-[15%]">
-                            <button
-                                type="submit"
-                                onClick={handleSubmit}
-                                className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem] hover:shadow-none"
-                            >
-                                Upload
-                            </button>
-                        </div>
+
+                        {files && files.length > 0 ? (<>
+                            <div className="w-[15%]">
+                                <button
+                                    type="submit"
+                                    onClick={handleSubmit}
+                                    className="bg-blue-500 text-white p-2 rounded-lg text-lg mt-10 w-full shadow-md hover:rounded-[2rem] hover:shadow-none"
+                                >
+                                    Upload
+                                </button>
+                            </div>
+                        </>) : (<>
+                            <div>
+                                <h1 className="text-black font-semibold uppercase text-lg mt-5 border-b-2">Please select Project</h1>
+                            </div>
+                        </>)}
+
                     </div>
                 </div>
             </div>
