@@ -271,13 +271,15 @@ export default function TaskView() {
                                             />
                                         </div>
                                     ))}
-                                    <button
+
+                                    {formData && formData.length > 0 ? (<button
                                         type="button"
                                         onClick={handleAddMember}
                                         className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
                                     >
                                         Add Member
-                                    </button>
+                                    </button>) : (<></>)}
+
                                 </div>
 
                                 <div className="flex flex-col m-2 mt-8">

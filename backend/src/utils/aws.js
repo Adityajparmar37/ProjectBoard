@@ -21,7 +21,7 @@ async function putObject(projectName, filename, contentType, body) {
     await s3Client.send(command);
 
     // Construct the public URL directly without signing
-    const url = `https://${process.env.BUCKET_NAME}-upload.s3.ap-south-1.amazonaws.com/${encodeURIComponent(key)}`;
+    const url = `https://${process.env.BUCKET_NAME}.s3.ap-south-1.amazonaws.com/${encodeURIComponent(key)}`;
 
     return url;
 }
@@ -30,7 +30,7 @@ async function getObjectURL(projectName, filename) {
     const key = `${projectName}/${filename}`;
 
     // Construct the public URL directly without signing
-    const url = `https://${process.env.BUCKET_NAME}-upload.s3.ap-south-1.amazonaws.com/${encodeURIComponent(key)}`;
+    const url = `https://${process.env.BUCKET_NAME}.s3.ap-south-1.amazonaws.com/${encodeURIComponent(key)}`;
     return url;
 }
 

@@ -96,6 +96,10 @@ export default function CreateTask() {
                 toast.success(NewtaskCreate.message);
                 navigate("/manageTask");
             }
+            else if (NewtaskCreate.success === false){
+                hideLoading();
+                toast.error(NewtaskCreate.message);
+            }
         } catch (error) {
             hideLoading();
             toast.error("Task Not Created , Please try again");

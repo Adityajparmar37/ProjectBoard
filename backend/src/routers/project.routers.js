@@ -60,7 +60,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
                 (project.projectStatus && project.projectStatus.match(keywordSearchRegex)) ||
                 (project.projectCategory && project.projectCategory.match(keywordSearchRegex)) ||
                 (project.projectMembers && project.projectMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex))) ||
-                (project.projectMembers && project.projectMembers.some((member) => member.memberId === req.user.id))
+                // (project.projectMembers && project.projectMembers.some((member) => member.memberId === req.user.id))
                 (project.projectPhases && project.projectPhases.some((phase) => (phase.phaseTitle && phase.phaseTitle.match(keywordSearchRegex)) || (phase.phaseNum && phase.phaseNum.match(keywordSearchRegex))))
             ));
         }

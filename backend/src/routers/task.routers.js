@@ -22,7 +22,7 @@ router.get("/manageTask", handler(async (req, res, next) => {
 
         console.log("Task filters ==> ", filterTask);
         console.log(sort)
-        
+
         const queryObject = {
             $or: [
                 { taskCreator: req.user.id },
@@ -52,8 +52,8 @@ router.get("/manageTask", handler(async (req, res, next) => {
                 (task.taskTitle && task.taskTitle.match(keywordSearchRegex)) ||
                 (task.taskDescription && task.taskDescription.match(keywordSearchRegex)) ||
                 (task.taskPriority && task.taskPriority.match(keywordSearchRegex)) ||
-                (task.taskMembers && task.taskMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex))) ||
-                (task.taskMembers && task.taskMembers.some((member) => member.memberId === req.user.id))
+                (task.taskMembers && task.taskMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex)))
+                // (task.taskMembers && task.taskMembers.some((member) => member.memberId === req.user.id))
             ));
         }
 
@@ -209,19 +209,25 @@ router.post("/createTask", handler(async (req, res, next) => {
             return next(errorHandler(400, "Please fill all fields"));
         }
 
-        // console.log(projectMembers)
-        const taskMembersData = [];
-        for (const memberData of taskMembers) {
-            const student = await Student.findOne({ name: memberData.memberNam });
-            if (student) {
-                taskMembersData.push({
-                    memberId: student.id,
-                    memberName: student.name,
-                });
-            } else {
+        console.log(taskMembers.length)
 
-                return res.status(404).json({ error: `Student with name ${memberData.memberName} not found` });
+        const taskMembersData = [];
+        if (taskMembers.length != 1) {
+            for (const memberData of taskMembers) {
+                const student = await Student.findOne({ name: memberData.memberNam });
+                if (student) {
+                    taskMembersData.push({
+                        memberId: student.id,
+                        memberName: student.name,
+                    });
+                } else {
+
+                    return next(errorHandler(404, "Enter more than one member"))
+                }
             }
+        }
+        else {
+            taskMembersData = [];
         }
 
         const task = await Task.create({
