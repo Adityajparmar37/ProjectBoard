@@ -19,6 +19,7 @@ import Calendar from "../../Calendar/Calendar";
 import FilePage from "../../../Pages/FilePage/FilePage";
 import UploadFile from "../../UploadFile/UploadFile";
 import ManageFile from "../../ManageFile/ManageFile";
+import Chatting from "../../Chatting/Chatting";
 
 export default function AppRoute() {
     return (
@@ -29,71 +30,69 @@ export default function AppRoute() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/" element={<DefaultPage />} />
 
+                {/* main pages */}
                 <Route path="/home" element={<AuthRoute>
                     <HomePage />
                 </AuthRoute>} />
-
                 <Route path="/project" element={<AuthRoute>
                     <ProjectPage />
                 </AuthRoute>} />
-
-
                 <Route path="/chat" element={<AuthRoute>
                     <ChatPage />
                 </AuthRoute>} />
 
+                
+                {/* Chat section nae routes */}
                 <Route path="/chat/find" element={<AuthRoute>
                     <SearchMember />
                 </AuthRoute>} />
+                <Route path="/chat/chatting" element={<AuthRoute>
+                    <Chatting />
+                </AuthRoute>}/>
 
+                
+                 {/* Project section nae routes    */}
                 <Route path="/createProject" element={<AuthRoute>
                     <CreateProject />
                 </AuthRoute>} />
-
                 <Route path="/manageProject" element={<AuthRoute>
                     <ManageProject />
                 </AuthRoute>} />
-
                 <Route path="/manageProject/:id" element={<AuthRoute>
                     <ProjectView />
                 </AuthRoute>} />
 
+
+                {/* Task section nae routes */}
                 <Route path="/task" element={<AuthRoute>
                     <TaskPage />
                 </AuthRoute>} />
-
                 <Route path="/createTask" element={<AuthRoute>
                     <CreateTask />
                 </AuthRoute>} />
-
-
                 <Route path="/manageTask" element={<AuthRoute>
                     <ManageTask />
                 </AuthRoute>} />
-
-
                 <Route path="/manageTask/:id" element={<AuthRoute>
                     <TaskView />
                 </AuthRoute>} />
-
                 <Route path="/manageTask/calendar" element={<AuthRoute>
                     <Calendar />
                 </AuthRoute>} />
 
+
+                 {/* File section nae routes    */}
                 <Route path="/file" element={<AuthRoute>
                     <FilePage />
                 </AuthRoute>} />
-
-
                 <Route path="/uploadFile" element={<AuthRoute>
                     <UploadFile />
                 </AuthRoute>} />
-
-
-
                 <Route path="/manageFile" element={<AuthRoute>
                     <ManageFile />
                 </AuthRoute>} />
+
+
             </Routes>
         </>
     )

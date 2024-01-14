@@ -1,5 +1,6 @@
 import MiniCard from "../../Components/MiniCard/MiniCard";
-import { FaSearch } from "react-icons/fa";
+import { IoSearchOutline } from "react-icons/io5";
+import { PiChatsCircleFill } from "react-icons/pi";
 
 
 export default function ProjectPage() {
@@ -9,18 +10,18 @@ export default function ProjectPage() {
                 <MiniCard
                     to="/chat/find"
                     bgColor="bg-green-400"
-                    icon={<FaSearch className="text-[2.5rem] text-green-400" />}
+                    icon={<IoSearchOutline className="text-[2.5rem] text-green-400" />}
                     title="Search Member"
                     content={["Search Member and add"]}
                 />
 
-                {/* <MiniCard
-                    to="/manageProject"
-                    bgColor="bg-orange-600"
-                    icon={<GrDocumentUpdate className="text-[2.5rem] text-orange-600" />}
-                    title="Project Dashboard"
-                    content={["Manage Ongoing Project", "Update existing Project"]}
-                /> */}
+                <MiniCard
+                    to="/chat/chatting"
+                    bgColor="bg-green-400"
+                    icon={<PiChatsCircleFill className="text-[2.5rem] text-green-400" />}
+                    title="Chat"
+                    content={["Chat and discuss", "Group chat with member about project"]}
+                />
             </div>
         </div>
     )
