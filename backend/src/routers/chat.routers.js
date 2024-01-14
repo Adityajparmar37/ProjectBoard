@@ -46,24 +46,20 @@ router.get("/myfriend", handler(async (req, res, next) => {
             ]
         })
             .populate([
-                { path: 'sender', select: 'name' },
-                { path: 'receiver', select: 'name' }
+                { path: 'sender', select: 'name _id' },
+                { path: 'receiver', select: 'name _id' }
             ])
             .exec();
 
-        // Exclude the logged-in user's name from the response
+        // Exclude the logged-in user's data from the response
         const filteredFriends = myFriends.map(friend => {
-            let friendName;
-            if (friend.sender.id === userId) {
-                friendName = friend.receiver.name;
-            } else {
-                friendName = friend.sender.name;
-            }
+            const friendId = (friend.sender.id === userId) ? friend.receiver._id : friend.sender._id;
+            const friendName = (friend.sender.id === userId) ? friend.receiver.name : friend.sender.name;
 
-            // Return the modified object
             return {
+                friendId,
                 friendName,
-                // Add other properties as needed
+
             };
         });
 
@@ -72,6 +68,7 @@ router.get("/myfriend", handler(async (req, res, next) => {
         next(error);
     }
 }));
+
 
 
 

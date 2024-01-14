@@ -45,13 +45,7 @@ const projectSchema = mongoose.Schema(
                 memberNam: {
                     type: String,
                 }
-            }],
-            validate: {
-                validator: function (members) {
-                    return members.length > 0;
-                },
-                message: 'At least one member is required.',
-            },
+            }]
         },
         projectPhases: {
             type: [{
