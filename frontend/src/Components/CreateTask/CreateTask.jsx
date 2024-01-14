@@ -5,9 +5,8 @@ import 'react-quill/dist/quill.snow.css';
 import Autosuggest from 'react-autosuggest';
 import { useLoading } from '../../Hooks/useLoading';
 import { MyFriend } from '../../Services/chatService';
-import { getAllProject } from '../../Services/projectServices';
 import toast from 'react-hot-toast';
-import { TaskCreate } from '../../Services/taskServices';
+import { getAllTheProject, TaskCreate } from '../../Services/taskServices';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateTask() {
@@ -140,7 +139,7 @@ export default function CreateTask() {
         const fetchData = async () => {
             try {
                 showLoading();
-                const allProject = await getAllProject();
+                const allProject = await getAllTheProject();
                 console.log("ALL PROJECT ==> ", allProject);
                 setStudentProjects(allProject);
                 hideLoading();

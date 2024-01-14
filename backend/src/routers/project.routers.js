@@ -4,6 +4,7 @@ const handler = require('express-async-handler');
 const authMid = require('../middlewares/authMiddleware.js');
 const errorHandler = require('../middlewares/errorMiddlewares.js');
 const Project = require('../models/projectModal.js');
+const Student = require('../models/studentModal.js');
 
 //middleare for authorization
 router.use(authMid);
@@ -79,15 +80,27 @@ router.get("/manageProject", handler(async (req, res, next) => {
     }
 }));
 
-router.post("/createProject", handler(async (req, res, next) => {
-
+router.post("/createProject", async (req, res, next) => {
     try {
-
         const { projectTitle, projectObjectives, projectDescription, projectStatus, projectCategory, startDate, endDate, projectMembers, projectPhases } = req.body;
 
-
         if (!projectTitle || !projectObjectives || !projectDescription || !projectStatus || !projectCategory || !startDate || !endDate || !projectPhases) {
-            next(errorHandler(404, "Please fill all fields"));
+            return res.status(400).json({ error: "Please fill all fields" });
+        }
+
+        // console.log(projectMembers)
+        const projectMembersData = [];
+        for (const memberData of projectMembers) {
+            const student = await Student.findOne({ name: memberData.memberNam });
+            if (student) {
+                projectMembersData.push({
+                    memberId: student.id,
+                    memberName: student.name,
+                });
+            } else {
+                
+                return res.status(404).json({ error: `Student with name ${memberData.memberName} not found` });
+            }
         }
 
         const project = await Project.create({
@@ -99,21 +112,20 @@ router.post("/createProject", handler(async (req, res, next) => {
             projectCategory,
             projectStartDate: startDate,
             projectEndDate: endDate,
-            projectMembers,
+            projectMembers: projectMembersData,
             projectPhases,
             success: true
         });
 
-
         if (project) {
-            res.status(201).send({ message: "Project created successfully" });
+            return res.status(201).json({ message: "Project created successfully" });
         } else {
-            next(errorHandler(400, "Something went Wrong !"));
+            return res.status(400).json({ error: "Something went wrong!" });
         }
     } catch (error) {
-        next(error);
+        return next(error);
     }
-}))
+});
 
 
 router.get("/manageProject/:id", handler(async (req, res, next) => {

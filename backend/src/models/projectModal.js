@@ -42,10 +42,14 @@ const projectSchema = mongoose.Schema(
         },
         projectMembers: {
             type: [{
-                memberNam: {
+                memberName: {
                     type: String,
-                }
-            }]
+                },
+                memberId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Student', 
+                },
+            }],
         },
         projectPhases: {
             type: [{

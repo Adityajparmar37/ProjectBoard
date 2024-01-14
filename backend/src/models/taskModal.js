@@ -40,16 +40,14 @@ const taskSchema = mongoose.Schema(
 
         taskMembers: {
             type: [{
-                memberNam: {
+                memberName: {
                     type: String,
-                }
-            }],
-            validate: {
-                validator: function (members) {
-                    return members.length > 0;
                 },
-                message: 'At least one member is required.',
-            },
+                memberId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Student', 
+                },
+            }],
         },
         taskStartDate: {
             type: Date,

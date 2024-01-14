@@ -265,7 +265,7 @@ export default function TaskView() {
                                             <input
                                                 type="text"
                                                 className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[20rem]"
-                                                value={member.memberNam}
+                                                value={member.memberName}
                                                 onChange={(e) => handleMemberChange(index, e.target.value)}
                                                 name="projectMembers"
                                             />

@@ -38,6 +38,16 @@ export const getTheTask = async (id) => {
     }
 }
 
+export const getAllTheProject = async () => {
+    try {
+        const { data } = await axios.get(`api/task/taskALLProject`);
+        // console.log(data)
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 export const taskDone = async (id) => {
     try {
         const { data } = await axios.get(`api/task/manageTask/taskdone/${id}`);

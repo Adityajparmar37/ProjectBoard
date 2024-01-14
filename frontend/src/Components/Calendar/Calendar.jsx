@@ -5,8 +5,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useEffect, useState } from "react";
 import { useLoading } from "../../Hooks/useLoading";
-import { getAllTask } from "../../Services/taskServices";
-import { getAllProject } from "../../Services/projectServices";
+import { getAllTask, getAllTheProject } from "../../Services/taskServices";
+
 
 function Calendar() {
     const [allEvents, setAllEvents] = useState();
@@ -35,7 +35,7 @@ function Calendar() {
         const fetchData = async () => {
             try {
                 showLoading();
-                const allProject = await getAllProject();
+                const allProject = await getAllTheProject();
                 console.log("ALL PROJECT ==> ", allProject);
                 setProjects(allProject);
                 hideLoading();

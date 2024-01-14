@@ -3,6 +3,8 @@ const router = express.Router();
 const handler = require('express-async-handler');
 const authMid = require('../middlewares/authMiddleware.js');
 const errorHandler = require('../middlewares/errorMiddlewares');
+const Project = require('../models/projectModal.js');
+const Student = require('../models/studentModal.js');
 const Task = require('../models/taskModal.js');
 
 
@@ -61,6 +63,22 @@ router.get("/manageTask", handler(async (req, res, next) => {
         next(error);
     }
 }));
+
+
+router.get("/taskALLProject", handler(async (req, res, next) => {
+    try {
+        let Allproject = await Project.find({ projectCreator: req.user.id });
+
+        if (Allproject.length > 0) {
+            res.json(Allproject);
+        } else {
+            res.json({ message: "No Project Found for user" });
+        }
+    } catch (error) {
+        console.log('Error fetching project (task): ', error);
+        next(error);
+    }
+}))
 
 //get the task from database
 router.get("/manageTask/:id", handler(async (req, res, next) => {
@@ -178,6 +196,21 @@ router.post("/createTask", handler(async (req, res, next) => {
             return next(errorHandler(400, "Please fill all fields"));
         }
 
+        // console.log(projectMembers)
+        const taskMembersData = [];
+        for (const memberData of taskMembers) {
+            const student = await Student.findOne({ name: memberData.memberNam });
+            if (student) {
+                taskMembersData.push({
+                    memberId: student.id,
+                    memberName: student.name,
+                });
+            } else {
+
+                return res.status(404).json({ error: `Student with name ${memberData.memberName} not found` });
+            }
+        }
+
         const task = await Task.create({
             taskCreator: req.user.id,
             taskType,
@@ -185,7 +218,7 @@ router.post("/createTask", handler(async (req, res, next) => {
             taskTitle,
             taskDescription,
             taskPriority,
-            taskMembers,
+            taskMembers: taskMembersData,
             taskStartDate: startDate,
             taskEndDate: endDate,
             success: true
