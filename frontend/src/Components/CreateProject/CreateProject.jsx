@@ -18,33 +18,37 @@ export default function CreateProject() {
         projectObjectives: '',
         projectDescription: '',
         projectStatus: '',
-        projectMembers: [''],
+        projectMembers: [{ friendName: '', friendId: '' }],
         projectCategory: '',
         projectPhases: [''],
         startDate: '',
         endDate: ''
-    })
+    });
+
+    console.log("Project form ==> ", formData);
 
     const [myFriends, setMyFriends] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [projectPhases, setProjectPhases] = useState(['']);
-    const [projectMember, setProjectMember] = useState(['']);
+    const [projectMember, setProjectMember] = useState([{ friendName: '', friendId: '' }]);
+    console.log(projectMember)
 
     const handleAddMore = () => {
-        setProjectPhases([...projectPhases, '']); // Add a new empty string to the array
+        setProjectPhases([...projectPhases, '']);
     };
 
     const handleAddMemebr = () => {
-        setProjectMember([...projectMember, '']); // Add a new object with an empty memberRef
+        setProjectMember([...projectMember, '']);
     };
 
-    const handleMember = (index, value) => {
+    const handleMember = (index, value, friendId) => {
         const newMember = [...projectMember];
-        newMember[index] = value;
+        console.log("NewMember ==> ", newMember)
+        newMember[index] = { friendName: value, friendId: friendId };
         setProjectMember(newMember);
 
         // Update
-        handleInputChange('projectMembers', index, value);
+        handleInputChange('projectMembers', index, { friendName: value, friendId: friendId });
     };
 
     const handlePhase = (index, value) => {
@@ -79,13 +83,19 @@ export default function CreateProject() {
     const getSuggestions = (inputValue) => {
         const inputValueLowerCase = inputValue.toLowerCase();
         return myFriends.filter(
-            (friend) => friend.friendName.toLowerCase().includes(inputValueLowerCase)
+            (friend) =>
+                friend.friendName.toLowerCase().includes(inputValueLowerCase) ||
+                friend.friendId.toLowerCase().includes(inputValueLowerCase)
         );
     };
 
     const getSuggestionValue = (suggestion) => suggestion.friendName;
 
-    const renderSuggestion = (suggestion) => <span className='m-5 lg:text-xl font-semibold cursor-pointer text-red-600'> 👉🏼 {suggestion.friendName}</span>;
+    const renderSuggestion = (suggestion) => (
+        <span className='m-5 lg:text-xl font-semibold cursor-pointer text-red-600'>
+            👉🏼 {suggestion.friendName} (ID: {suggestion.friendId})
+        </span>
+    );
 
     const onSuggestionsFetchRequested = ({ value }) => {
         setSuggestions(getSuggestions(value));
@@ -216,7 +226,8 @@ export default function CreateProject() {
                             <div className="flex flex-col m-2">
                                 {projectMember.map((member, index) => (
                                     <>
-                                        <label className="font-semibold text-lg mt-5">Project Members {index+1}</label>
+                                        <label className="font-semibold text-lg mt-5">Project Members {index + 1}</label>
+                                        {console.log(member.friendId)}
                                         <div key={index} className="flex flex-row w-96 gap-3 text-lg">
                                             <Autosuggest
                                                 suggestions={suggestions}
@@ -225,8 +236,8 @@ export default function CreateProject() {
                                                 getSuggestionValue={getSuggestionValue}
                                                 renderSuggestion={renderSuggestion}
                                                 inputProps={{
-                                                    value: member,
-                                                    onChange: (event, { newValue }) => handleMember(index, newValue),
+                                                    value: member.friendName,
+                                                    onChange: (event, { newValue }) => handleMember(index, newValue, member.friendId),
                                                     placeholder: 'Type a friend name',
                                                     className: 'p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none'
                                                 }}
