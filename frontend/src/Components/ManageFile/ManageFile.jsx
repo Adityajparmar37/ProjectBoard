@@ -108,8 +108,8 @@ export default function ManageFile() {
                             {listFiles.map((file) => (
                                 <>
 
-                                    <ul className=" border-b-4 p-3 text-xl font-bold rounded-lg hover:shadow-inner hover:border-2" key={file._id}>
-                                        <li className="flex justify-between items-center    ">
+                                    <ul className=" border-b-4 p-3 text-xl font-bold rounded-lg hover:shadow-inner hover:bg-gray-50 hover:border-2 mb-2" key={file._id}>
+                                        <li className="flex justify-between items-center">
                                             {file.fileName}
                                             <div className="flex flex-row">
                                                 <Link to={file.fileUrl}>

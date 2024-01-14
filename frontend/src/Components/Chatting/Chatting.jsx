@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { FaUserFriends } from "react-icons/fa";
-import { MyFriend } from "../../Services/chatService";
+import { getAllProject } from "../../Services/projectServices";
 
 export default function Chatting() {
-    const [myFriends, setMyFriends] = useState([]);
+    const [Project, setProject] = useState([]);
     useEffect(() => {
         const fetch = async () => {
             try {
-                const allMyFriends = await MyFriend();
-                setMyFriends(allMyFriends);
+                const allMyFriends = await getAllProject();
+                setProject(allMyFriends);
             } catch (error) {
                 console.log(error);
             }
         }
         fetch();
     }, [])
-    console.log(myFriends);
+    console.log(Project);
     return (
         <div className="bg-gray-100 h-screen pt-20">
             <div className="flex justify-center items-center w-full h-full">
@@ -27,11 +27,11 @@ export default function Chatting() {
                         </div>
                         <div className="flex p-5">
                             <div className="w-full">
-                                {myFriends && myFriends.length > 0 ? (
-                                    myFriends.map((friend) => (
-                                        <ul key={friend.friendId} className="text-xl font-bold border-b-2 mb-3 p-3 hover:shadow-inner    rounded-lg cursor-pointer">
+                                {Project && Project.length > 0 ? (
+                                    Project.map((Project) => (
+                                        <ul key={Project._id} className="text-xl font-bold border-b-2 mb-3 p-3 hover:shadow-inner hover:bg-gray-50 rounded-lg cursor-pointer">
                                             <li className="flex justify-between items-center">
-                                                {friend.friendName}
+                                                {Project.projectTitle}
                                             </li>
                                         </ul>
                                     ))

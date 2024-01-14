@@ -28,12 +28,18 @@ export default function Header() {
                     </Link>
                     <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                         {student ? (
-                            <button
-                                type="button"
-                                onClick={handleLogOut}
-                                className="text-white bg-blue-700 hover:bg-blue-800 hover:rounded-[5rem] focus:ring-2 focus:outline-none focus:ring-white font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-white">
-                                Log Out
-                            </button>
+                            <>
+                                <div className='flex flex-row items-center'>
+                                    <h1 className='text-slate-50 mr-5 text-xl font-semibold underline'>{student.name}</h1>
+                                    <button
+                                        type="button"
+                                        onClick={handleLogOut}
+                                        className="text-white bg-blue-700 hover:bg-blue-800 hover:rounded-[5rem] focus:ring-2 focus:outline-none focus:ring-white font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-white">
+                                        Log Out
+                                    </button>
+                                </div>
+                            </>
+
                         ) : (<Link to="/login">
                             <button
                                 type="button"
@@ -41,6 +47,7 @@ export default function Header() {
                                 className="text-white bg-blue-700 hover:bg-blue-800 hover:rounded-[5rem] focus:ring-2 focus:outline-none focus:ring-white font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-white">
                                 Log In
                             </button>
+
                         </Link>)}
 
                         <button
