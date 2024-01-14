@@ -20,7 +20,12 @@ router.get("/manageProject", handler(async (req, res, next) => {
         // console.log("Page backend==> ", Page, " ", pageSize);
 
         //student nae badha project find karo
-        const queryObject = { projectCreator: req.user.id };
+        const queryObject = {
+            $or: [
+                { projectCreator: req.user.id },
+                { "projectMembers.memberId": req.user.id }
+            ]
+        };
 
 
         //regex mongoDB
@@ -55,6 +60,7 @@ router.get("/manageProject", handler(async (req, res, next) => {
                 (project.projectStatus && project.projectStatus.match(keywordSearchRegex)) ||
                 (project.projectCategory && project.projectCategory.match(keywordSearchRegex)) ||
                 (project.projectMembers && project.projectMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex))) ||
+                (project.projectMembers && project.projectMembers.some((member) => member.memberId === req.user.id))
                 (project.projectPhases && project.projectPhases.some((phase) => (phase.phaseTitle && phase.phaseTitle.match(keywordSearchRegex)) || (phase.phaseNum && phase.phaseNum.match(keywordSearchRegex))))
             ));
         }

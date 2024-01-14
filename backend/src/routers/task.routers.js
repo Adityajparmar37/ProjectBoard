@@ -22,8 +22,13 @@ router.get("/manageTask", handler(async (req, res, next) => {
 
         console.log("Task filters ==> ", filterTask);
         console.log(sort)
-
-        const queryObject = { taskCreator: req.user.id };
+        
+        const queryObject = {
+            $or: [
+                { taskCreator: req.user.id },
+                { "taskMembers.memberId": req.user.id }
+            ]
+        };
 
         if (taskType) {
             queryObject.taskType = { $regex: new RegExp(taskType, 'i') };
@@ -47,7 +52,8 @@ router.get("/manageTask", handler(async (req, res, next) => {
                 (task.taskTitle && task.taskTitle.match(keywordSearchRegex)) ||
                 (task.taskDescription && task.taskDescription.match(keywordSearchRegex)) ||
                 (task.taskPriority && task.taskPriority.match(keywordSearchRegex)) ||
-                (task.taskMembers && task.taskMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex)))
+                (task.taskMembers && task.taskMembers.some((member) => member.memberNam && member.memberNam.match(keywordSearchRegex))) ||
+                (task.taskMembers && task.taskMembers.some((member) => member.memberId === req.user.id))
             ));
         }
 
@@ -67,7 +73,14 @@ router.get("/manageTask", handler(async (req, res, next) => {
 
 router.get("/taskALLProject", handler(async (req, res, next) => {
     try {
-        let Allproject = await Project.find({ projectCreator: req.user.id });
+
+        const queryObject = {
+            $or: [
+                { projectCreator: req.user.id },
+                { "projectMembers.memberId": req.user.id }
+            ]
+        };
+        let Allproject = await Project.find(queryObject);
 
         if (Allproject.length > 0) {
             res.json(Allproject);

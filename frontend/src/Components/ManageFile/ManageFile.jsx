@@ -3,9 +3,9 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoading } from "../../Hooks/useLoading";
 import { fileDelete, fileList } from "../../Services/fileService";
-import { getAllProject } from "../../Services/projectServices";
 import { FaDownload } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
+import { getAllTheProject } from "../../Services/taskServices";
 
 export default function ManageFile() {
     const [project, setProject] = useState([]);
@@ -17,7 +17,7 @@ export default function ManageFile() {
         const fetchData = async () => {
             try {
                 showLoading();
-                const allProject = await getAllProject();
+                const allProject = await getAllTheProject();
                 setProject(allProject);
                 hideLoading();
             } catch (error) {

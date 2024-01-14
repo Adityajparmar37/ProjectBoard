@@ -18,7 +18,7 @@ function Calendar() {
             try {
                 showLoading();
                 const allTask = await getAllTask();
-                // console.log("ALL Task ==> ", allTask);
+                console.log("ALL Task ==> ", allTask);
                 setTasks(allTask);
                 hideLoading();
             } catch (error) {
@@ -49,9 +49,10 @@ function Calendar() {
     }, []);
 
     const createEvents = () => {
-        if (Tasks && Array.isArray(Projects)) {
+        if (Tasks && Array.isArray(Tasks) && Projects && Array.isArray(Projects)) {
+            // console.log("hello", Tasks);
             let events = [];
-
+    
             for (let item of Tasks) {
                 if (!item.isCrossed) {
                     events.push({
@@ -63,8 +64,9 @@ function Calendar() {
                     });
                 }
             }
-
+    
             for (let item of Projects) {
+                console.log("heelo " , Projects);
                 events.push({
                     type: "project",
                     title: item.projectTitle,
@@ -73,15 +75,16 @@ function Calendar() {
                     borderColor: 'orange',
                 });
             }
-
+    
             console.log(events);
             setAllEvents(events);
         }
     };
+    
     useEffect(() => {
         createEvents();
-    }, [Tasks, Projects])
-
+    }, [Tasks, Projects]);
+    
     return (
         <>
             <div className="pt-20 bg-gray-100">
