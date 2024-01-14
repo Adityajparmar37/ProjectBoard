@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useLoading } from "../../Hooks/useLoading";
 import { fileUpload } from "../../Services/fileService";
-import { getAllProject } from "../../Services/projectServices";
 import { TiDropbox } from "react-icons/ti";
 import toast from "react-hot-toast";
+import { getAllTheProject } from "../../Services/taskServices";
 
 export default function UploadFile() {
     const { showLoading, hideLoading } = useLoading();
@@ -16,7 +16,7 @@ export default function UploadFile() {
         const fetchData = async () => {
             try {
                 showLoading();
-                const allProject = await getAllProject();
+                const allProject = await getAllTheProject();
                 setProject(allProject);
                 hideLoading();
             } catch (error) {
