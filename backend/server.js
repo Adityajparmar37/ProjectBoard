@@ -8,7 +8,7 @@ const projectRouters = require('./src/routers/project.routers.js');
 const chatRouters = require('./src/routers/chat.routers.js');
 const taskRouters = require('./src/routers/task.routers.js');
 const fileRouters = require('./src/routers/file.routers.js');
-const socketConfig = require('./socket.js');
+const socketConfig = require('./src/socket/socket.js');
 
 dotenv.config();
 const app = express();

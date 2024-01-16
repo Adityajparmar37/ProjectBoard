@@ -1,10 +1,13 @@
 const { Server } = require('socket.io');
 const CryptoJS = require('crypto-js');
-const ChatGroup = require('./src/models/chatModal.js');
-const Message = require('./src/models/messageModal.js');
+const ChatGroup = require('../models/chatModal.js');
+const Message = require('../models/messageModal.js');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Key
-const encryptionKey = '1321asdkjaljdlapro465ajec4tdboa52rd5';
+const encryptionKey = process.env.KeyCrypt;
+console.log(process.env.KeyCrypt)
 
 const encryptMessage = (message) => {
     const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
