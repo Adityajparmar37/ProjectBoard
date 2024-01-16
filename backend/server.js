@@ -44,18 +44,55 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log("User connected", socket.id);
 
-    socket.on("CreateRoom", (projectName) => {
-        console.log("Project Name ==> ", projectName);
-        socket.join(projectName)
-        console.log(`${socket.id} joined the room ${projectName}`);
-        // You can emit an event to notify the client that the room has been successfully created.
-        io.to(projectName).emit("room-created", projectName);
+    // Function to handle room creation
+    const createChatRoom = async (project) => {
+        try {
+            const existingChat = await ChatGroup.findOne({ projectId: project._id });
 
+            if (existingChat) {
+                console.log('Chat group already exists for projectId:', project._id);
+                return existingChat._id;
+            } else {
+                const newChatGroup = await ChatGroup.create({
+                    projectName: project.projectTitle,
+                    projectId: project._id,
+                    members: project.projectMembers.map(member => ({
+                        userId: member.memberId,
+                        name: member.memberName,
+                    })),
+                });
+
+                console.log('Chat saved:', newChatGroup);
+
+                // Emit an event to notify clients that the room has been successfully created
+                io.emit("room-created", newChatGroup.projectName);
+
+                return newChatGroup._id.toString();
+            }
+        } catch (error) {
+            console.error('Error creating or checking chat:', error.message);
+        }
+    };
+
+    socket.on("CreateRoom", async (project) => {
+        // console.log("Project Name ==> ", project);
+
+        // Create the chat room and get the room ID
+        const roomId = await createChatRoom(project);
+        console.log("ROOM ID ==> ", roomId);
+
+        // Join the socket to the room
+        if (roomId) {
+            const roomIdString = roomId.toString();
+            socket.join(roomIdString);
+            console.log(`${socket.id} joined the room ${roomIdString}`);
+            io.to(roomIdString).emit("room-created", roomIdString);
+        }
     });
 
-    socket.on("newMessage", (projectName, newMessage) => {
-        io.to(projectName.projectTitle).emit("received-message", newMessage);
-        console.log("New Message ==> ", newMessage, " ", projectName.projectTitle);
+    socket.on("newMessage", (roomIdString, newMessage) => {
+        io.to(roomIdString).emit("received-message", newMessage);
+        console.log("New Message ==> ", newMessage, " ", roomIdString);
     })
 
 })

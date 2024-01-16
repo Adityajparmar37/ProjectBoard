@@ -16,6 +16,7 @@ export default function Chatting() {
     const [ProjectSelect, setProjectSelect] = useState("");
     const [newMessage, setNewMessage] = useState("");
     const [messageReceived, setMessageReceived] = useState([]);
+    const [room, setRoom] = useState();
 
     console.log("==>", messageReceived)
 
@@ -33,6 +34,9 @@ export default function Chatting() {
 
         socket.on("room-created", (data) => {
             console.log("user join in room ", data);
+            if (data) {
+                setRoom(data);
+            }
         })
     }, [])
 
@@ -50,12 +54,12 @@ export default function Chatting() {
 
     const handleProjectBtn = (project) => {
         setProjectSelect(project);
-        socket.emit("CreateRoom", project.projectTitle);
+        socket.emit("CreateRoom", project);
     };
 
     const handleSend = () => {
-        // console.log("Sending new message:", newMessage);
-        socket.emit("newMessage", ProjectSelect, newMessage);
+        console.log("Sending new message to room :", room);
+        socket.emit("newMessage", room, newMessage);
         setNewMessage(" ");
     }
 
@@ -74,7 +78,7 @@ export default function Chatting() {
                                 {Project && Project.length > 0 ? (
                                     <ul className="text-xl font-bold">
                                         {Project.map((project) => (
-                                            <button className="border-b-2 mb-3 p-3 hover:shadow-inner hover:bg-gray-50 rounded-lg cursor-pointer w-full" key={project._id}
+                                            <button className="border-b-4 p-3 text-xl font-bold rounded-lg hover:shadow-inner hover:bg-gray-50 hover:border-2 mb-2 hover:text-purple-600 w-full" key={project._id}
                                                 onClick={() => handleProjectBtn(project)}>
                                                 {project.projectTitle}
                                             </button>
@@ -99,16 +103,17 @@ export default function Chatting() {
                                     </h1>
                                 </>
                             ))}
-                            <input
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                value={newMessage}
-                                type="text"
-                                name="message"
-                                className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 hover:shadow-inner focus:shadow-none w-11/12 font-semibold"
-                            />
-                            <button
-                                onClick={handleSend}
-                                className="bg-blue-600 p-4 text-white text-lg font-semibold w-1/12 rounded-br-xl hover:bg-blue-900">Send</button>
+                            <div className="w-full bg-gray-700/95 p-1">
+                                <input
+                                    onChange={(e) => setNewMessage(e.target.value)}
+                                    value={newMessage}
+                                    type="text"
+                                    name="message"
+                                    className="border-2 border-gray-200 mb-1 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-11/12 font-semibold rounded-l-xl" />
+                                <button
+                                    onClick={handleSend}
+                                    className="bg-blue-600 p-4 text-white text-lg font-semibold w-1/12 rounded-r-xl hover:bg-blue-900">Send</button>
+                            </div>
                         </div>
                     </div>
                 </div>
