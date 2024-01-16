@@ -66,6 +66,7 @@ export default function Chatting() {
 
     const handleProjectBtn = (project) => {
         setProjectSelect(project);
+        setMessageReceived([]);
         socket.emit("CreateRoom", project);
     };
 
@@ -103,10 +104,11 @@ export default function Chatting() {
                     </div>
                     <div className="flex flex-col w-full relative">
                         <div className="bg-gray-700/95 border-b border-gray-500 h-16 flex flex-row items-center rounded-tr-2xl w-full">
-                            <h1 className="ml-3 font-light text-xl text-white">Chat</h1>
+                            {ProjectSelect ?
+                                (<h1 className="ml-3 font-bold text-xl text-white">{ProjectSelect.projectTitle}</h1>)
+                                : (<h1 className="ml-3 font-light text-xl text-white">Chat</h1>)}
                         </div>
                         <div className="w-full absolute bottom-0">
-                            <h1 className="font-bold">{ProjectSelect.projectTitle}</h1>
                             <div className="messages-container">
                                 {messageReceived?.map((mss, index) => (
                                     <div key={index} className="message received">
