@@ -30,6 +30,10 @@ export default function Chatting() {
             setMessageReceived(prevMessages => [...prevMessages, data]);
             console.log("Data received ==> ", data);
         })
+
+        socket.on("room-created", (data) => {
+            console.log("user join in room ", data);
+        })
     }, [])
 
     useEffect(() => {
@@ -44,11 +48,15 @@ export default function Chatting() {
         fetch();
     }, [])
 
+    const handleProjectBtn = (project) => {
+        setProjectSelect(project);
+        socket.emit("CreateRoom", project.projectTitle);
+    };
 
     const handleSend = () => {
         // console.log("Sending new message:", newMessage);
-        socket.emit("newMessage", newMessage);
-        setNewMessage("");
+        socket.emit("newMessage", ProjectSelect, newMessage);
+        setNewMessage(" ");
     }
 
 
@@ -67,7 +75,7 @@ export default function Chatting() {
                                     <ul className="text-xl font-bold">
                                         {Project.map((project) => (
                                             <button className="border-b-2 mb-3 p-3 hover:shadow-inner hover:bg-gray-50 rounded-lg cursor-pointer w-full" key={project._id}
-                                                onClick={() => setProjectSelect(project)}>
+                                                onClick={() => handleProjectBtn(project)}>
                                                 {project.projectTitle}
                                             </button>
                                         ))}
@@ -86,7 +94,7 @@ export default function Chatting() {
                             <h1 className="font-bold">{ProjectSelect.projectTitle}</h1>
                             {messageReceived.map((mss) => (
                                 <>
-                                    <h1 className="text-red">
+                                    <h1 className="text-red-500 mt-1 font-bold">
                                         {mss}
                                     </h1>
                                 </>

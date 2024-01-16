@@ -44,9 +44,18 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log("User connected", socket.id);
 
-    socket.on("newMessage", (newMessage) => {
-        socket.broadcast.emit("received-message", newMessage)
-        console.log("New Message ==> ", newMessage);
+    socket.on("CreateRoom", (projectName) => {
+        console.log("Project Name ==> ", projectName);
+        socket.join(projectName)
+        console.log(`${socket.id} joined the room ${projectName}`);
+        // You can emit an event to notify the client that the room has been successfully created.
+        io.to(projectName).emit("room-created", projectName);
+
+    });
+
+    socket.on("newMessage", (projectName, newMessage) => {
+        io.to(projectName.projectTitle).emit("received-message", newMessage);
+        console.log("New Message ==> ", newMessage, " ", projectName.projectTitle);
     })
 
 })
