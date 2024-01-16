@@ -3,7 +3,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { getAllProject } from "../../Services/projectServices";
 import io from 'socket.io-client';
 import config from "../../configSocket/configSocket";
-
+import { useAuth } from "../../Hooks/useAuth";
 
 export default function Chatting() {
     const socket = useMemo(() => {
@@ -12,6 +12,7 @@ export default function Chatting() {
         });
     }, [])
 
+    const { student } = useAuth();
     const [Project, setProject] = useState([]);
     const [ProjectSelect, setProjectSelect] = useState("");
     const [newMessage, setNewMessage] = useState("");
@@ -27,8 +28,19 @@ export default function Chatting() {
             console.log("connected", socket.id);
         });
 
+        socket.on("old-messages", (oldMessages) => {
+            console.log(oldMessages);
+            setMessageReceived(oldMessages.map(oldmss => oldmss.content));
+        });
+
         socket.on("received-message", (data) => {
-            setMessageReceived(prevMessages => [...prevMessages, data]);
+            setMessageReceived(prevMessages => {
+                if (Array.isArray(prevMessages)) {
+                    return [...prevMessages, data];
+                } else {
+                    return [data];
+                }
+            });
             console.log("Data received ==> ", data);
         })
 
@@ -58,11 +70,10 @@ export default function Chatting() {
     };
 
     const handleSend = () => {
-        console.log("Sending new message to room :", room);
-        socket.emit("newMessage", room, newMessage);
-        setNewMessage(" ");
+        console.log("Sending new message to room:", room);
+        socket.emit("newMessage", room, newMessage, student._id);
+        setNewMessage("");
     }
-
 
     return (
         <div className="bg-gray-100 h-screen pt-20">
@@ -70,8 +81,8 @@ export default function Chatting() {
                 <div className="bg-white h-[98%] w-[90%] rounded-2xl shadow-xl flex flex-row">
                     <div className="w-1/4 border-r border-gray-500">
                         <div className="bg-gray-700/95 border-b border-gray-500 h-16 flex flex-row items-center rounded-tl-2xl ">
-                            <FaUserFriends className="ml-5 text-3xl text-gray-100" />
-                            <h1 className="ml-3 font-light text-xl text-white">Your Friends</h1>
+                            <FaUserFriends className="ml-5 text-3xl text-gray-300" />
+                            <h1 className="ml-5 font-light text-xl text-white"> Your Project Group</h1>
                         </div>
                         <div className="flex p-5">
                             <div className="w-full">
@@ -96,20 +107,20 @@ export default function Chatting() {
                         </div>
                         <div className="w-full absolute bottom-0">
                             <h1 className="font-bold">{ProjectSelect.projectTitle}</h1>
-                            {messageReceived.map((mss) => (
-                                <>
-                                    <h1 className="text-red-500 mt-1 font-bold">
-                                        {mss}
-                                    </h1>
-                                </>
-                            ))}
-                            <div className="w-full bg-gray-700/95 p-1">
+                            <div className="messages-container">
+                                {messageReceived?.map((mss, index) => (
+                                    <div key={index} className="message received">
+                                        <p className="message-content">{mss}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="w-full bg-gray-700/95 py-2 px-3 flex items-center">
                                 <input
                                     onChange={(e) => setNewMessage(e.target.value)}
                                     value={newMessage}
                                     type="text"
                                     name="message"
-                                    className="border-2 border-gray-200 mb-1 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-11/12 font-semibold rounded-l-xl" />
+                                    className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-11/12 font-semibold rounded-l-xl" />
                                 <button
                                     onClick={handleSend}
                                     className="bg-blue-600 p-4 text-white text-lg font-semibold w-1/12 rounded-r-xl hover:bg-blue-900">Send</button>

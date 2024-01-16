@@ -11,6 +11,7 @@ const fileRouters = require('./src/routers/file.routers.js');
 const http = require('http');
 const { Server } = require('socket.io');
 const ChatGroup = require('./src/models/chatModal.js');
+const Message = require('./src/models/messageModal.js');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -51,6 +52,16 @@ io.on("connection", (socket) => {
 
             if (existingChat) {
                 console.log('Chat group already exists for projectId:', project._id);
+
+                // Retrieve old messages for the room
+                const oldMessages = await Message.find({ chatRoom: existingChat._id })
+                    .sort({ timestamp: 1 })
+                    .lean()
+                    .exec();
+
+                // Emit old messages to the connected client
+                socket.emit("old-messages", oldMessages);
+
                 return existingChat._id;
             } else {
                 const newChatGroup = await ChatGroup.create({
@@ -77,7 +88,7 @@ io.on("connection", (socket) => {
     socket.on("CreateRoom", async (project) => {
         // console.log("Project Name ==> ", project);
 
-        // Create the chat room and get the room ID
+
         const roomId = await createChatRoom(project);
         console.log("ROOM ID ==> ", roomId);
 
@@ -90,9 +101,20 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("newMessage", (roomIdString, newMessage) => {
-        io.to(roomIdString).emit("received-message", newMessage);
-        console.log("New Message ==> ", newMessage, " ", roomIdString);
+    socket.on("newMessage", async (roomIdString, newMessage, studentId) => {
+        try {
+            const message = new Message({
+                content: newMessage,
+                sender: studentId,
+                chatRoom: roomIdString,
+            });
+
+            await message.save();
+            io.to(roomIdString).emit("received-message", newMessage);
+            console.log("New Message ==> ", newMessage, " ", roomIdString);
+        } catch (error) {
+            console.log("Error in saving message ", error);
+        }
     })
 
 })
