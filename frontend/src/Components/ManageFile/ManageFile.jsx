@@ -36,6 +36,7 @@ export default function ManageFile() {
         setSelectedProject(selectedProject);
         try {
             const responseData = await fileList(selectedProject);
+            console.log(responseData);
             console.log(responseData.data.filedata.projectInfo.files);
             setListFiles(responseData.data.filedata.projectInfo.files);
         } catch (error) {
@@ -113,11 +114,11 @@ export default function ManageFile() {
                                             {file.fileName}
                                             <div className="flex flex-row">
                                                 <Link to={file.fileUrl}>
-                                                    <button className="mr-5 text-white bg-blue-700 hover:bg-blue-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-2xl text-center p-2 shadow-md"><FaDownload/></button>
+                                                    <button className="mr-5 text-white bg-blue-700 hover:bg-blue-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-2xl text-center p-2 shadow-md"><FaDownload /></button>
                                                 </Link>
                                                 <button
                                                     onClick={() => handleDelete(file.fileName)}
-                                                    className="mr-5 text-white bg-orange-600 hover:bg-orange-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-2xl text-center p-2 shadow-md"><MdDelete/></button>
+                                                    className="mr-5 text-white bg-orange-600 hover:bg-orange-800 hover:rounded-xl  focus:outline-none font-medium rounded-lg text-2xl text-center p-2 shadow-md"><MdDelete /></button>
                                             </div>
                                         </li>
                                     </ul>

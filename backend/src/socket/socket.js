@@ -7,7 +7,7 @@ dotenv.config();
 
 // Key
 const encryptionKey = process.env.KeyCrypt;
-console.log(process.env.KeyCrypt)
+// console.log(process.env.KeyCrypt)
 
 const encryptMessage = (message) => {
     const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV

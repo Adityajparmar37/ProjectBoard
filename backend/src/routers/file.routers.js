@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { putObject, getObjectURL, listObjects , deleteObject } = require('../utils/aws.js');
+const { putObject, getObjectURL, listObjects, deleteObject } = require('../utils/aws.js');
 const Files = require('../models/filesModal');
 const authMid = require('../middlewares/authMiddleware');
 const fs = require('fs');
@@ -46,6 +46,7 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
 
             const projectName = req.body.projectName;
             const fileNames = req.files.map(file => file.filename);
+            console.log(fileUrls);
 
             // Store file information in the database
             const filesData = {
@@ -61,7 +62,7 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
             // Delete files from server
             req.files.forEach(file => {
                 const filePath = path.join("../backend/public/file", file.filename);
-                fs.unlinkSync(filePath);
+                // fs.unlinkSync(filePath);
             });
 
             res.status(200).json({
@@ -109,6 +110,7 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
         if (filesData) {
             console.log("hello 2 ");
             const objectList = await listObjects(projectName);
+            console.log("hello 3");
 
             res.status(200).json({
                 success: true,
@@ -127,7 +129,8 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
 
         }
     } catch (error) {
-        next(errorHandler(500, "Some error occured !"));
+        // next(errorHandler(500, "Some error occured !"));
+        console.log(error);
     }
 });
 

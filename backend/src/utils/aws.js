@@ -1,4 +1,7 @@
-const { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command,DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const dotenv = require('dotenv');
+dotenv.config();
+const { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+console.log(process.env.ACCESS_KEY_ID);
 
 const s3Client = new S3Client({
     region: "ap-south-1",
@@ -43,6 +46,7 @@ async function listObjects(projectName) {
     });
 
     const result = await s3Client.send(command);
+    console.log("result");
     console.log(result);
 }
 
