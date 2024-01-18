@@ -96,6 +96,12 @@ export default function Chatting() {
         setNewMessage("");
     }
 
+    const handleEnterKey = (e) => {
+        if (e.key === 'Enter') {
+            handleSend();
+        }
+    }
+
     const OpenEmoji = () => {
         setEmoji(!openEmoji);
     }
@@ -170,6 +176,7 @@ export default function Chatting() {
 
                                     <input
                                         onChange={(e) => setNewMessage(e.target.value)}
+                                        onKeyDown={handleEnterKey}
                                         value={newMessage}
                                         type="text"
                                         name="message"

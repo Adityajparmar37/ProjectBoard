@@ -44,7 +44,7 @@ export default function ManageTask() {
                                     <tr>
                                         <th scope="col" className="p-4">
                                             <div className="flex items-center">
-                                                <label className="text-white font-bold">📒</label>
+                                                <label className="text-white font-bold text-1xl">📋</label>
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3 border-l-4 ">
