@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import config from "../../configSocket/configSocket";
 import { useAuth } from "../../Hooks/useAuth";
 import { IoSend } from "react-icons/io5";
+import EmojiPicker from 'emoji-picker-react';
 
 
 export default function Chatting() {
@@ -16,6 +17,7 @@ export default function Chatting() {
 
     const { student } = useAuth();
     const [Project, setProject] = useState([]);
+    const [openEmoji, setEmoji] = useState(false);
     const [ProjectSelect, setProjectSelect] = useState("");
     const [newMessage, setNewMessage] = useState("");
     const [messageReceived, setMessageReceived] = useState([]);
@@ -94,6 +96,10 @@ export default function Chatting() {
         setNewMessage("");
     }
 
+    const OpenEmoji = () => {
+        setEmoji(!openEmoji);
+    }
+
     return (
         <div className="bg-gray-100 h-screen pt-20">
             <div className="flex justify-center items-center w-full h-full">
@@ -123,7 +129,7 @@ export default function Chatting() {
                     <div className="flex flex-col w-full relative">
                         <div className="bg-gray-700/95 border-b border-gray-500 h-16 flex flex-row items-center rounded-tr-2xl w-full">
                             {ProjectSelect ?
-                                (<h1 className="ml-3 font-bold text-xl text-white">{ProjectSelect.projectTitle}</h1>)
+                                (<h1 className="ml-3 font-bold text-xl text-white">🔸{ProjectSelect.projectTitle}</h1>)
                                 : (<h1 className="ml-3 font-light text-xl text-white">Chat</h1>)}
                         </div>
                         <div className="absolute bottom-0 w-full flex flex-col">
@@ -158,16 +164,27 @@ export default function Chatting() {
                             </div>
                             <div className="w-full absolute bottom-0">
                                 <div className="w-full bg-gray-700/95 py-2 px-3 flex items-center">
+                                    <button
+                                        onClick={OpenEmoji}
+                                        className="bg-blue-600 p-3 text-white text-[1.5rem] font-semibold w-auto mr-3 rounded-full hover:bg-blue-900 text-center">🙂</button>
+
                                     <input
                                         onChange={(e) => setNewMessage(e.target.value)}
                                         value={newMessage}
                                         type="text"
                                         name="message"
-                                        className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-l-xl" />
+                                        className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-xl" />
+
+
 
                                     <button
                                         onClick={handleSend}
-                                        className="bg-blue-600 p-4 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend /></button>
+                                        className="bg-blue-600 py-4 px-8 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend /></button>
+                                    {openEmoji && (
+                                        <div style={{ position: 'absolute', bottom: '60px', left: '10px', zIndex: '1000' }}>
+                                            <EmojiPicker onEmojiClick={(emojiObject) => setNewMessage((prevMessage) => prevMessage + emojiObject.emoji)} />
+                                        </div>
+                                    )}
                                 </div>
 
                             </div>
