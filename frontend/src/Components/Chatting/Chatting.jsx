@@ -4,6 +4,7 @@ import { getAllProject } from "../../Services/projectServices";
 import io from 'socket.io-client';
 import config from "../../configSocket/configSocket";
 import { useAuth } from "../../Hooks/useAuth";
+import { IoSend } from "react-icons/io5";
 
 export default function Chatting() {
     const socket = useMemo(() => {
@@ -122,10 +123,10 @@ export default function Chatting() {
                                     value={newMessage}
                                     type="text"
                                     name="message"
-                                    className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-11/12 font-semibold rounded-l-xl" />
+                                    className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-l-xl" />
                                 <button
                                     onClick={handleSend}
-                                    className="bg-blue-600 p-4 text-white text-lg font-semibold w-1/12 rounded-r-xl hover:bg-blue-900">Send</button>
+                                    className="bg-blue-600 p-4 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend/></button>
                             </div>
                         </div>
                     </div>
