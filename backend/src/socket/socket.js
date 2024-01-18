@@ -65,7 +65,7 @@ module.exports = (server) => {
                         senderId: msg.sender,
                     }));
 
-                    console.log(decryptedOldMessages);
+                    // console.log(decryptedOldMessages);
                     socket.emit("old-messages", decryptedOldMessages);
 
                     return existingChat._id;
@@ -131,5 +131,9 @@ module.exports = (server) => {
                 console.log("Error in saving message ", error);
             }
         });
+        socket.on("disconnect", () => {
+            console.log(`User disconnected: ${socket.id}`);
+        });
     });
+
 };

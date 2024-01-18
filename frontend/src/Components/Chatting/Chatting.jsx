@@ -6,6 +6,7 @@ import config from "../../configSocket/configSocket";
 import { useAuth } from "../../Hooks/useAuth";
 import { IoSend } from "react-icons/io5";
 
+
 export default function Chatting() {
     const socket = useMemo(() => {
         return io(config.serverUrl, {
@@ -29,7 +30,7 @@ export default function Chatting() {
             console.log("connected", socket.id);
         });
         socket.on("old-messages", (oldMessages) => {
-            console.log(oldMessages);
+            console.log("----", oldMessages);
             setMessageReceived(oldMessages.map(oldmss => ({
                 content: oldmss.content,
                 senderId: oldmss.senderId,
@@ -38,6 +39,7 @@ export default function Chatting() {
         });
 
         socket.on("received-message", ({ decryptedMessage, senderId, senderName }) => {
+            console.log("****", decryptedMessage);
             setMessageReceived(prevMessages => {
                 if (Array.isArray(prevMessages)) {
                     return [...prevMessages, { content: decryptedMessage, senderId, senderName }];
@@ -54,12 +56,12 @@ export default function Chatting() {
             }
         })
 
-        const chatContainer = document.getElementById("chatContainer");
-        if (chatContainer) {
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+        return () => {
+            console.log("Disconnecting socket");
+            socket.disconnect();
+        };
 
-    }, [messageReceived])
+    }, [])
 
     useEffect(() => {
         const fetch = async () => {
@@ -81,7 +83,7 @@ export default function Chatting() {
 
     const handleSend = () => {
         console.log("Sending new message to room:", room);
-        console.log(newMessage);
+        console.log("This is new message", newMessage);
         socket.emit("newMessage", room, newMessage, student._id, student.name);
 
         // setMessageReceived(prevMessages => [
@@ -125,11 +127,11 @@ export default function Chatting() {
                                 : (<h1 className="ml-3 font-light text-xl text-white">Chat</h1>)}
                         </div>
                         <div className="absolute bottom-0 w-full flex flex-col">
-                            <div id="chatContainer" className="overflow-y-auto max-h-[80vh] pb-20">
+                            <div id="chatContainer" className="overflow-y-auto max-h-[80vh] pb-24">
                                 <div className="p-5 leading-8">
                                     {messageReceived?.map((message, index) => (
-                                        <div key={index}>
-                                            {console.log(message)}
+                                        <div key={index} ref={(m) => m && index === messageReceived.length - 1 && m.parentElement.scrollTo({ behavior: "smooth", top: m.parentElement.scrollHeight })}>
+                                            {console.log("Message", message)}
                                             <div className={message.senderId === student._id ? 'flex justify-end' : 'flex justify-start'}>
                                                 {message.senderId === student._id ? (
                                                     <>
@@ -162,10 +164,12 @@ export default function Chatting() {
                                         type="text"
                                         name="message"
                                         className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-l-xl" />
+
                                     <button
                                         onClick={handleSend}
                                         className="bg-blue-600 p-4 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend /></button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
