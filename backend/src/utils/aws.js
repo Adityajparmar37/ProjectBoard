@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
-dotenv.config();
 const { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } = require("@aws-sdk/client-s3");
-console.log(process.env.ACCESS_KEY_ID);
+dotenv.config();
+// console.log(process.env.ACCESS_KEY_ID);
 
 const s3Client = new S3Client({
     region: "ap-south-1",

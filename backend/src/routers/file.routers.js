@@ -62,7 +62,7 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
             // Delete files from server
             req.files.forEach(file => {
                 const filePath = path.join("../backend/public/file", file.filename);
-                // fs.unlinkSync(filePath);
+                fs.unlinkSync(filePath);
             });
 
             res.status(200).json({
