@@ -72,6 +72,10 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
             });
         }
         else {
+            req.files.forEach(file => {
+                const filePath = path.join("../backend/public/file", file.filename);
+            });
+
             res.status(400).json({
                 success: false,
                 message: "Please try again !",

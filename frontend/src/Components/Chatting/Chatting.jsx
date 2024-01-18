@@ -32,16 +32,17 @@ export default function Chatting() {
             console.log(oldMessages);
             setMessageReceived(oldMessages.map(oldmss => ({
                 content: oldmss.content,
-                senderId: oldmss.sender,
+                senderId: oldmss.senderId,
+                senderName: oldmss.senderName,
             })));
         });
 
-        socket.on("received-message", ({ decryptedMessage, senderId }) => {
+        socket.on("received-message", ({ decryptedMessage, senderId, senderName }) => {
             setMessageReceived(prevMessages => {
                 if (Array.isArray(prevMessages)) {
-                    return [...prevMessages, { content: decryptedMessage, senderId }];
+                    return [...prevMessages, { content: decryptedMessage, senderId, senderName }];
                 } else {
-                    return [{ content: decryptedMessage, senderId }];
+                    return [{ content: decryptedMessage, senderId, senderName }];
                 }
             });
         });
@@ -74,7 +75,14 @@ export default function Chatting() {
 
     const handleSend = () => {
         console.log("Sending new message to room:", room);
-        socket.emit("newMessage", room, newMessage, student._id);
+        console.log(newMessage);
+        socket.emit("newMessage", room, newMessage, student._id, student.name);
+
+        // setMessageReceived(prevMessages => [
+        //     ...prevMessages,
+        //     { content: newMessage, senderId: student._id, senderName: student.name }
+        // ]);
+
         setNewMessage("");
     }
 
@@ -92,7 +100,7 @@ export default function Chatting() {
                                 {Project && Project.length > 0 ? (
                                     <ul className="text-xl font-bold">
                                         {Project.map((project) => (
-                                            <button className="border-b-4 p-3 text-xl font-bold rounded-lg hover:shadow-inner hover:bg-gray-50 hover:border-2 mb-2 hover:text-purple-600 w-full" key={project._id}
+                                            <button className={`border-b-4 p-3 text-xl font-bold rounded-lg mb-2  w-full ${project === ProjectSelect ? ' shadow-inner bg-gray-50 border-2 text-purple-700' : 'hover:shadow-inner hover:bg-gray-50 hover:border-2 hover:text-purple-600'}`} key={project._id}
                                                 onClick={() => handleProjectBtn(project)}>
                                                 {project.projectTitle}
                                             </button>
@@ -110,14 +118,31 @@ export default function Chatting() {
                                 (<h1 className="ml-3 font-bold text-xl text-white">{ProjectSelect.projectTitle}</h1>)
                                 : (<h1 className="ml-3 font-light text-xl text-white">Chat</h1>)}
                         </div>
-                        <div className="absolute bottom-0 w-full">
+                        <div className="absolute bottom-0 w-full overflow-y-auto max-h-[80vh] pb-24">
                             <div className="p-5 leading-8">
                                 {messageReceived?.map((message, index) => (
                                     <div key={index}>
-                                        <h1 className={message.senderId === student._id ? 'text-right bg-blue-100 px-8 py-1 mb-3 leading-9 rounded-2xl font-bold text-lg' : 'text-left bg-purple-100 px-8 py-1 mb-3 leading-9 rounded-2xl font-bold text-lg'}>
-                                            {console.log(message)}
-                                            {message.content}
-                                        </h1>
+                                        {console.log(message)}
+                                        <div className={message.senderId === student._id ? 'flex justify-end' : 'flex justify-start'}>
+                                            {message.senderId === student._id ? (
+                                                <>
+                                                    <h1 className='text-right bg-blue-100 px-8 py-1 mb-3 leading-9 rounded-xl font-bold text-lg '>
+                                                        {message.content}
+                                                    </h1>
+                                                    <span className=' bg-gray-100 px-3 py-1 mb-3 leading-9 rounded-full font-bold text-md ml-2'>{message.senderName}</span>
+                                                </>
+
+                                            ) : (
+                                                <>
+
+                                                    <span className=' bg-gray-100 px-3 py-1 mb-3 leading-9 rounded-full font-bold text-md mr-2'>{message.senderName}</span>
+                                                    <h1 className='text-left bg-purple-100 px-8 py-1 mb-3 leading-9 rounded-xl font-bold text-lg'>
+                                                        {message.content}
+                                                    </h1>
+                                                </>
+                                            )}
+                                        </div>
+
                                     </div>
                                 ))}
                             </div>

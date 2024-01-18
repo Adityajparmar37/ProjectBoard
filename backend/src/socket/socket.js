@@ -58,11 +58,14 @@ module.exports = (server) => {
                         .lean()
                         .exec();
 
+
                     const decryptedOldMessages = oldMessages.map(msg => ({
                         ...msg,
                         content: decryptMessage(msg.content),
+                        senderId: msg.sender,
                     }));
 
+                    console.log(decryptedOldMessages);
                     socket.emit("old-messages", decryptedOldMessages);
 
                     return existingChat._id;
@@ -99,27 +102,31 @@ module.exports = (server) => {
             }
         });
 
-        socket.on("newMessage", async (roomIdString, newMessage, studentId) => {
+        socket.on("newMessage", async (roomIdString, newMessage, studentId, studentName) => {
             try {
                 const encryptedMessage = encryptMessage(newMessage);
 
-                const message = new Message({
+                const message = await Message.create({
                     content: encryptedMessage,
                     sender: studentId,
+                    senderName: studentName,
                     chatRoom: roomIdString,
                 });
 
-                await message.save();
 
-                const decryptedMessage = decryptMessage(encryptedMessage);
+                if (message) {
 
-                const messageData = {
-                    decryptedMessage,
-                    senderId:studentId
+                    const decryptedMessage = decryptMessage(encryptedMessage);
+
+                    const messageData = {
+                        decryptedMessage,
+                        senderId: studentId,
+                        senderName: studentName
+                    }
+
+                    io.to(roomIdString).emit("received-message", messageData);
+                    console.log("New Message ==> ", decryptedMessage, " ", roomIdString);
                 }
-
-                io.to(roomIdString).emit("received-message", messageData);
-                console.log("New Message ==> ", decryptedMessage, " ", roomIdString);
             } catch (error) {
                 console.log("Error in saving message ", error);
             }

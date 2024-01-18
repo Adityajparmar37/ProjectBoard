@@ -10,6 +10,9 @@ const messageSchema = new mongoose.Schema({
         ref: 'User', // Reference to the User model (if you have a User model)
         required: true,
     },
+    senderName: {
+        type: String,
+    },
     timestamp: {
         type: Date,
         default: Date.now,
