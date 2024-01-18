@@ -109,6 +109,10 @@ function Calendar() {
                                         padding: '3px',
                                         borderRadius: '3px',
                                         transition: 'background-color 0.2s ease',
+                                        display:'flex',
+                                        justifyContent:'center',
+                                        alignItems:'center'
+                                        
                                     }}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.backgroundColor = '#FCF4A3';

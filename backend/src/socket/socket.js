@@ -113,7 +113,12 @@ module.exports = (server) => {
 
                 const decryptedMessage = decryptMessage(encryptedMessage);
 
-                io.to(roomIdString).emit("received-message", decryptedMessage);
+                const messageData = {
+                    decryptedMessage,
+                    senderId:studentId
+                }
+
+                io.to(roomIdString).emit("received-message", messageData);
                 console.log("New Message ==> ", decryptedMessage, " ", roomIdString);
             } catch (error) {
                 console.log("Error in saving message ", error);

@@ -1,6 +1,6 @@
 
 // eslint-disable-next-line react/prop-types
-const MemberCard = ({ handlerejectRequest,memberName, memberInsitutionName, memberEmail, memberId, buttonNm, buttonCol, onSendRequest }) => {
+const MemberCard = ({ handlerejectRequest, memberName, memberInsitutionName, memberEmail, memberId, buttonNm, buttonCol, onSendRequest }) => {
     return (
         <div className="w-[30rem] h-32 bg-gray-100 m-5 shadow-lg">
             <div className="pt-3 px-4">

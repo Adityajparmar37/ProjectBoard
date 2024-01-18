@@ -36,7 +36,7 @@ export default function ProjectCard({ Id, projectTitle, status, endDate }) {
                         </div>
                         <div className="flex">
                             <h1 className="text-gray-600">End Date:</h1>
-                            <h1 className="text-gray-800 font-semibold">{formattedEndDate}</h1>
+                            <h1 className="text-gray-800 font-semibold">&nbsp;{formattedEndDate}</h1>
                         </div>
                     </div>
                 </Link>

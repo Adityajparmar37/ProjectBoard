@@ -28,22 +28,23 @@ export default function Chatting() {
         socket.on("connect", () => {
             console.log("connected", socket.id);
         });
-
         socket.on("old-messages", (oldMessages) => {
             console.log(oldMessages);
-            setMessageReceived(oldMessages.map(oldmss => oldmss.content));
+            setMessageReceived(oldMessages.map(oldmss => ({
+                content: oldmss.content,
+                senderId: oldmss.sender,
+            })));
         });
 
-        socket.on("received-message", (data) => {
+        socket.on("received-message", ({ decryptedMessage, senderId }) => {
             setMessageReceived(prevMessages => {
                 if (Array.isArray(prevMessages)) {
-                    return [...prevMessages, data];
+                    return [...prevMessages, { content: decryptedMessage, senderId }];
                 } else {
-                    return [data];
+                    return [{ content: decryptedMessage, senderId }];
                 }
             });
-            console.log("Data received ==> ", data);
-        })
+        });
 
         socket.on("room-created", (data) => {
             console.log("user join in room ", data);
@@ -109,14 +110,19 @@ export default function Chatting() {
                                 (<h1 className="ml-3 font-bold text-xl text-white">{ProjectSelect.projectTitle}</h1>)
                                 : (<h1 className="ml-3 font-light text-xl text-white">Chat</h1>)}
                         </div>
-                        <div className="w-full absolute bottom-0">
-                            <div className="messages-container">
-                                {messageReceived?.map((mss, index) => (
-                                    <div key={index} className="message received">
-                                        <p className="message-content">{mss}</p>
+                        <div className="absolute bottom-0 w-full">
+                            <div className="p-5 leading-8">
+                                {messageReceived?.map((message, index) => (
+                                    <div key={index}>
+                                        <h1 className={message.senderId === student._id ? 'text-right bg-blue-100 px-8 py-1 mb-3 leading-9 rounded-2xl font-bold text-lg' : 'text-left bg-purple-100 px-8 py-1 mb-3 leading-9 rounded-2xl font-bold text-lg'}>
+                                            {console.log(message)}
+                                            {message.content}
+                                        </h1>
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                        <div className="w-full absolute bottom-0">
                             <div className="w-full bg-gray-700/95 py-2 px-3 flex items-center">
                                 <input
                                     onChange={(e) => setNewMessage(e.target.value)}
@@ -126,7 +132,7 @@ export default function Chatting() {
                                     className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-l-xl" />
                                 <button
                                     onClick={handleSend}
-                                    className="bg-blue-600 p-4 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend/></button>
+                                    className="bg-blue-600 p-4 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend /></button>
                             </div>
                         </div>
                     </div>

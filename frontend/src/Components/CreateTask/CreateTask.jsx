@@ -96,9 +96,9 @@ export default function CreateTask() {
                 toast.success(NewtaskCreate.message);
                 navigate("/manageTask");
             }
-            else if (NewtaskCreate.success === false){
+            else if (NewtaskCreate.success === false) {
                 hideLoading();
-                toast.error(NewtaskCreate.message);
+                toast.error("Please fill all detials or Try again");
             }
         } catch (error) {
             hideLoading();
@@ -278,33 +278,38 @@ export default function CreateTask() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col m-2">
-                                    <label className="font-semibold text-lg">Task Members</label>
-                                    {taskMember.map((member, index) => (
-                                        <div key={index} className="flex flex-row mt-2 w-96 gap-3 text-lg">
-                                            <Autosuggest
-                                                suggestions={suggestions}
-                                                onSuggestionsFetchRequested={({ value }) => onSuggestionsFetchRequested({ value })}
-                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                                getSuggestionValue={getSuggestionValue}
-                                                renderSuggestion={renderSuggestion}
-                                                inputProps={{
-                                                    value: member,
-                                                    onChange: (event, { newValue }) => handleMember(index, newValue),
-                                                    placeholder: 'Type a friend name',
-                                                    className: 'p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none'
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
-                                    <button
-                                        type="button"
-                                        onClick={handleAddMember}
-                                        className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
-                                    >
-                                        Add Member
-                                    </button>
-                                </div>
+                                {tasktype && tasktype == "Project" ? (
+                                    <div className="flex flex-col m-2">
+                                        <label className="font-semibold text-lg">Task Members</label>
+                                        {taskMember.map((member, index) => (
+                                            <div key={index} className="flex flex-row mt-2 w-96 gap-3 text-lg">
+                                                <Autosuggest
+                                                    suggestions={suggestions}
+                                                    onSuggestionsFetchRequested={({ value }) => onSuggestionsFetchRequested({ value })}
+                                                    onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                                    getSuggestionValue={getSuggestionValue}
+                                                    renderSuggestion={renderSuggestion}
+                                                    inputProps={{
+                                                        value: member,
+                                                        onChange: (event, { newValue }) => handleMember(index, newValue),
+                                                        placeholder: 'Type a friend name',
+                                                        className: 'p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none'
+                                                    }}
+                                                />
+                                            </div>
+                                        ))}
+                                        <button
+                                            type="button"
+                                            onClick={handleAddMember}
+                                            className="bg-blue-400 ml-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-3 text-sm"
+                                        >
+                                            Add Member
+                                        </button>
+                                    </div>
+                                ) : (<>
+
+                                </>)}
+
 
                                 <div className="flex flex-col m-2 mt-8">
                                     <div className="flex flex-row gap-5 w-[72rem] items-center">
