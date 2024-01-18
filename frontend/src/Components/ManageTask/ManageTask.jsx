@@ -35,7 +35,7 @@ export default function ManageTask() {
                     <>
                         <div className='bg-white w-fulltext-[1rem] mb-10 shadow-lg mt-3'>
                             <div className='flex justify-center items-center  p-2'>
-                                <TaskFilter setStudentTasks={setStudentTasks} />
+                                <TaskFilter setStudentTasks={setStudentTasks}/>
                             </div>
                         </div>
                         <div className='flex flex-col justify-center items-center'>
