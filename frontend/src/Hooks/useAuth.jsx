@@ -55,6 +55,27 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const UpdateStudent = async (formData) => {
+        try {
+            const data = await studentServices.ProfileUpdate(formData);
+            console.log("update Profile ==> ", data.update);
+
+            if (data.update === true) {
+                const updatedStudentInfo = {
+                    ...studentServices.getUser(),
+                    name: formData.name,
+                    email: formData.email,
+                    InsitutionName: formData.InsitutionName,
+                };
+                setStudent(updatedStudentInfo);
+                localStorage.setItem('studentInfo', JSON.stringify(updatedStudentInfo));
+                return data
+            }
+        } catch (error) {
+            toast.error("Some Error Occured !");
+            console.log("ERROR OCCURED !", error);
+        }
+    }
 
     const logout = () => {
         studentServices.logout();
@@ -65,10 +86,11 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ student, login, signup, logout }}>
+        <AuthContext.Provider value={{ student, login, signup, logout, UpdateStudent }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

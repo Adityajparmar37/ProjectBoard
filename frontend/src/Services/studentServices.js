@@ -21,6 +21,16 @@ export const signup = async (signupData) => {
     }
 }
 
+export const ProfileUpdate = async (formData) => {
+    try {
+        const { data } = await axios.put('api/student/profile/update', formData);
+        console.log("Update Profile Frontend API Hit ==> ", data);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 
 
 export const getUser = () =>

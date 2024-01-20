@@ -160,7 +160,7 @@ export default function CreateTask() {
         <>
             <div className="pt-20 bg-gray-100 h-screen overflow-x-hidden">
                 <div className="flex justify-center items-center py-3 m-5">
-                    <div className="bg-white shadow-lg w-[70rem] h-auto grid grid-cols-3">
+                    <div className="bg-white shadow-lg w-[70rem] h-auto grid grid-cols-3 border-b-4 border-r-4 border-gray-500">
                         <div className="p-10">
                             <h1 className="font-semibold lg:text-3xl">Task Details</h1>
                             <h1 className="font-semibold text-gray-500 lg:text-xl ml-1 mt-4">Please fill all the detials</h1>

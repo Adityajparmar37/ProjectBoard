@@ -8,6 +8,7 @@ export default function Header() {
 
     const { student, logout } = useAuth();
     const navigate = useNavigate();
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
     const handleLogOut = async () => {
         await logout();
@@ -17,6 +18,11 @@ export default function Header() {
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+
+
+    const toggleProfileMenu = () => {
+        setIsProfileMenuOpen(!isProfileMenuOpen);
     };
 
     return (
@@ -29,14 +35,28 @@ export default function Header() {
                     <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                         {student ? (
                             <>
-                                <div className='flex flex-row items-center'>
-                                    <h1 className='text-slate-50 mr-5 text-xl font-semibold underline'>{student.name}</h1>
-                                    <button
-                                        type="button"
-                                        onClick={handleLogOut}
-                                        className="text-white bg-blue-700 hover:bg-blue-800 hover:rounded-[5rem] focus:ring-2 focus:outline-none focus:ring-white font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-white">
-                                        Log Out
-                                    </button>
+                                <div className="relative">
+                                    {student && (
+                                        <button
+                                            type="button"
+                                            onClick={toggleProfileMenu}
+                                            className="text-slate-50 focus:outline-none bg-blue-800 py-1 font-bold  px-4 rounded-md">
+                                            {student.name}
+                                        </button>
+                                    )}
+                                    {isProfileMenuOpen && (
+                                        <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg flex flex-col w-32">
+                                            <Link to="/profile" className="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700  hover:border-b-2 hover:shadow-inner">
+                                                Your Profile
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                onClick={handleLogOut}
+                                                className="block w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700   hover:border-b-2 hover:shadow-inner">
+                                                Log Out
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </>
 

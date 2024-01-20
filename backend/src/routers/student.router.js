@@ -4,6 +4,7 @@ const Student = require('../models/studentModal');
 const router = express.Router();
 const handler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
+const authMid = require('../middlewares/authMiddleware');
 
 
 //login API
@@ -78,6 +79,27 @@ router.post("/signup", handler(async (req, res, next) => {
     }
 }))
 
+
+router.put("/profile/update", authMid, handler(async (req, res, next) => {
+    try {
+        const formData = req.body;
+        console.log("Formdata ==> ", formData);
+        const studentId = req.user.id
+
+        const updatedProfile = await Student.findByIdAndUpdate(studentId, formData);
+
+        if (!updatedProfile) {
+            next(errorHandler(404, "Profile not found , please try again !"));
+        }
+        console.log(updatedProfile);
+        res.json({
+            updatedProfile,
+            "update": true,
+        });
+    } catch (error) {
+        next(error)
+    }
+}))
 
 
 

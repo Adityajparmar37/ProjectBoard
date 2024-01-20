@@ -20,6 +20,7 @@ import FilePage from "../../../Pages/FilePage/FilePage";
 import UploadFile from "../../UploadFile/UploadFile";
 import ManageFile from "../../ManageFile/ManageFile";
 import Chatting from "../../Chatting/Chatting";
+import ProfilePage from "../../../Pages/ProfilePage/ProfilePage";
 
 export default function AppRoute() {
     return (
@@ -39,6 +40,9 @@ export default function AppRoute() {
                 </AuthRoute>} />
                 <Route path="/chat" element={<AuthRoute>
                     <ChatPage />
+                </AuthRoute>} />
+                <Route path="/profile" element={<AuthRoute>
+                    <ProfilePage />
                 </AuthRoute>} />
 
                 
