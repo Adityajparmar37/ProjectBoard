@@ -127,7 +127,7 @@ export default function Chatting() {
                                         ))}
                                     </ul>
                                 ) : (
-                                    <p>No friends available</p>
+                                    <p>No Project Group available</p>
                                 )}
                             </div>
                         </div>
@@ -141,60 +141,72 @@ export default function Chatting() {
                         <div className="absolute bottom-0 w-full flex flex-col">
                             <div id="chatContainer" className="overflow-y-auto max-h-[80vh] pb-24">
                                 <div className="p-5 leading-8">
-                                    {messageReceived?.map((message, index) => (
-                                        <div key={index} ref={(m) => m && index === messageReceived.length - 1 && m.parentElement.scrollTo({ behavior: "smooth", top: m.parentElement.scrollHeight })}>
-                                            {console.log("Message", message)}
-                                            <div className={message.senderId === student._id ? 'flex justify-end' : 'flex justify-start'}>
-                                                {message.senderId === student._id ? (
-                                                    <>
-                                                        <h1 className='text-right bg-blue-100 px-8 py-1 mb-3 leading-9 rounded-xl font-bold text-lg '>
-                                                            {message.content}
-                                                        </h1>
-                                                        <span className=' bg-gray-100 px-3 py-1 mb-3 leading-9 rounded-full font-bold text-md ml-2'>{message.senderName}</span>
-                                                    </>
-
-                                                ) : (
-                                                    <>
-
-                                                        <span className=' bg-gray-100 px-3 py-1 mb-3 leading-9 rounded-full font-bold text-md mr-2'>{message.senderName}</span>
-                                                        <h1 className='text-left bg-purple-100 px-8 py-1 mb-3 leading-9 rounded-xl font-bold text-lg'>
-                                                            {message.content}
-                                                        </h1>
-                                                    </>
-                                                )}
+                                    {messageReceived && messageReceived.length > 0 ? (
+                                        messageReceived.map((message, index) => (
+                                            <div
+                                                key={index}
+                                                ref={(m) =>
+                                                    m &&
+                                                    index === messageReceived.length - 1 &&
+                                                    m.parentElement.scrollTo({ behavior: "smooth", top: m.parentElement.scrollHeight })
+                                                }
+                                            >
+                                                {console.log("Message", message)}
+                                                <div className={message.senderId === student._id ? 'flex justify-end' : 'flex justify-start'}>
+                                                    {message.senderId === student._id ? (
+                                                        <>
+                                                            <h1 className='text-right bg-blue-100 px-8 py-1 mb-3 leading-9 rounded-xl font-bold text-lg '>
+                                                                {message.content}
+                                                            </h1>
+                                                            <span className='bg-gray-100 px-3 py-1 mb-3 leading-9 rounded-full font-bold text-md ml-2'>{message.senderName}</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span className='bg-gray-100 px-3 py-1 mb-3 leading-9 rounded-full font-bold text-md mr-2'>{message.senderName}</span>
+                                                            <h1 className='text-left bg-purple-100 px-8 py-1 mb-3 leading-9 rounded-xl font-bold text-lg'>
+                                                                {message.content}
+                                                            </h1>
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
-
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="w-full absolute bottom-0">
-                                <div className="w-full bg-gray-700/95 py-2 px-3 flex items-center">
-                                    <button
-                                        onClick={OpenEmoji}
-                                        className="bg-blue-600 p-3 text-white text-[1.5rem] font-semibold w-auto mr-3 rounded-full hover:bg-blue-900 text-center">🙂</button>
-
-                                    <input
-                                        onChange={(e) => setNewMessage(e.target.value)}
-                                        onKeyDown={handleEnterKey}
-                                        value={newMessage}
-                                        type="text"
-                                        name="message"
-                                        className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-xl" />
-
-
-
-                                    <button
-                                        onClick={handleSend}
-                                        className="bg-blue-600 py-4 px-8 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend /></button>
-                                    {openEmoji && (
-                                        <div style={{ position: 'absolute', bottom: '60px', left: '10px', zIndex: '1000' }}>
-                                            <EmojiPicker onEmojiClick={(emojiObject) => setNewMessage((prevMessage) => prevMessage + emojiObject.emoji)} />
-                                        </div>
+                                        ))
+                                    ) : (
+                                        <>
+                                            <div className="flex justify-center items-center">
+                                                <h1 className="bg-gray-200 shadow-inner rounded-lg p-2 font-bold">Please Select Group or No chat</h1>
+                                            </div>
+                                        </>
                                     )}
                                 </div>
-
                             </div>
+                        </div>
+                        <div className="w-full absolute bottom-0">
+                            <div className="w-full bg-gray-700/95 py-2 px-3 flex items-center">
+                                <button
+                                    onClick={OpenEmoji}
+                                    className="bg-blue-600 p-3 text-white text-[1.5rem] font-semibold w-auto mr-3 rounded-full hover:bg-blue-900 text-center">🙂</button>
+
+                                <input
+                                    onChange={(e) => setNewMessage(e.target.value)}
+                                    onKeyDown={handleEnterKey}
+                                    value={newMessage}
+                                    type="text"
+                                    name="message"
+                                    className="border-2 border-gray-200 focus:outline-none bg-gray-100 p-4 focus:shadow-inner w-full font-semibold rounded-xl" />
+
+
+
+                                <button
+                                    onClick={handleSend}
+                                    className="bg-blue-600 py-4 px-8 text-white text-[1.5rem] font-semibold w-auto ml-3 rounded-r-xl hover:bg-blue-900 text-center"><IoSend /></button>
+                                {openEmoji && (
+                                    <div style={{ position: 'absolute', bottom: '60px', left: '10px', zIndex: '1000' }}>
+                                        <EmojiPicker onEmojiClick={(emojiObject) => setNewMessage((prevMessage) => prevMessage + emojiObject.emoji)} />
+                                    </div>
+                                )}
+                            </div>
+
                         </div>
                     </div>
                 </div>
