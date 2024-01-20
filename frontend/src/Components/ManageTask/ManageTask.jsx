@@ -73,7 +73,7 @@ export default function ManageTask() {
                         <div className="fixed bottom-10 right-24">
                             <Link to="/manageTask/calendar">
                                 <FcCalendar 
-                                    className="cursor-pointer bg-white p-3 h-[5rem] w-[5rem] rounded-[3rem]"
+                                    className="cursor-pointer bg-white p-3 h-[5rem] w-[5rem] rounded-[3rem] border-4 border-gray-500"
                                 />
                             </Link>
                         </div>
