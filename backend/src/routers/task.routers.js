@@ -212,19 +212,20 @@ router.post("/createTask", handler(async (req, res, next) => {
         console.log(taskMembers.length)
 
         const taskMembersData = [];
-        if (taskMembers.length != 1) {
-            for (const memberData of taskMembers) {
-                const student = await Student.findOne({ name: memberData.memberNam });
-                if (student) {
-                    taskMembersData.push({
-                        memberId: student.id,
-                        memberName: student.name,
-                    });
-                } else {
+        if (taskMembers) {
+            if (taskMembers.length != 1)
+                for (const memberData of taskMembers) {
+                    const student = await Student.findOne({ name: memberData.memberNam });
+                    if (student) {
+                        taskMembersData.push({
+                            memberId: student.id,
+                            memberName: student.name,
+                        });
+                    } else {
 
-                    return next(errorHandler(404, "Enter more than one member"))
+                        return next(errorHandler(404, "Enter more than one member"))
+                    }
                 }
-            }
         }
         else {
             taskMembersData = [];
