@@ -5,6 +5,7 @@ const router = express.Router();
 const handler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
 const authMid = require('../middlewares/authMiddleware');
+const bcrypt = require("bcryptjs");
 
 
 //login API
@@ -83,23 +84,35 @@ router.post("/signup", handler(async (req, res, next) => {
 router.put("/profile/update", authMid, handler(async (req, res, next) => {
     try {
         const formData = req.body;
-        console.log("Formdata ==> ", formData);
-        const studentId = req.user.id
+        const studentId = req.user.id;
+        console.log(formData);
 
-        const updatedProfile = await Student.findByIdAndUpdate(studentId, formData);
+        const existingProfile = await Student.findById(studentId);
 
-        if (!updatedProfile) {
-            next(errorHandler(404, "Profile not found , please try again !"));
+        if (!existingProfile) {
+            console.log(error)
+            return next(errorHandler(404, "Profile not found, please try again!"));
         }
+
+        if (formData.password) {
+            console.log(formData.password)
+            const salt = await bcrypt.genSalt(10);
+            formData.password = await bcrypt.hash(formData.password, salt);
+        }
+
+        const updatedProfile = await Student.findByIdAndUpdate(studentId, formData, { new: true });
+
         console.log(updatedProfile);
         res.json({
             updatedProfile,
             "update": true,
         });
     } catch (error) {
-        next(error)
+        console.log(error)
+        next(error);
     }
-}))
+}));
+
 
 
 

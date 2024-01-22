@@ -46,7 +46,9 @@ export default function Header() {
                                     )}
                                     {isProfileMenuOpen && (
                                         <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg flex flex-col w-32">
-                                            <Link to="/profile" className="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700  hover:border-b-2 hover:shadow-inner">
+                                            <Link
+                                            onClick={toggleProfileMenu} 
+                                            to="/profile" className="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700  hover:border-b-2 hover:shadow-inner">
                                                 Your Profile
                                             </Link>
                                             <button

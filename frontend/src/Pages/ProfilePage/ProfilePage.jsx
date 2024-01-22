@@ -10,26 +10,49 @@ export default function ProfilePage() {
         name: student.name,
         email: student.email,
         InsitutionName: student.InsitutionName,
-        // password: "",
-        // confirmPassword: ""
+        password: "",
+        confirmPassword: ""
     })
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        const updatedProfile = await UpdateStudent(form);
+        try {
 
-        if (updatedProfile.update === true) {
-            setForm((prevForm) => ({
-                ...prevForm,
-                name: updatedProfile.name,
-                email: updatedProfile.email,
-                InsitutionName: updatedProfile.InsitutionName,
-            }));
-            toast.success("Profile updated successfully");
-        } else {
-            toast.error("Please try again !");
+            const isPasswordUpdated = form.password.trim().length > 0;
+
+            if (isPasswordUpdated && form.password !== form.confirmPassword) {
+                toast.error("Password must match");
+                return;
+            }
+
+
+            ///password change thayu hoi toj send karu nakar nhi
+            const updatePayload = isPasswordUpdated
+                ? { ...form, password: form.password }
+                : { ...form, password: undefined };
+
+            const updatedProfile = await UpdateStudent(updatePayload);
+
+            if (updatedProfile && updatedProfile.update === true) {
+
+                setForm((prevForm) => ({
+                    ...prevForm,
+                    name: updatedProfile.name,
+                    email: updatedProfile.email,
+                    InsitutionName: updatedProfile.InsitutionName,
+                }));
+
+                toast.success("Profile updated successfully");
+            } else {
+                toast.error("Please try again !");
+            }
+        } catch (error) {
+            toast.error("Please try again");
+            console.log("Error, please try again:", error);
         }
     };
+
+
 
     const handleInputChange = (e) => {
         setForm((prevForm) => ({
@@ -74,6 +97,20 @@ export default function ProfilePage() {
                                     required
                                     onChange={handleInputChange}
                                     type="text" name="InsitutionName" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[30rem] font-bold mb-2"></input>
+                            </div>
+                            <div className="flex flex-col m-2 justify-between">
+                                <label className="font-semibold text-lg">Update Password : </label>
+                                <input
+                                    onChange={handleInputChange}
+                                    placeholder="Enter new password"
+                                    type="password" name="password" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[30rem] font-bold mb-2"></input>
+                            </div>
+                            <div className="flex flex-col m-2 justify-between">
+                                <label className="font-semibold text-lg">Confirm new password : </label>
+                                <input
+                                    onChange={handleInputChange}
+                                    placeholder="Enter new password again"
+                                    type="password" name="confirmPassword" className="p-1 border-2 border-gray-200 focus:outline-none rounded-sm bg-gray-100 mt-2 h-10 shadow-inner focus:shadow-none w-[30rem] font-bold mb-2"></input>
                             </div>
                             <div className="flex flex-col mt-5">
                                 <button type="submit"
