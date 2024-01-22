@@ -58,6 +58,8 @@ export default function Chatting() {
             }
         })
 
+
+
         return () => {
             console.log("Disconnecting socket");
             socket.disconnect();
@@ -76,6 +78,13 @@ export default function Chatting() {
         }
         fetch();
     }, [])
+
+    useEffect(() => {
+        const chatContainer = document.getElementById('chatContainer');
+        if (chatContainer) {
+            chatContainer.scrollTo({ behavior: 'smooth', top: chatContainer.scrollHeight });
+        }
+    }, [messageReceived, ProjectSelect]);
 
     const handleProjectBtn = (project) => {
         setProjectSelect(project);
