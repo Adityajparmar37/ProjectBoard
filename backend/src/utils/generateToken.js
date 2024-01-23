@@ -6,5 +6,21 @@ const generateToken = (id, name, email, InsitutionName) => {
     });
 };
 
+const forgotPasswordToken = (oldStudent) => {
+    const secret = process.env.JWT_SECRET + oldStudent.password;
+    const token = jwt.sign({ email: oldStudent.email, id: oldStudent._id }, secret, {
+        expiresIn: "5m",
+    });
+    return token;
+}
 
-module.exports = generateToken;
+
+const verifyToken = (oldStudent, token) => {
+    const secret = process.env.JWT_SECRET + oldStudent.password;
+    const verify = jwt.verify(token, secret);
+
+    return verify;
+
+}
+
+module.exports = { generateToken, forgotPasswordToken, verifyToken };

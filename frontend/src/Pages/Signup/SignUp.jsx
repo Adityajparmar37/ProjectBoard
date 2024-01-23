@@ -64,7 +64,7 @@ export default function SignUp() {
                             type="text"
                             onChange={handleChange}
                             name="name"
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your name"
                         />
                     </div>
@@ -76,7 +76,7 @@ export default function SignUp() {
                             type="email"
                             onChange={handleChange}
                             name="email"
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your email"
                         />
                     </div>
@@ -89,7 +89,7 @@ export default function SignUp() {
                             type="text"
                             onChange={handleChange}
                             name="InsitutionName"
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your School or Insitution name"
                         />
                     </div>
@@ -102,7 +102,7 @@ export default function SignUp() {
                             type="password"
                             onChange={handleChange}
                             name="password"
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your password"
                         />
                     </div>
@@ -114,7 +114,7 @@ export default function SignUp() {
                             type="password"
                             onChange={handleChange}
                             name="confirmPassword"
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your password"
                         />
                     </div>

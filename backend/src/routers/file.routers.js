@@ -41,9 +41,6 @@ router.post("/uploadFile", upload.array("files"), async (req, res, next) => {
 
 
         if (fileUrls) {
-
-
-
             const projectName = req.body.projectName;
             const fileNames = req.files.map(file => file.filename);
             console.log(fileUrls);
@@ -110,7 +107,6 @@ router.get("/listFiles/:projectName", async (req, res, next) => {
         }
 
         // Get the list of objects (files) from AWS S3 for the specified project name
-
         if (filesData) {
             console.log("hello 2 ");
             const objectList = await listObjects(projectName);

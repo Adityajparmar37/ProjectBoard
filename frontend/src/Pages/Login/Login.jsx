@@ -58,7 +58,7 @@ export default function Login() {
                             type="email"
                             name="email"
                             onChange={handleChange}
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your username"
                         />
                     </div>
@@ -71,16 +71,23 @@ export default function Login() {
                             type="password"
                             name="password"
                             onChange={handleChange}
-                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none"
+                            className="mt-1 p-2 w-full border-b-2 md:border-b-4 rounded-md outline-none focus:border-2"
                             placeholder="Enter your password"
                         />
                     </div>
                     <button
                         onClick={handleSubmit}
                         type="submit"
-                        className="w-full bg-blue-700 text-white rounded-md p-2 hover:bg-blue-800 focus:outline-none focus:ring focus:border-blue-500 hover:rounded-full">
+                        className="w-full bg-blue-700 text-white rounded-md p-2 hover:bg-blue-800 focus:outline-none focus:ring focus:border-blue-500 hover:rounded-full mt-3">
                         Login
                     </button>
+
+                    <div className="flex justify-center items-center mt-5 text-slate-900">
+                        <p className="mr-2">Forgot Password ?</p>
+                        <Link to="/forgotPassword">
+                            <span className="text-red-600 font-semibold">Click here</span>
+                        </Link>
+                    </div>
                 </form>
             </div>
 

@@ -32,6 +32,27 @@ export const ProfileUpdate = async (formData) => {
 }
 
 
+export const forgotPassword = async (email) => {
+    try {
+        console.log(email)
+        const { data } = await axios.post('api/student/forgotPassword', email);
+        console.log("Forgot password email message");
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+export const NewPassword = async (id, token, password) => {
+    try {
+        const { data } = await axios.post(`api/student/newPassword/${id}/${token}`, password);
+        console.log("New password message", data);
+        return data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
 
 export const getUser = () =>
     localStorage.getItem('studentInfo')

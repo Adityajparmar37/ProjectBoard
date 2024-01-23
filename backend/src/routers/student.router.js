@@ -1,11 +1,14 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const errorHandler = require('../middlewares/errorMiddlewares');
 const Student = require('../models/studentModal');
 const router = express.Router();
 const handler = require('express-async-handler');
-const generateToken = require('../utils/generateToken');
 const authMid = require('../middlewares/authMiddleware');
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const { generateToken, forgotPasswordToken, verifyToken } = require('../utils/generateToken');
+dotenv.config();
 
 
 //login API
@@ -112,6 +115,116 @@ router.put("/profile/update", authMid, handler(async (req, res, next) => {
         next(error);
     }
 }));
+
+
+router.post("/forgotPassword", handler(async (req, res, next) => {
+    try {
+
+        const { email } = req.body;
+        console.log(email);
+        const oldStudent = await Student.findOne({ email });
+
+        if (!oldStudent) {
+            next(errorHandler(404, "User not exit , please create your new account !"));
+        }
+
+        else if (oldStudent) {
+
+
+            const tokenReturn = forgotPasswordToken(oldStudent)
+            const link = `http://localhost:5173/api/student/newPassword/${oldStudent._id}/${tokenReturn}`;
+            var transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.MAILPASS,
+                },
+            });
+
+            var mailOptions = {
+                from: process.env.EMAIL,
+                to: "adiparmar107@gmail.com",
+                subject: "Password Reset Link",
+                text: link,
+            };
+
+            await transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                }
+            });
+
+            // console.log("link ==> ", link);
+
+            res.status(201).json({
+                msg: "You should receive an email"
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}));
+
+
+
+//for verification
+router.get("/resetPassword/:id/:token", async (req, res) => {
+    const { id, token } = req.params;
+    // console.log(req.params);
+    const oldStudent = await Student.findOne({ _id: id });
+    if (!oldStudent) {
+        next(errorHandler(404, "User not found !"))
+    }
+
+    try {
+        const verify = verifyToken(oldStudent, token);
+        res.status(201).json({
+            email: verify.email,
+            status: "Verified"
+        });
+
+    } catch (error) {
+        // console.log(error);
+        res.status(201).json({
+            status: "Not Verified"
+        });
+    }
+});
+
+
+router.post("/newPassword/:id/:token", handler(async (req, res, next) => {
+    const { id, token } = req.params;
+
+    const { password } = req.body;
+
+    console.log(password, " ", id, " ", token);
+
+    try {
+        const oldStudent = await Student.findOne({ _id: id });
+
+        const verify = verifyToken(oldStudent, token);
+        console.log("VerifyToke ==> ", verify);
+
+        if (oldStudent && verify) {
+            const salt = await bcrypt.genSalt(10);
+            const newpassword = await bcrypt.hash(password, salt);
+
+            const setNewPass = await Student.findByIdAndUpdate({ _id: id }, { password: newpassword });
+
+            await setNewPass.save();
+            res.status(201).json({ "change": true })
+
+        } else {
+            next(errorHandler(404, "User not found !"));
+        }
+    } catch (error) {
+        console.log("Changing new reset password ", error);
+        next(error)
+    }
+}));
+
 
 
 

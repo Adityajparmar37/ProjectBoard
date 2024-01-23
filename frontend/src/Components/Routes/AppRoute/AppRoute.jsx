@@ -21,6 +21,8 @@ import UploadFile from "../../UploadFile/UploadFile";
 import ManageFile from "../../ManageFile/ManageFile";
 import Chatting from "../../Chatting/Chatting";
 import ProfilePage from "../../../Pages/ProfilePage/ProfilePage";
+import ForgotPassword from "../../../Pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "../../../Pages/ResetPassword/ResetPassword";
 
 export default function AppRoute() {
     return (
@@ -30,6 +32,8 @@ export default function AppRoute() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/" element={<DefaultPage />} />
+                <Route path="/forgotPassword" element={<ForgotPassword />} />
+                <Route path="/api/student/newPassword/:id/:token" element={<ResetPassword />} />
 
                 {/* main pages */}
                 <Route path="/home" element={<AuthRoute>
@@ -45,17 +49,17 @@ export default function AppRoute() {
                     <ProfilePage />
                 </AuthRoute>} />
 
-                
+
                 {/* Chat section nae routes */}
                 <Route path="/chat/find" element={<AuthRoute>
                     <SearchMember />
                 </AuthRoute>} />
                 <Route path="/chat/chatting" element={<AuthRoute>
                     <Chatting />
-                </AuthRoute>}/>
+                </AuthRoute>} />
 
-                
-                 {/* Project section nae routes    */}
+
+                {/* Project section nae routes    */}
                 <Route path="/createProject" element={<AuthRoute>
                     <CreateProject />
                 </AuthRoute>} />
@@ -85,7 +89,7 @@ export default function AppRoute() {
                 </AuthRoute>} />
 
 
-                 {/* File section nae routes    */}
+                {/* File section nae routes    */}
                 <Route path="/file" element={<AuthRoute>
                     <FilePage />
                 </AuthRoute>} />
