@@ -145,7 +145,7 @@ router.post("/forgotPassword", handler(async (req, res, next) => {
                 from: process.env.EMAIL,
                 to: "adiparmar107@gmail.com",
                 subject: "Password Reset Link",
-                text: link,
+                text: `${link}\n\n**Note: The link will be active only for 5 minutes**.`,
             };
 
             await transporter.sendMail(mailOptions, function (error, info) {
@@ -173,17 +173,26 @@ router.post("/forgotPassword", handler(async (req, res, next) => {
 router.get("/resetPassword/:id/:token", async (req, res) => {
     const { id, token } = req.params;
     // console.log(req.params);
-    const oldStudent = await Student.findOne({ _id: id });
+    const oldStudent = await Student.findById(id);
     if (!oldStudent) {
         next(errorHandler(404, "User not found !"))
     }
 
     try {
+        console.log("Found student: ", oldStudent);
         const verify = verifyToken(oldStudent, token);
-        res.status(201).json({
-            email: verify.email,
-            status: "Verified"
-        });
+        console.log("VerifyToken result: ", verify);
+
+        if (verify.id === id) {
+            res.status(201).json({
+                email: verify.email,
+                status: "Verified"
+            });
+        } else {
+            res.status(201).json({
+                status: "Can not Verify"
+            });
+        }
 
     } catch (error) {
         // console.log(error);
@@ -202,19 +211,25 @@ router.post("/newPassword/:id/:token", handler(async (req, res, next) => {
     console.log(password, " ", id, " ", token);
 
     try {
-        const oldStudent = await Student.findOne({ _id: id });
+        const oldStudent = await Student.findById(id);
 
+        console.log("Found student: ", oldStudent);
         const verify = verifyToken(oldStudent, token);
-        console.log("VerifyToke ==> ", verify);
+        console.log("VerifyToken result: ", verify);
 
-        if (oldStudent && verify) {
-            const salt = await bcrypt.genSalt(10);
-            const newpassword = await bcrypt.hash(password, salt);
+        if (oldStudent) {
 
-            const setNewPass = await Student.findByIdAndUpdate({ _id: id }, { password: newpassword });
+            if (verify.id === id) {
+                const salt = await bcrypt.genSalt(10);
+                const newpassword = await bcrypt.hash(password, salt);
 
-            await setNewPass.save();
-            res.status(201).json({ "change": true })
+                const setNewPass = await Student.findByIdAndUpdate({ _id: id }, { password: newpassword });
+
+                await setNewPass.save();
+                res.status(201).json({ "change": true })
+            } else {
+                res.status(201).json({ "change": false })
+            }
 
         } else {
             next(errorHandler(404, "User not found !"));
