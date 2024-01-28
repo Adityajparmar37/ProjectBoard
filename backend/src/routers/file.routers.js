@@ -49,6 +49,7 @@ router.post(
         { projectName }
       );
 
+      ///promises create kari che badhi file mate je thi each and every file brb bani jai
       const promises = req.files.map(
         async (file) => {
           const contentType = file.mimetype;
@@ -67,6 +68,7 @@ router.post(
         }
       );
 
+      ///badhe promise thai jai pachi ej newFile const banse , ej newFile apre badhi file hold kare che agar project already db ma hoi toh concat karu nakar navi create karu
       const newFiles = await Promise.all(
         promises
       );
