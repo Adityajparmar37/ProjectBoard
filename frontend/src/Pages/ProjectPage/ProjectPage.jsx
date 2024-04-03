@@ -3,9 +3,12 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { GrDocumentUpdate } from "react-icons/gr";
 
 export default function ProjectPage() {
-  if (1) {
-    throw new Error("Testing ErrorBoundary");
-  }
+
+
+  // //testing error boundary
+  // if (1) {
+  //   throw new Error("Testing ErrorBoundary");
+  // }
   return (
     <div className="bg-gray-100 h-screen">
       <div className="grid grid-cols-3 gap-5 pt-20">
