@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import AuthRoute from "../AuthRoute/AuthRoute";
+import FallBack from "../../FallBackUI/FallBack";
 
 // Lazy loaded components
 const DefaultPage = lazy(() =>import("../../../Pages/DefaultPage/DefaultPage"));
@@ -34,7 +35,7 @@ export default function AppRoute() {
         position="top-center"
         toastOptions={{ duration: 2000 }}
       />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<FallBack/>}>
         <Routes>
           <Route path="/login"element={<Login />}/>
           <Route path="/signup" element={<SignUp />}/>
@@ -43,148 +44,31 @@ export default function AppRoute() {
           <Route path="/api/student/newPassword/:id/:token" element={<ResetPassword />}/>
 
           {/* main pages */}
-          <Route path="/home" element={
-             <AuthRoute>
-                <HomePage />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/project"
-            element={
-              <AuthRoute>
-                <ProjectPage />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <AuthRoute>
-                <ChatPage />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <AuthRoute>
-                <ProfilePage />
-              </AuthRoute>
-            }
-          />
+          <Route path="/home" element={<AuthRoute> <HomePage /> </AuthRoute>}/>
+          <Route path="/project" element={<AuthRoute> <ProjectPage /> </AuthRoute>}/>
+          <Route path="/chat" element={<AuthRoute> <ChatPage /> </AuthRoute>}/>
+          <Route path="/profile" element={<AuthRoute> <ProfilePage /> </AuthRoute>}/>
 
           {/* Chat section nae routes */}
-          <Route
-            path="/chat/find"
-            element={
-              <AuthRoute>
-                <SearchMember />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/chat/chatting"
-            element={
-              <AuthRoute>
-                <Chatting />
-              </AuthRoute>
-            }
-          />
+          <Route path="/chat/find" element={<AuthRoute> <SearchMember /> </AuthRoute>}/>
+          <Route path="/chat/chatting" element={<AuthRoute> <Chatting /> </AuthRoute>}/>
 
           {/* Project section nae routes    */}
-          <Route
-            path="/createProject"
-            element={
-              <AuthRoute>
-                <CreateProject />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/manageProject"
-            element={
-              <AuthRoute>
-                <ManageProject />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/manageProject/:id"
-            element={
-              <AuthRoute>
-                <ProjectView />
-              </AuthRoute>
-            }
-          />
+          <Route path="/createProject" element={<AuthRoute> <CreateProject /></AuthRoute>}/>
+          <Route path="/manageProject" element={<AuthRoute> <ManageProject /> </AuthRoute>}/>
+          <Route path="/manageProject/:id" element={<AuthRoute> <ProjectView /> </AuthRoute>}/>
 
           {/* Task section nae routes */}
-          <Route
-            path="/task"
-            element={
-              <AuthRoute>
-                <TaskPage />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/createTask"
-            element={
-              <AuthRoute>
-                <CreateTask />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/manageTask"
-            element={
-              <AuthRoute>
-                <ManageTask />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/manageTask/:id"
-            element={
-              <AuthRoute>
-                <TaskView />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/manageTask/calendar"
-            element={
-              <AuthRoute>
-                <Calendar />
-              </AuthRoute>
-            }
-          />
+          <Route path="/task" element={<AuthRoute> <TaskPage /> </AuthRoute>}/>
+          <Route path="/createTask" element={<AuthRoute> <CreateTask /> </AuthRoute>}/>
+          <Route path="/manageTask" element={<AuthRoute> <ManageTask /> </AuthRoute>}/>
+          <Route path="/manageTask/:id" element={<AuthRoute> <TaskView /> </AuthRoute>}/>
+          <Route path="/manageTask/calendar" element={<AuthRoute> <Calendar /> </AuthRoute>}/>
 
           {/* File section nae routes    */}
-          <Route
-            path="/file"
-            element={
-              <AuthRoute>
-                <FilePage />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/uploadFile"
-            element={
-              <AuthRoute>
-                <UploadFile />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/manageFile"
-            element={
-              <AuthRoute>
-                <ManageFile />
-              </AuthRoute>
-            }
-          />
+          <Route path="/file" element={<AuthRoute> <FilePage /> </AuthRoute>}/>
+          <Route path="/uploadFile" element={<AuthRoute> <UploadFile /> </AuthRoute>}/>
+          <Route path="/manageFile" element={<AuthRoute> <ManageFile /> </AuthRoute>}/>
         </Routes>
       </Suspense>
     </>
