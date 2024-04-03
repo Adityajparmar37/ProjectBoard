@@ -3,12 +3,12 @@ import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import AuthRoute from "../AuthRoute/AuthRoute";
 import FallBack from "../../FallBackUI/FallBack";
+import DefaultPage from "../../../Pages/DefaultPage/DefaultPage";
+import Login from "../../../Pages/Login/Login";
+import SignUp from "../../../Pages/Signup/SignUp";
 
 // Lazy loaded components
-const DefaultPage = lazy(() =>import("../../../Pages/DefaultPage/DefaultPage"));
-const HomePage = lazy(() => import("../../../Pages/HomePage/HomePage"));
-const Login = lazy(() => import("../../../Pages/Login/Login"));
-const SignUp = lazy(() => import("../../../Pages/Signup/SignUp"));
+ const HomePage = lazy(() => import("../../../Pages/HomePage/HomePage"));
 const ProjectPage = lazy(() =>import("../../../Pages/ProjectPage/ProjectPage"));
 const CreateProject = lazy(() =>import("../../CreateProject/CreateProject"));
 const ManageProject = lazy(() =>import("../../ManageProject/ManageProject"));
