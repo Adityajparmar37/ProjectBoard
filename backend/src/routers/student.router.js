@@ -15,6 +15,11 @@ dotenv.config();
 router.post("/login", handler(async (req, res, next) => {
     try {
         const { email, password } = req.body;
+        const token = req.params.token;
+
+        if (token) {
+            console.log(token);
+        }
 
         if (!email || !password) {
             next(errorHandler(401, "Plase fill all fields"));

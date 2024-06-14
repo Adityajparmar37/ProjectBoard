@@ -11,10 +11,11 @@ export const login = async (loginData) => {
 }
 
 
-export const GoogleLogin = async () => {
+export const GoogleLogin = async (token) => {
     try {
-        const { data } = await axios.get("/auth/google/callback");
-        console.log("Login Frontend API Hit ==> ", data);
+        console.log(token)
+        const { data } = await axios.post("auth/google/login/success",{token});
+        console.log("Google API Hit ==> ", data);
         return data;
     } catch (error) {
         console.log(error);

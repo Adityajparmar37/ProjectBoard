@@ -44,11 +44,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const GoogleAuthLogin = async () => {
+  const GoogleAuthLogin = async (token) => {
     try {
-      const { data } =
-        await studentServices.GoogleLogin();
-      console.log(data);
+      console.log(token);
+      const student =
+        await studentServices.GoogleLogin(token);
+      console.log(student);
       if (student.success === true) {
         setStudent(student);
         localStorage.setItem(

@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const morgan = require("morgan");
 const dbconnect = require("./config/database.config");
 const http = require("http");
 const helmet = require("helmet");
@@ -14,7 +15,6 @@ const taskRouters = require("./src/routers/task.routers.js");
 const fileRouters = require("./src/routers/file.routers.js");
 const socketConfig = require("./src/socket/socket.js");
 const passportAuth = require("./src/utils/passportUtil.js");
-
 
 dotenv.config();
 const app = express();
@@ -42,6 +42,9 @@ app.use(
 
 //for-google-auth-accessing-app
 passportAuth(app);
+
+// log http
+app.use(morgan("dev"));
 
 //API Endpoints
 app.use("/api/student", studentRouters);

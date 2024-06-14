@@ -6,6 +6,7 @@ import FallBack from "../../FallBackUI/FallBack";
 import DefaultPage from "../../../Pages/DefaultPage/DefaultPage";
 import Login from "../../../Pages/Login/Login";
 import SignUp from "../../../Pages/Signup/SignUp";
+import AuthSuccess from "../../../Pages/AuthSuccess/AuthSuccess";
 
 // Lazy loaded components
  const HomePage = lazy(() => import("../../../Pages/HomePage/HomePage"));
@@ -38,7 +39,8 @@ export default function AppRoute() {
       <Suspense fallback={<FallBack/>}>
         <Routes>
           <Route path="/" element={<DefaultPage />} />
-          <Route path="/login"element={<Login />}/>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/auth/google/success/:token" element={<AuthSuccess />} />
           <Route path="/signup" element={<SignUp />}/>
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/api/student/newPassword/:id/:token" element={<ResetPassword />}/>
