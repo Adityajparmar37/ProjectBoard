@@ -11,6 +11,18 @@ export const login = async (loginData) => {
 }
 
 
+export const GoogleLogin = async () => {
+    try {
+        const { data } = await axios.get("/auth/google/callback");
+        console.log("Login Frontend API Hit ==> ", data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error.response.data;
+    }
+}
+
+
 export const signup = async (signupData) => {
     try {
         const { data } = await axios.post('api/student/signup', signupData);

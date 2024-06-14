@@ -7,11 +7,14 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const studentRouters = require("./src/routers/student.router.js");
+const googleAuthRouters = require("./src/routers/googleAuth.routers");
 const projectRouters = require("./src/routers/project.routers.js");
 const chatRouters = require("./src/routers/chat.routers.js");
 const taskRouters = require("./src/routers/task.routers.js");
 const fileRouters = require("./src/routers/file.routers.js");
 const socketConfig = require("./src/socket/socket.js");
+const passportAuth = require("./src/utils/passportUtil.js");
+
 
 dotenv.config();
 const app = express();
@@ -37,8 +40,12 @@ app.use(
   })
 );
 
+//for-google-auth-accessing-app
+passportAuth(app);
+
 //API Endpoints
 app.use("/api/student", studentRouters);
+app.use("/auth", googleAuthRouters);
 app.use("/api/project", projectRouters);
 app.use("/api/chat", chatRouters);
 app.use("/api/task", taskRouters);

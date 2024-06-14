@@ -37,9 +37,9 @@ export default function AppRoute() {
       />
       <Suspense fallback={<FallBack/>}>
         <Routes>
+          <Route path="/" element={<DefaultPage />} />
           <Route path="/login"element={<Login />}/>
           <Route path="/signup" element={<SignUp />}/>
-          <Route path="/" element={<DefaultPage />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/api/student/newPassword/:id/:token" element={<ResetPassword />}/>
 
