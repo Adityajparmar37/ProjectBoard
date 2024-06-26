@@ -33,6 +33,7 @@
     - Upload files to specific projects.
     - Allow project teammates to download and upload files.
     - Manage files by deleting and uploading new ones.
+    - Filter tasks by task name, project name, or priority, and sort them.
     - Integrate with AWS S3 for fast and secure file access.
   
 9. **Chat Module:**
