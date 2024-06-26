@@ -67,7 +67,7 @@
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Adityajparmar37/EduConnect.git
+   git clone https://github.com/Adityajparmar37/ProjectBoard.git
    ```
 
 2. Go to backend and run 
