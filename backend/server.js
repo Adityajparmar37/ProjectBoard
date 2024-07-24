@@ -70,7 +70,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-//server creation
+
+//Create server 
 server.listen(PORT, () => {
   console.log(`serving on ${PORT}`);
 });
