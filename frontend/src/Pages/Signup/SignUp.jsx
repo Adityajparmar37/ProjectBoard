@@ -145,7 +145,7 @@ export default function SignUp() {
                 type="button"
                 onClick={handleGoogleAuth}
                 className="w-full bg-transparent text-black rounded-md p-2 hover:bg-gray-100 focus:outline-none focus:ring focus:border-gray-400 duration-300 hover:border-gray-400 hover:rounded-full mt-3 flex justify-center items-center text-center gap-5 border-2">
-                <FcGoogle /> Sign up with Google
+                <FcGoogle />Sign up with Google
               </button>
             </div>
           </form>
