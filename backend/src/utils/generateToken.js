@@ -14,7 +14,6 @@ const forgotPasswordToken = (oldStudent) => {
     return token;
 }
 
-
 const verifyToken = (oldStudent, token) => {
     const secret = process.env.JWT_SECRET + oldStudent.password;
     const verify = jwt.verify(token, secret);
