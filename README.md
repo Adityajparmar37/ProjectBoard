@@ -5,6 +5,7 @@
 
 - A platform for seamless project management and team collaboration, enabling task assignment, file sharing, and real-time chat within user portfolios.
 - The application is optimized with code-splitting techniques using React's `react-lazy` and `Suspense` for lazy loading, along with an `error boundary` fallback UI.
+- Integrate `AWS s3` bucket for storing files
 
 
 ## 📜 Features
