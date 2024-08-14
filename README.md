@@ -12,7 +12,6 @@
 
 1. **Authentication and Authorization:**
     - Secure user authentication using JWT tokens and Bcrypt.js for password hashing.
-    - Google OAuth for user sign-in and sign-up.
     - Forgot Password functionality to reset passwords via email token.
     - Update Profile 
 
