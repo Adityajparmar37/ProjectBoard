@@ -27,6 +27,7 @@
     - Create tasks for specific projects and assign them to teammates.
     - View tasks on a calendar with deadlines.
     - Update tasks, including task priority, and allow teammates to make changes.
+    - Filter tasks by task name, project name, or priority, and sort them.
     - Mark tasks as done or undo them
   
 
@@ -34,7 +35,6 @@
     - Upload files to specific projects.
     - Allow project teammates to download and upload files.
     - Manage files by deleting and uploading new ones.
-    - Filter tasks by task name, project name, or priority, and sort them.
     - Integrate with AWS S3 for fast and secure file access.
   
 9. **Chat Module:**
