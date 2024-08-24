@@ -12,6 +12,7 @@
 
 1. **Authentication and Authorization:**
     - Secure user authentication using JWT tokens and Bcrypt.js for password hashing.
+    - Can signup or login even by Google account through googleAuth 
     - Forgot Password functionality to reset passwords via email token.
     - Update Profile 
 
@@ -103,8 +104,11 @@
     # MAILING
     EMAIL = "Email address to send mail"
     MAILPASS = "app-password for access to gmail services"
-    
-    
+
+    # GOOGLE-AUTH
+    SESSION_SECRET = "secret key for session"
+    GOOGLE_CLIENT_ID = "Client ID of Project create in Google console of your account"
+    GOOGLE_CLIENT_SECRET = "Secret key for accessing and verification"
     
     # FRONTEND
     CLIENT_URL ="Frontend Url"
