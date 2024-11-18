@@ -116,7 +116,7 @@
      ```
      
 
-* **4.1)** OR Install it without docker through following steps*:
+* **4.1)** *OR Install it without docker through following steps*:
         
    **For Linux Users**:
     
