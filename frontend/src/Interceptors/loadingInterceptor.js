@@ -3,7 +3,7 @@ import axios from 'axios';
 export const setLoadingInterceptor = ({ showLoading, hideLoading }) => {
     axios.interceptors.request.use(
         req => {
-            showLoading();
+            // showLoading();
             return req;
         },
         error => {

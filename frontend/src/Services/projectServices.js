@@ -5,7 +5,7 @@ export const getAllProject = async (filters, Page, pageSize) => {
     try {
         // console.log("Page==>", Page)
         filters = filters || {};
-        Page = Page || 1;
+        Page = filters.Page || 1;
         pageSize = pageSize || 6;
 
         const params = new URLSearchParams({
