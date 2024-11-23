@@ -5,7 +5,8 @@
 
 - A platform for seamless project management and team collaboration, enabling task assignment, file sharing, and real-time chat with project teammate.
 - The application is optimized with code-splitting techniques using React's `react-lazy` and `Suspense` for lazy loading, along with an `error boundary` fallback UI.
-- Integrate `AWS s3` bucket for storing files
+- Integrate `AWS s3` bucket for storing files.
+- Eanched frontend performance by implementing `debouncing` and `throttling`.
 
 
 ## 📜 Features
@@ -21,6 +22,7 @@
     - Connect with teammates and invite them to projects.
     - Update project details and status (Pending, Completed, or On Hold).
     - Filter projects by keyword, project name, or status.
+    - Debounce applied to search to low down api calls of searching.
     - Sort projects from new to old and use pagination for easy navigation.
  
 
@@ -41,6 +43,7 @@
 9. **Chat Module:**
     - Communicate with teammates within specific projects.
     - Store chat history securely by encrypting it before storing it to database and decrypted it while retrieving past conversations.
+    - Throttling the send button in a chat app prevents spam, reduces server load and ensures consistent performance
      
 
 ## 🛠️Tech Stack
