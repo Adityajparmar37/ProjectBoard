@@ -6,7 +6,7 @@
 - A platform for seamless project management and team collaboration, enabling task assignment, file sharing, and real-time chat with project teammate.
 - The application is optimized with code-splitting techniques using React's `react-lazy` and `Suspense` for lazy loading, along with an `error boundary` fallback UI.
 - Integrate `AWS s3` bucket for storing files.
-- Eanched frontend performance by implementing `debouncing` and `throttling`.
+- Eanched frontend performance by implementing `debouncing` and `throttling` by `70%` .
 
 
 ## 📜 Features
@@ -88,61 +88,7 @@
     npm install
     ```
 
-4. Install Redis
-   - Install Docker Desktop/Docker daemon from:
-     ```bash
-     https://www.docker.com/products/docker-desktop/
-     ```
-
-    Run all following commands in terminal
-     
-   - Pull Redis Image
-     ```bash
-     docker pull redis
-     ```
-   - Expose Redis on a Port
-     ```bash
-     docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
-     ```
-   - Start Docker
-     ```bash
-     docker ps
-     ```
-     Note: After this you will get a ID copy that
-
-     
-   - Start Redis
-     ```bash
-     docker exec it <id> bash
-
-     redis-cli
-     ```
-     
-
-* **4.1)** *OR Install it without docker through following steps*:
-        
-   **For Linux Users**:
     
-    1. Install Redis:
-       ```bash
-       sudo apt-get update
-       sudo apt-get install redis-server
-       ```
-    
-    2. Start the Redis server:
-       ```bash
-       redis-server
-       ```
-    
-    **For Windows Users:**
-    
-    Use Windows Subsystem for Linux (WSL) to install Redis:
-    
-    1. Install WSL and a Linux distribution (e.g., Ubuntu) from the Microsoft Store.
-    2. Open the WSL terminal and follow the Linux instructions to install Redis.
-
-   
-
 ### 4. Running the Project
 
 Start the frontend, backend, and Redis server:
