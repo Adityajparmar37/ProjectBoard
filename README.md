@@ -119,7 +119,7 @@
     ```
 
 
-### To Run Project
+5. To Run Project
     ```bash
 
     cd frontend
