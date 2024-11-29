@@ -88,12 +88,8 @@
     npm install
     ```
 
-    
-### 4. Running the Project
+4. Setup .env file 
 
-Start the frontend, backend, and Redis server:
-
-6. Setup .env file 
     ```bash
     MONGO_URI = "Your Mongodb URI"
     PORT = "SERVER PORT NUMBER"
@@ -123,7 +119,7 @@ Start the frontend, backend, and Redis server:
     ```
 
 
-7. To Run Project
+### To Run Project
     ```bash
 
     cd frontend
