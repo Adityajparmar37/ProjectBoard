@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
   useNavigate,
   useLocation,
   useParams,
 } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../../Hooks/useAuth";
 
